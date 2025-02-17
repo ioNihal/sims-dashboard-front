@@ -1,0 +1,99 @@
+.sidebar {
+    height: calc(100vh -40px);
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 20px 10px;
+    transition: width 0.3s ease;
+    position: relative;
+}
+
+/* Sidebar width when open vs. closed */
+.sidebar.open {
+    width: 250px;
+}
+
+.sidebar.closed {
+    width: 40px;
+}
+
+/* Toggle button styles */
+.toggleBtn {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    background-color: #34495e;
+    color: #ecf0f1;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* Logo text (shown when sidebar is open) */
+.logo {
+    margin: 5px;
+    font-size: 1.5rem;
+}
+
+/* 
+     OPTIONAL: Hide or adjust the logo when closed 
+  */
+.sidebar.closed .logo {
+    /* display: none; */
+    text-align: center;
+}
+
+/* Navigation list styling */
+.sidebar nav {
+    margin-top: 50px;
+    /* <-- ADDED: Creates space between toggle button and icons */
+}
+
+.sidebar nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar nav ul li {
+    margin-bottom: 20px;
+}
+
+/* Styling for navigation links */
+.sidebar nav ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li a.active {
+    background-color: #34495e;
+}
+
+/* Icon styling (default) */
+.sidebar nav ul li a .icon {
+    font-size: 1.2rem;
+    margin-right: 10px;
+}
+
+/* Hide the text when the sidebar is closed */
+.sidebar.closed nav ul li a span {
+    display: none;
+}
+
+/* Center and enlarge icons in closed state */
+.sidebar.closed nav ul li a {
+    justify-content: center;
+}
+
+.sidebar.closed nav ul li a .icon {
+    margin-right: 0;
+    font-size: 1.4rem;
+}

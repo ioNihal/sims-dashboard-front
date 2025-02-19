@@ -42,7 +42,7 @@
   font-size: 16px;
 }
 
-/* Button Group */
+
 .buttonGroup {
   display: flex;
   justify-content: space-between;
@@ -52,7 +52,7 @@
 .saveBtn,
 .cancelBtn {
   flex: 1;
-  /* Makes buttons equally sized */
+
   padding: 10px;
   font-size: 16px;
   text-align: center;
@@ -62,7 +62,7 @@
   transition: 0.3s ease-in-out;
 }
 
-/* Button Colors */
+
 .saveBtn {
   background-color: #28a745;
   color: white;
@@ -73,7 +73,7 @@
   color: white;
 }
 
-/* Hover Effects */
+
 .saveBtn:hover {
   background-color: #218838;
 }
@@ -82,7 +82,7 @@
   background-color: #c82333;
 }
 
-/* 🔹 RESPONSIVENESS */
+
 
 /* Tablets (768px and below) */
 @media screen and (max-width: 768px) {
@@ -92,7 +92,7 @@
 
   .modal input {
     font-size: 14px;
-    /* Adjusts for smaller screens */
+
   }
 }
 
@@ -101,7 +101,7 @@
   .modal {
     width: 100%;
     max-width: 95%;
-    /* Prevents modal from touching screen edges */
+
     padding: 15px;
   }
 

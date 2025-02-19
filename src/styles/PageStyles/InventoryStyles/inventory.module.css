@@ -43,7 +43,7 @@ h2 {
   font-size: 14px;
 }
 
-/* Table */
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -60,7 +60,7 @@ h2 {
   background-color: #f4f4f4;
 }
 
-/* Stock Status */
+
 .inStock {
   color: green;
   font-weight: bold;
@@ -76,7 +76,7 @@ h2 {
   font-weight: bold;
 }
 
-/* Buttons */
+
 .editBtn {
   background-color: #ffc107;
   color: white;
@@ -96,7 +96,7 @@ h2 {
   cursor: pointer;
 }
 
-/* 🔹 RESPONSIVENESS */
+
 
 /* Tablets (768px and below) */
 @media screen and (max-width: 768px) {
@@ -107,14 +107,14 @@ h2 {
 
   .addBtn {
     width: 100%;
-    /* Full width button */
+
     padding: 12px;
   }
 
   .table th,
   .table td {
     padding: 10px;
-    /* Larger tap area */
+
   }
 
   .editBtn,
@@ -133,7 +133,7 @@ h2 {
   .table {
     display: block;
     overflow-x: auto;
-    /* Scrollable table */
+
   }
 
   .addBtn {

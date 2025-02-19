@@ -1,167 +1,128 @@
-.page {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-width: 1200px;
+.container {
+    max-width: 900px;
     margin: auto;
-}
-
-.page h1 {
-    margin-top: 0;
-    font-size: 24px;
-}
-
-/* Add button styling */
-.addBtn {
-    background-color: #2ecc71;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Headings */
+  h2 {
+    margin-bottom: 10px;
+  }
+  
+  /* Add Button */
+  .addBtn {
+    background-color: #007bff;
     color: white;
-    padding: 8px 16px;
+    padding: 10px 15px;
     border: none;
-    border-radius: 4px;
-    font-size: 1rem;
+    border-radius: 5px;
     cursor: pointer;
-    margin-bottom: 15px;
-    transition: background-color 0.2s ease;
-}
-
-.addBtn:hover {
-    background-color: #27ae60;
-}
-
-/* Inventory table container styling */
-.tableContainer {
-    margin-top: 20px;
-    overflow-x: auto;
-    /* Enables horizontal scrolling on smaller screens */
-}
-
-/* Inventory table styling */
-.table {
+    margin-bottom: 10px;
+  }
+  
+  /* Search Bar */
+  .searchBar {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Table */
+  .table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 600px;
-    /* Prevents the table from shrinking too much */
-}
-
-.table th,
-.table td {
-    padding: 12px;
+  }
+  
+  .table th, 
+  .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
-    white-space: nowrap;
-    /* Prevents wrapping */
-}
-
-.table th {
-    background-color: #f2f2f2;
+  }
+  
+  .table th {
+    background-color: #f4f4f4;
+  }
+  
+  /* Stock Status */
+  .inStock {
+    color: green;
     font-weight: bold;
-}
-
-.table tr:hover {
-    background-color: #f9f9f9;
-}
-
-/* Button styles for actions */
-.btn {
-    padding: 6px 12px;
+  }
+  
+  .outOfStock {
+    color: red;
+    font-weight: bold;
+  }
+  
+  /* Buttons */
+  .editBtn {
+    background-color: #ffc107;
+    color: white;
+    padding: 5px 10px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 0.9rem;
     margin-right: 5px;
-}
-
-.editBtn {
-    background-color: #3498db;
+  }
+  
+  .deleteBtn {
+    background-color: #dc3545;
     color: white;
-}
-
-.editBtn:hover {
-    background-color: #2980b9;
-}
-
-.deleteBtn {
-    background-color: #e74c3c;
-    color: white;
-}
-
-.deleteBtn:hover {
-    background-color: #c0392b;
-}
-
-/* RESPONSIVENESS */
-
-/* Tablets (below 1024px) */
-@media (max-width: 1024px) {
-    .page {
-        padding: 15px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* 🔹 RESPONSIVENESS */
+  
+  /* Tablets (768px and below) */
+  @media screen and (max-width: 768px) {
+    .container {
+      max-width: 95%;
+      padding: 15px;
     }
-
-    .tableContainer {
-        padding: 10px;
-    }
-
-    .table th,
-    .table td {
-        padding: 10px;
-    }
-
+  
     .addBtn {
-        font-size: 0.9rem;
-        padding: 6px 14px;
+      width: 100%; /* Full width button */
+      padding: 12px;
     }
-
-    .btn {
-        font-size: 0.8rem;
-        padding: 5px 10px;
+  
+    .table th, .table td {
+      padding: 10px; /* Larger tap area */
     }
-}
-
-/* Mobile screens (below 768px) */
-@media (max-width: 768px) {
-    .page {
-        padding: 10px;
+  
+    .editBtn, .deleteBtn {
+      padding: 8px 12px;
     }
-
+  }
+  
+  /* Mobile (480px and below) */
+  @media screen and (max-width: 480px) {
+    .container {
+      max-width: 100%;
+      padding: 10px;
+    }
+  
     .table {
-        font-size: 14px;
+      display: block;
+      overflow-x: auto; /* Scrollable table */
     }
-
-    .tableContainer {
-        overflow-x: auto;
-    }
-
-    .table th,
-    .table td {
-        padding: 8px;
-        font-size: 14px;
-    }
-
+  
     .addBtn {
-        width: 100%;
-        text-align: center;
-        padding: 10px;
+      font-size: 16px;
+      padding: 14px;
     }
-
-    .btn {
-        font-size: 12px;
-        padding: 5px 8px;
+  
+    .editBtn, .deleteBtn {
+      padding: 10px;
+      font-size: 14px;
     }
-}
-
-/* Extra small screens (below 480px) */
-@media (max-width: 480px) {
-    .page h1 {
-        font-size: 20px;
-    }
-
-    .table {
-        font-size: 12px;
-    }
-
-    .btn {
-        font-size: 10px;
-        padding: 4px 6px;
-    }
-}
+  }
+  

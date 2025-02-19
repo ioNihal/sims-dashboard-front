@@ -1,0 +1,97 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px; /* Ensures spacing around the modal on small screens */
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px; /* Default width */
+  max-width: 90%; /* Prevents modal from being too wide on small screens */
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for better visibility */
+}
+
+/* Input Fields */
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px; /* Improves readability */
+}
+
+/* Button Group */
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.saveBtn, .cancelBtn {
+  flex: 1; /* Makes buttons equally sized */
+  padding: 10px;
+  font-size: 16px;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+/* Button Colors */
+.saveBtn {
+  background-color: #28a745;
+  color: white;
+}
+
+.cancelBtn {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Hover Effects */
+.saveBtn:hover {
+  background-color: #218838;
+}
+
+.cancelBtn:hover {
+  background-color: #c82333;
+}
+
+/* 🔹 RESPONSIVENESS */
+
+/* Tablets (768px and below) */
+@media screen and (max-width: 768px) {
+  .modal {
+    width: 80%;
+  }
+
+  input {
+    font-size: 14px; /* Adjusts for smaller screens */
+  }
+}
+
+/* Mobile (480px and below) */
+@media screen and (max-width: 480px) {
+  .modal {
+    width: 100%;
+    max-width: 95%; /* Prevents modal from touching screen edges */
+    padding: 15px;
+  }
+
+  .saveBtn, .cancelBtn {
+    font-size: 14px;
+    padding: 12px;
+  }
+}

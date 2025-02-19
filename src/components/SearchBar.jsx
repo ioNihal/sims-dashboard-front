@@ -1,6 +1,6 @@
 // components/SearchBar.js
 import React from "react";
-import styles from "../styles/SearchBar/searchbar.module.css";
+import styles from "../styles/ComponentStyles/searchbar.module.css";
 
 const SearchBar = ({ placeholder, searchQuery, setSearchQuery }) => {
   return (

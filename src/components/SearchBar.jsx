@@ -1,4 +1,4 @@
-// components/SearchBar.js
+
 import React from "react";
 import styles from "../styles/ComponentStyles/searchbar.module.css";
 

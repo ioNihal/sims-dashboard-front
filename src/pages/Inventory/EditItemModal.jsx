@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../styles/ComponentStyles/editItemModal.module.css";
+import styles from "../../styles/PageStyles/Inventory/editItemModal.module.css";
 
 const EditItemModal = ({ item, onSave, onCancel }) => {
   const [updatedItem, setUpdatedItem] = useState({ ...item });

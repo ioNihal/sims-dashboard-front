@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../styles/ComponentStyles/addItemModal.module.css";
+import styles from "../../styles/PageStyles/Inventory/addItemModal.module.css";
 
 const AddItemModal = ({ onAddItem, onCancel }) => {
   const [item, setItem] = useState({ name: "", category: "", quantity: "", priceperunit: "", supplier: "" });

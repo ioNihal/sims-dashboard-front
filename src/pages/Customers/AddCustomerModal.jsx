@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../../styles/PageStyles/Inventory/addItemModal.module.css";
+import styles from "../../styles/PageStyles/Customers/addCustomerModal.module.css";
 
 const AddCustomerModal = ({ onAddCustomer, onCancel }) => {
   const [customer, setCustomer] = useState({ name: "", category: "", quantity: "", priceperunit: "", supplier: "" });

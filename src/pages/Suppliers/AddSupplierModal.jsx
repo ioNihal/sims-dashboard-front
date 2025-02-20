@@ -1,26 +1,27 @@
-import React, { useState } from "react";
-import styles from "../../styles/PageStyles/Customers/addCustomerModal.module.css";
 
-const AddCustomerModal = ({ onAddCustomer, onCancel }) => {
-  const [customer, setCustomer] = useState({ name: "", category: "", quantity: "", priceperunit: "", supplier: "" });
+import React, { useState } from "react";
+import styles from "../../styles/PageStyles/Suppliers/addSupplierModal.module.css";
+
+const AddSupplierModal = ({ onAddSupplier, onCancel }) => {
+  const [supplier, setSupplier] = useState({ name: "", email: "", phone: "", address: "" });
 
   const handleChange = (e) => {
-    setCustomer({ ...customer, [e.target.name]: e.target.value });
+    setSupplier({ ...supplier, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = () => {
-    if (!customer.name || !customer.email || !customer.phone || !customer.address) {
-      alert("Please fill in all required fields.")
+    if (!supplier.name || !supplier.email || !supplier.phone || !supplier.address) {
+      alert("Please fill in all required fields.");
       return;
     }
-    onAddCustomer({ ...customer });
+    onAddSupplier({ ...supplier });
   };
 
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
-        <h3>Add New customer</h3>
-        <input type="text" name="name" placeholder="Customer Name" onChange={handleChange} />
+        <h3>Add New Supplier</h3>
+        <input type="text" name="name" placeholder="Supplier Name" onChange={handleChange} />
         <input type="text" name="email" placeholder="Email" onChange={handleChange} />
         <input type="text" name="phone" placeholder="Phone" onChange={handleChange} />
         <input type="text" name="address" placeholder="Address" onChange={handleChange} />
@@ -33,4 +34,4 @@ const AddCustomerModal = ({ onAddCustomer, onCancel }) => {
   );
 };
 
-export default AddCustomerModal;
+export default AddSupplierModal;

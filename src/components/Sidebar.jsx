@@ -7,9 +7,11 @@ import {
   FaUserTie, 
   FaClipboardList, 
   FaChartBar, 
-  FaBars 
+  FaBars,
 } from 'react-icons/fa';
+import { FaTruckFront } from 'react-icons/fa6';
 import styles from '../styles/SideBar/sidebar.module.css';
+
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -50,6 +52,15 @@ const Sidebar = () => {
             >
               <FaUsers className={styles.icon} />
               {isOpen && <span>Customers</span>}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
+              to="/suppliers" 
+              className={({ isActive }) => isActive ? styles.active : undefined}
+            >
+              <FaTruckFront className={styles.icon} />
+              {isOpen && <span>Suppliers</span>}
             </NavLink>
           </li>
           <li>

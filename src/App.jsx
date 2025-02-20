@@ -7,6 +7,7 @@ import Customers from './pages/Customers/Customers';
 import Staffs from './pages/Staffs';
 import Orders from './pages/Orders';
 import Reports from './pages/Reports';
+import Suppliers from './pages/Suppliers/Suppliers';
 import './App.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/customers" element={<Customers />} />
+            <Route path="/suppliers" element={<Suppliers />} />
             <Route path="/staffs" element={<Staffs />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/reports" element={<Reports />} />

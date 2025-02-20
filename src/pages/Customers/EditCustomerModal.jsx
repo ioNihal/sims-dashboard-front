@@ -13,7 +13,7 @@ const EditCustomerModal = ({ customer, onSave, onCancel }) => {
       alert("Fields cannot be empty!")
       return;
     }
-    onSave({ ...updatedCustomer, phone: parseInt(updatedCustomer.phone) });
+    onSave({ ...updatedCustomer });
   };
 
   return (
@@ -32,7 +32,7 @@ const EditCustomerModal = ({ customer, onSave, onCancel }) => {
 
         <div className={styles.inputWrapper}>
           <label>Phone</label>
-          <input type="number" name="phone" value={updatedCustomer.phone} onChange={handleChange} />
+          <input type="text" name="phone" value={updatedCustomer.phone} onChange={handleChange} />
         </div>
 
         <div className={styles.inputWrapper}>

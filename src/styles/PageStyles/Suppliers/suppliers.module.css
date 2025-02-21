@@ -63,11 +63,21 @@
     border-bottom: 1px solid #ddd;
     text-align: left;
     white-space: nowrap;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.table td {
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    max-width: 250px; 
 }
 
 .table th {
     background-color: #f1f1f1;
     font-weight: bold;
+    text-overflow: ellipsis;
 }
 
 .table tbody tr:hover {

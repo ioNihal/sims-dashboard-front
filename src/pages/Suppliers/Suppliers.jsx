@@ -20,21 +20,21 @@ const Suppliers = () => {
       setLoading(false);
     } else {
       const suppliersData = [
-        { id: 1, name: "Hindustan FMCG Supplies", email: "hindustan.fmcg@example.com", phone: "011-2345-6789", address: "12 Connaught Place, New Delhi", status: "Active" },
-        { id: 2, name: "Bharat FMCG Traders", email: "bharat.traders@example.com", phone: "022-3456-7890", address: "45 MG Road, Mumbai, Maharashtra", status: "Active" },
-        { id: 3, name: "Desi Foods Distribution", email: "desi.foods@example.com", phone: "044-5678-1234", address: "78 T. Nagar, Chennai, Tamil Nadu", status: "Active" },
-        { id: 4, name: "Spice Route FMCG", email: "spiceroute.fmcg@example.com", phone: "080-1234-5678", address: "89 Brigade Road, Bangalore, Karnataka", status: "Inactive" },
-        { id: 5, name: "Royal FMCG Suppliers", email: "royal.fmcg@example.com", phone: "033-2345-6789", address: "23 Salt Lake, Kolkata, West Bengal", status: "Active" },
-        { id: 6, name: "Swadeshi FMCG Distributors", email: "swadeshi.fmcg@example.com", phone: "079-9876-5432", address: "56 Banjara Hills, Hyderabad, Telangana", status: "Inactive" },
-        { id: 7, name: "Omkar FMCG Wholesale", email: "omkar.fmcg@example.com", phone: "011-8765-4321", address: "34 Connaught Place, New Delhi", status: "Active" },
-        { id: 8, name: "Saffron FMCG Exports", email: "saffron.exports@example.com", phone: "044-3456-7890", address: "90 Kilpauk, Chennai, Tamil Nadu", status: "Active" },
-        { id: 9, name: "Vijay FMCG Distributors", email: "vijay.fmcg@example.com", phone: "080-9876-1234", address: "67 Indiranagar, Bangalore, Karnataka", status: "Inactive" },
-        { id: 10, name: "Prerna FMCG Supplies", email: "prerna.fmcg@example.com", phone: "033-5678-1234", address: "12 Park Street, Kolkata, West Bengal", status: "Active" },
-        { id: 11, name: "Rajasthan FMCG Traders", email: "rajasthan.fmcg@example.com", phone: "0151-2345-6789", address: "15 Johri Bazaar, Jaipur, Rajasthan", status: "Active" },
-        { id: 12, name: "Ganga FMCG Distributors", email: "ganga.fmcg@example.com", phone: "0512-3456-7890", address: "101 MG Road, Kolkata, West Bengal", status: "Inactive" },
-        { id: 13, name: "Suryodaya FMCG Supplies", email: "suryodaya.fmcg@example.com", phone: "079-1234-5678", address: "65 Residency Road, Hyderabad, Telangana", status: "Active" },
-        { id: 14, name: "Dharma FMCG Wholesale", email: "dharma.fmcg@example.com", phone: "044-7890-1234", address: "77 Anna Salai, Chennai, Tamil Nadu", status: "Active" },
-        { id: 15, name: "Mitra FMCG Traders", email: "mitra.fmcg@example.com", phone: "022-8765-4321", address: "88 Bandra, Mumbai, Maharashtra", status: "Inactive" },
+        { "id": 1, "name": "Hindustan Unilever Limited", "email": "contact@hul.com", "phone": "022-3983-0000", "address": "HUL House, Andheri East, Mumbai, Maharashtra", "status": "Active" },
+        { "id": 2, "name": "ITC Limited", "email": "info@itc.in", "phone": "033-2288-9371", "address": "Virginia House, Kolkata, West Bengal", "status": "Active" },
+        { "id": 3, "name": "Nestlé India", "email": "consumer.services@in.nestle.com", "phone": "0124-394-0000", "address": "Nestlé House, Gurgaon, Haryana", "status": "Active" },
+        { "id": 4, "name": "Britannia Industries", "email": "consumer@britindia.com", "phone": "080-3768-9999", "address": "Britannia House, Bangalore, Karnataka", "status": "Active" },
+        { "id": 5, "name": "Amul (Gujarat Cooperative Milk Marketing Federation)", "email": "info@amul.coop", "phone": "02692-258506", "address": "Amul Dairy Road, Anand, Gujarat", "status": "Active" },
+        { "id": 6, "name": "Parle Products", "email": "consumer@parleproducts.com", "phone": "022-6691-6911", "address": "Vile Parle, Mumbai, Maharashtra", "status": "Active" },
+        { "id": 7, "name": "Tata Consumer Products", "email": "customercare@tataconsumer.com", "phone": "1800-345-1725", "address": "Kolkata, West Bengal", "status": "Active" },
+        { "id": 8, "name": "Colgate-Palmolive India", "email": "consumer_affairs@colpal.com", "phone": "1800-225-599", "address": "Colgate Research Centre, Mumbai, Maharashtra", "status": "Active" },
+        { "id": 9, "name": "Reckitt Benckiser India", "email": "care@rb.com", "phone": "1800-103-8873", "address": "DLF Plaza Tower, Gurgaon, Haryana", "status": "Active" },
+        { "id": 10, "name": "Patanjali Ayurved", "email": "customercare@patanjaliayurved.org", "phone": "1800-180-4108", "address": "Patanjali Yogpeeth, Haridwar, Uttarakhand", "status": "Active" },
+        { "id": 11, "name": "Marico Limited", "email": "consumer@marico.com", "phone": "022-6648-0480", "address": "Kanjurmarg, Mumbai, Maharashtra", "status": "Active" },
+        { "id": 12, "name": "Dabur India Limited", "email": "care@dabur.com", "phone": "0120-396-2100", "address": "Kaushambi, Ghaziabad, Uttar Pradesh", "status": "Active" },
+        { "id": 13, "name": "Godrej Consumer Products", "email": "care@godrejcp.com", "phone": "022-2518-8010", "address": "Godrej One, Vikhroli, Mumbai, Maharashtra", "status": "Active" },
+        { "id": 14, "name": "Emami Limited", "email": "contact@emamigroup.com", "phone": "033-6613-6264", "address": "Emami Tower, Kolkata, West Bengal", "status": "Active" },
+        { "id": 15, "name": "Nivea India (Beiersdorf AG)", "email": "consumer.care@nivea.in", "phone": "1800-103-7315", "address": "Mumbai, Maharashtra", "status": "Active" }
       ];
       setTimeout(() => {
         setSuppliers(suppliersData);

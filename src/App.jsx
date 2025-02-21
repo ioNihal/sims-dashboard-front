@@ -4,7 +4,7 @@ import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import Inventory from './pages/Inventory/Inventory';
 import Customers from './pages/Customers/Customers';
-import Staffs from './pages/Staffs';
+import Staffs from './pages/Staffs/Staffs';
 import Orders from './pages/Orders';
 import Reports from './pages/Reports';
 import Suppliers from './pages/Suppliers/Suppliers';

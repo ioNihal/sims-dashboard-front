@@ -1,25 +1,25 @@
-// pages/Customers.js
+// pages/Staffs.js
 import React, { useState, useEffect } from "react";
-import styles from "../../styles/PageStyles/Customers/customers.module.css";
+import styles from "../../styles/PageStyles/Staffs/staffs.module.css";
 import SearchBar from "../../components/SearchBar";
-import AddCustomerModal from "./AddCustomerModal";
-import EditCustomerModal from "./EditCustomerModal";
+import AddStaffModal from "./AddStaffModal";
+import EditStaffModal from "./EditStaffModal";
 
-const Customers = () => {
-  const [customers, setCustomers] = useState([]);
+const Staffs = () => {
+  const [staffs, setStaffs] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [selectedStaff, setSelectedStaff] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const savedCustomers = localStorage.getItem("customers");
-    if (savedCustomers) {
-      setCustomers(JSON.parse(savedCustomers));
+    const savedStaffs = localStorage.getItem("staffs");
+    if (savedStaffs) {
+      setStaffs(JSON.parse(savedStaffs));
       setLoading(false);
     } else {
-      const customers = [
+      const staffs = [
         { id: 1, name: "John Doe", email: "john@example.com", phone: "123-456-7890", address: "123 Main St", status: "Active" },
         { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "987-654-3210", address: "456 Oak St", status: "Inactive" },
         { id: 3, name: "Alice Brown", email: "alice@example.com", phone: "555-678-1234", address: "789 Pine St", status: "Active" },
@@ -37,71 +37,71 @@ const Customers = () => {
         { id: 15, name: "Prakash Iyer", email: "prakash.iyer@example.com", phone: "701-998-7766", address: "Malappuram, Kerala", status: "Active" },
       ];
       setTimeout(() => {
-        setCustomers(customers);
-        localStorage.setItem("customers", JSON.stringify(customers));
+        setStaffs(staffs);
+        localStorage.setItem("staffs", JSON.stringify(staffs));
         setLoading(false);
       }, 1000);
     }
   }, []);
 
 
-  const handleAddCustomer = (newCustomer) => {
-    const emailExists = customers.some(customer => customer.email === newCustomer.email);
+  const handleAddStaff = (newStaff) => {
+    const emailExists = staffs.some((s) => s.email === newStaff.email);
 
     if (emailExists) {
       alert("This email is already in use. Please use a different email.");
       return;
     }
 
-    const updatedCustomers = [...customers, { ...newCustomer, id: Date.now() }];
-    setCustomers(updatedCustomers);
-    localStorage.setItem("customers", JSON.stringify(updatedCustomers));
+    const updatedStaff = [...staffs, { ...newStaff, id: Date.now() }];
+    setStaffs(updatedStaff);
+    localStorage.setItem("staffs", JSON.stringify(updatedStaff));
     setIsAddModalOpen(false);
   };
 
 
-  const handleEditCustomer = (updatedCustomer) => {
-    const updatedCustomers = customers.map((customer) =>
-      customer.id === updatedCustomer.id ? updatedCustomer : customer
+  const handleEditStaff = (updatedStaff) => {
+    const updatedStaffs = staffs.map((staff) =>
+      staff.id === updatedStaff.id ? updatedStaff : staff
     );
-    setCustomers(updatedCustomers);
-    localStorage.setItem("customers", JSON.stringify(updatedCustomers));
+    setStaffs(updatedStaffs);
+    localStorage.setItem("staffs", JSON.stringify(updatedStaffs));
     setIsEditModalOpen(false);
   };
 
-  const handleDeleteCustomer = (id) => {
-    const updatedCustomers = customers.filter((customer) => customer.id !== id);
-    setCustomers(updatedCustomers);
-    localStorage.setItem("customers", JSON.stringify(updatedCustomers));
+  const handleDeleteStaff = (id) => {
+    const updatedStaffs = staffs.filter((staff) => staff.id !== id);
+    setStaffs(updatedStaffs);
+    localStorage.setItem("staffs", JSON.stringify(updatedStaffs));
   };
 
-  const filteredCustomers = customers.filter(
-    (customer) =>
-      customer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      customer.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      customer.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      customer.phone.includes(searchQuery)
+  const filteredStaffs = staffs.filter(
+    (staff) =>
+      staff.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      staff.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      staff.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      staff.phone.includes(searchQuery)
   );
 
   return (
     <div className={styles.page}>
-      <h1>Customers</h1>
+      <h1>Staffs</h1>
 
       <div className={styles.actions}>
-        <button className={styles.addBtn} onClick={() => setIsAddModalOpen(true)}>Add Customer</button>
+        <button className={styles.addBtn} onClick={() => setIsAddModalOpen(true)}>Add Staff</button>
         <SearchBar
-          placeholder="Search customers..."
+          placeholder="Search staffs..."
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
         />
       </div>
 
-      {isAddModalOpen && <AddCustomerModal onAddCustomer={handleAddCustomer} onCancel={() => setIsAddModalOpen(false)} />}
-      {isEditModalOpen && <EditCustomerModal customer={selectedCustomer} onSave={handleEditCustomer} onCancel={() => setIsEditModalOpen(false)} />}
+      {isAddModalOpen && <AddStaffModal onAddStaff={handleAddStaff} onCancel={() => setIsAddModalOpen(false)} />}
+      {isEditModalOpen && <EditStaffModal staff={selectedStaff} onSave={handleEditStaff} onCancel={() => setIsEditModalOpen(false)} />}
 
       {loading ? (
         <div className={styles.tableContainer}>
-          <p className={styles.loading}>Loading Customers...</p>
+          <p className={styles.loading}>Loading Staffs...</p>
         </div>
       ) : (
         <div className={styles.tableContainer}>
@@ -117,19 +117,19 @@ const Customers = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredCustomers.map((customer) => (
-                <tr key={customer.id}>
-                  <td>{customer.id}</td>
-                  <td>{customer.name}</td>
-                  <td>{customer.email}</td>
-                  <td>{customer.phone}</td>
-                  <td>{customer.address}</td>
+              {filteredStaffs.map((staff) => (
+                <tr key={staff.id}>
+                  <td>{staff.id}</td>
+                  <td>{staff.name}</td>
+                  <td>{staff.email}</td>
+                  <td>{staff.phone}</td>
+                  <td>{staff.address}</td>
                   <td>
                     <button className={styles.editBtn} onClick={() => {
-                      setSelectedCustomer(customer);
+                      setSelectedStaff(staff);
                       setIsEditModalOpen(true);
                     }}>Edit</button>
-                    <button className={styles.deleteBtn} onClick={() => handleDeleteCustomer(customer.id)}>Delete</button>
+                    <button className={styles.deleteBtn} onClick={() => handleDeleteStaff(staff.id)}>Delete</button>
                   </td>
                 </tr>
               ))}
@@ -142,4 +142,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Staffs;

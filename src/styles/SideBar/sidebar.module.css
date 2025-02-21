@@ -9,7 +9,7 @@
 
 /* Sidebar width when open vs. closed */
 .sidebar.open {
-    width: 250px;
+    width: 200px;
 }
 
 .sidebar.closed {

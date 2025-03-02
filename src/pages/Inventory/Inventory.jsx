@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "../../styles/PageStyles/Inventory/inventory.module.css";
 import SearchBar from "../../components/SearchBar";
 import AddItemModal from "./AddItemModal";
@@ -120,18 +121,23 @@ const Inventory = () => {
                     </td>
                     <td>{item.supplier}</td>
                     <td>
-                      <button
-                        className={styles.editBtn}
-                        onClick={() => {
-                          setSelectedItem(item);
-                          setIsEditModalOpen(true);
-                        }}
-                      >
-                        Edit
-                      </button>
-                      <button className={styles.deleteBtn} onClick={() => handleDeleteItem(item.id)}>
-                        Delete
-                      </button>
+                      <td>
+                        <Link to={`/inventory/${item.id}`}>
+                          <button className={styles.viewBtn}>View</button>
+                        </Link>
+                        <button
+                          className={styles.editBtn}
+                          onClick={() => {
+                            setSelectedItem(item);
+                            setIsEditModalOpen(true);
+                          }}
+                        >
+                          Edit
+                        </button>
+                        <button className={styles.deleteBtn} onClick={() => handleDeleteItem(item.id)}>
+                          Delete
+                        </button>
+                      </td>
                     </td>
                   </tr>
                 ))}

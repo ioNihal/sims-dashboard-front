@@ -1,0 +1,68 @@
+
+.container {
+    background: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.backButton {
+    background: #1976d2;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.backButton:hover {
+    background: #1565c0;
+}
+
+.title {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.detailSection p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.link {
+    color: #1976d2;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.section {
+    margin-top: 20px;
+}
+
+.orderList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.orderCard {
+    background: #f5f5f5;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.orderCard p {
+    margin: 5px 0;
+    font-size: 15px;
+}

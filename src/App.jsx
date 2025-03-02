@@ -9,6 +9,8 @@ import Orders from './pages/Orders';
 import Reports from './pages/Reports';
 import Suppliers from './pages/Suppliers/Suppliers';
 import './App.css';
+import ItemDetails from './pages/Inventory/ItemDetails';
+import SupplierDetails from './pages/Suppliers/SupplierDetails';
 
 function App() {
   return (
@@ -19,8 +21,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/inventory" element={<Inventory />} />
+            <Route path="/inventory/:id" element={<ItemDetails />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/suppliers" element={<Suppliers />} />
+            <Route path="/suppliers/:supplierName" element={<SupplierDetails />} />
             <Route path="/staffs" element={<Staffs />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/reports" element={<Reports />} />

@@ -1,0 +1,118 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.modal {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    min-width: 320px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: stretch;
+}
+
+.modal h3 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.inputWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.inputWrapper label {
+    font-weight: 500;
+    color: #555;
+}
+
+.inputWrapper input,
+.inputWrapper select {
+    all: unset;
+    flex: 1;
+    text-align: left;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.inputWrapper input:focus,
+.inputWrapper select:focus {
+    border-color: #6200ea;
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.saveBtn,
+.cancelBtn {
+    flex: 1;
+    padding: 12px;
+    font-size: 1rem;
+    text-align: center;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.saveBtn {
+    background-color: #6200ea;
+    color: #fff;
+}
+
+.saveBtn:hover {
+    background-color: #4b00c1;
+}
+
+.cancelBtn {
+    background-color: #d32f2f;
+    color: #fff;
+}
+
+.cancelBtn:hover {
+    background-color: #b71c1c;
+}
+
+/* Tablets (768px and below) */
+@media screen and (max-width: 768px) {
+    .modal {
+        width: 80%;
+    }
+}
+
+/* Mobile (480px and below) */
+@media screen and (max-width: 480px) {
+    .modal {
+        width: 100%;
+        max-width: 95%;
+        padding: 15px;
+    }
+
+    .saveBtn,
+    .cancelBtn {
+        font-size: 1.1rem;
+        padding: 14px;
+    }
+}

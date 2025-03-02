@@ -5,12 +5,13 @@ import Home from './pages/Home';
 import Inventory from './pages/Inventory/Inventory';
 import Customers from './pages/Customers/Customers';
 import Staffs from './pages/Staffs/Staffs';
-import Orders from './pages/Orders';
+import Orders from './pages/Orders/Orders';
 import Reports from './pages/Reports';
 import Suppliers from './pages/Suppliers/Suppliers';
 import './App.css';
 import ItemDetails from './pages/Inventory/ItemDetails';
 import SupplierDetails from './pages/Suppliers/SupplierDetails';
+import ViewOrder from './pages/Orders/ViewOrder';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/suppliers/:supplierName" element={<SupplierDetails />} />
             <Route path="/staffs" element={<Staffs />} />
             <Route path="/orders" element={<Orders />} />
+            <Route path="/orders/:id" element={<ViewOrder />} />
             <Route path="/reports" element={<Reports />} />
           </Routes>
         </div>

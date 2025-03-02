@@ -42,6 +42,21 @@
   font-size: 16px;
 }
 
+.modal select {
+  flex: 1;
+  text-align: left;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.modal select:focus {
+  outline: none;
+  border-color: #3498db;
+  font-size: 16px;
+}
+
 
 .buttonGroup {
   display: flex;

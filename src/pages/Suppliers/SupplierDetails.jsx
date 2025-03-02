@@ -6,8 +6,11 @@ const SupplierDetails = () => {
     const { supplierName } = useParams();
     const navigate = useNavigate();
 
+    console.log(supplierName)
+
     // Retrieve supplier details from localStorage or API
     const suppliers = JSON.parse(localStorage.getItem("suppliers")) || [];
+    console.log(suppliers.map((s) => s.name))
     const supplier = suppliers.find((s) => s.name === supplierName);
 
     if (!supplier) {

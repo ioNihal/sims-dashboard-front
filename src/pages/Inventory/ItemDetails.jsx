@@ -15,7 +15,7 @@ const ItemDetails = () => {
     const sampleOrders = [
         {
             id: 101,
-            itemId: 1, // Should match the id of an inventory item (e.g., Parle-G Biscuits)
+            itemId: 1, 
             orderDetails: "Order for 50 units of Parle-G Biscuits",
             orderedBy: "John Doe",
         },
@@ -27,7 +27,7 @@ const ItemDetails = () => {
         },
         {
             id: 103,
-            itemId: 2, // For a different inventory item
+            itemId: 2,
             orderDetails: "Order for 20 units of Britannia Bread",
             orderedBy: "Alice Brown",
         },

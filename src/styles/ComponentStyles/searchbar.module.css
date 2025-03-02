@@ -1,13 +1,31 @@
 .searchInput {
-    padding: 8px;
-    width: 250px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    outline: none;
-    transition: border-color 0.2s ease;
+  padding: 8px;
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.searchInput:focus {
+  border-color: #3498db;
+}
+
+/* RESPONSIVENESS */
+
+/* Tablets (below 1024px) */
+@media (max-width: 1024px) {}
+
+/* Mobile screens (below 768px) */
+@media (max-width: 768px) {
+  .searchInput {
+    width: calc(100% - 16px);
   }
-  
-  .searchInput:focus {
-    border-color: #3498db;
+}
+
+/* Extra small screens (below 480px) */
+@media (max-width: 480px) {
+  .searchInput {
+    width: calc(100% - 16px);
   }
-  
+}

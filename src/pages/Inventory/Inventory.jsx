@@ -121,23 +121,23 @@ const Inventory = () => {
                     </td>
                     <td>{item.supplier}</td>
                     <td>
-                      <td>
-                        <Link to={`/inventory/${item.id}`}>
-                          <button className={styles.viewBtn}>View</button>
-                        </Link>
-                        <button
-                          className={styles.editBtn}
-                          onClick={() => {
-                            setSelectedItem(item);
-                            setIsEditModalOpen(true);
-                          }}
-                        >
-                          Edit
-                        </button>
-                        <button className={styles.deleteBtn} onClick={() => handleDeleteItem(item.id)}>
-                          Delete
-                        </button>
-                      </td>
+
+                      <Link to={`/inventory/${item.id}`}>
+                        <button className={styles.viewBtn}>View</button>
+                      </Link>
+                      <button
+                        className={styles.editBtn}
+                        onClick={() => {
+                          setSelectedItem(item);
+                          setIsEditModalOpen(true);
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button className={styles.deleteBtn} onClick={() => handleDeleteItem(item.id)}>
+                        Delete
+                      </button>
+
                     </td>
                   </tr>
                 ))}

@@ -34,8 +34,10 @@
 
 /* Logo text (shown when sidebar is open) */
 .logo {
-    margin: 5px;
-    font-size: 1.5rem;
+    position: absolute;
+    top: 5px;
+    left: 14px;
+    color: #ecf0f1;
 }
 
 /* 
@@ -48,8 +50,7 @@
 
 /* Navigation list styling */
 .sidebar nav {
-    margin-top: 50px;
-    /* <-- ADDED: Creates space between toggle button and icons */
+    margin-top: 100px;
 }
 
 .sidebar nav ul {

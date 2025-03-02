@@ -166,6 +166,7 @@
   .actions {
     flex-direction: column;
     align-items: center;
+    flex-wrap: nowrap;
   }
 
   .addBtn {
@@ -188,6 +189,10 @@
 
   .tableContainer {
     padding: 5px;
+  }
+
+  .actions {
+    flex-wrap: nowrap;
   }
 
   .table {

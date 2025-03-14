@@ -1,35 +1,41 @@
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px;
+.page {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 1200px;
+  margin: auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.modal {
-  background: white;
+.formContainer {
   padding: 10px;
   border-radius: 8px;
   min-width: 300px;
-  max-width: 500px;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+
+
 
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 1rem;
   align-items: stretch;
 }
 
-
-.modal input {
-  all: unset;
+.inputWrapper {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: stretch;
+}
+
+.inputWrapper label {
+  text-align: left;
+}
+
+.inputWrapper input {
+  all: unset;
   text-align: left;
   padding: 10px;
   border: 1px solid #ccc;
@@ -37,16 +43,36 @@
   font-size: 16px;
 }
 
-.modal input:focus {
+.inputWrapper input:focus {
   border-color: #3498db;
-  font-size: 16px;
 }
+
+.inputWrapper textarea {
+  all: unset;
+  resize: vertical;
+  text-align: left;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  min-height: 60px;
+}
+
+.inputWrapper textarea:focus {
+  border-color: #3498db;
+}
+
+.inputWrapper.fullWidth {
+  flex: 1 1 100%;
+}
+
 
 
 .buttonGroup {
   display: flex;
   justify-content: space-between;
   gap: 10px;
+  flex: 1;
 }
 
 .saveBtn,
@@ -86,11 +112,12 @@
 
 /* Tablets (768px and below) */
 @media screen and (max-width: 768px) {
-  .modal {
-    width: 80%;
+  .formContainer {
+    width: 95%;
+    min-width: 100px;
   }
 
-  .modal input {
+  .inputWrapper input {
     font-size: 14px;
 
   }
@@ -98,11 +125,14 @@
 
 /* Mobile (480px and below) */
 @media screen and (max-width: 480px) {
-  .modal {
-    width: 100%;
-    max-width: 95%;
+  .page {
+    min-width: 200px;
+  }
 
-    padding: 15px;
+  .formContainer {
+    width: 95%;
+    max-width: none;
+    padding: 10px;
   }
 
   .saveBtn,

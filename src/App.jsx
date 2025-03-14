@@ -12,6 +12,7 @@ import './App.css';
 import ItemDetails from './pages/Inventory/ItemDetails';
 import SupplierDetails from './pages/Suppliers/SupplierDetails';
 import ViewOrder from './pages/Orders/ViewOrder';
+import AddSupplierModal from './pages/Suppliers/AddSupplierModal';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/customers" element={<Customers />} />
             <Route path="/suppliers" element={<Suppliers />} />
             <Route path="/suppliers/:supplierName" element={<SupplierDetails />} />
+            <Route path="/suppliers/add" element={<AddSupplierModal />} />
             <Route path="/staffs" element={<Staffs />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/orders/:id" element={<ViewOrder />} />

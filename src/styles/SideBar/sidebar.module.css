@@ -40,12 +40,10 @@
     color: #ecf0f1;
 }
 
-/* 
-     OPTIONAL: Hide or adjust the logo when closed 
-  */
 .sidebar.closed .logo {
     /* display: none; */
     text-align: center;
+   
 }
 
 /* Navigation list styling */
@@ -73,6 +71,7 @@
     transition: background-color 0.2s ease;
 }
 
+
 .sidebar nav ul li a:hover,
 .sidebar nav ul li a.active {
     background-color: #34495e;
@@ -82,6 +81,8 @@
 .sidebar nav ul li a .icon {
     font-size: 1.2rem;
     margin-right: 10px;
+    transition: all 0.3s ease;
+   
 }
 
 /* Hide the text when the sidebar is closed */

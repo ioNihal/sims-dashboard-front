@@ -1,12 +1,19 @@
+/* Container for the entire page */
 .page {
-  background-color: #f8f9fa;
+  background-color: #ffffff;
+  /* White background for a clean, material look */
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 12px;
+  /* Slightly larger radius for a softer look */
   max-width: 1200px;
   margin: auto;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  /* More pronounced shadow for a "card" effect */
+  font-family: "Roboto", sans-serif;
+  /* Typical Material Design font */
 }
 
+/* Form Container */
 .formContainer {
   padding: 10px;
   border-radius: 8px;
@@ -14,14 +21,13 @@
   text-align: center;
   box-sizing: border-box;
 
-
-
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   align-items: stretch;
 }
 
+/* Each input wrapper (label + input) */
 .inputWrapper {
   flex: 1;
   display: flex;
@@ -30,85 +36,191 @@
   align-items: stretch;
 }
 
+/* Label style */
 .inputWrapper label {
   text-align: left;
+  color: #444;
+  /* Subtle text color */
+  font-weight: 500;
+  /* Slightly bolder label */
+  font-size: 0.95rem;
 }
 
+/* Input fields (text, email, etc.) */
 .inputWrapper input {
   all: unset;
   text-align: left;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: 16px;
+  background-color: #fdfdfd;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Focused state for inputs */
 .inputWrapper input:focus {
-  border-color: #3498db;
+  border-color: #42a5f5;
+  /* Material blue accent */
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
 }
 
+/* Textarea style */
 .inputWrapper textarea {
   all: unset;
   resize: vertical;
   text-align: left;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: 16px;
   min-height: 60px;
+  background-color: #fdfdfd;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Focused state for textarea */
 .inputWrapper textarea:focus {
-  border-color: #3498db;
+  border-color: #42a5f5;
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
 }
 
-.inputWrapper.fullWidth {
+/* Full width input wrapper (for address, etc.) */
+
+
+.fullWidth {
   flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-
-
+/* Buttons Container */
 .buttonGroup {
   display: flex;
   justify-content: space-between;
   gap: 10px;
   flex: 1;
+  margin-top: 10px;
 }
 
+/* Save & Cancel Buttons (Material Green & Red) */
 .saveBtn,
-.cancelBtn {
+.cancelBtn,
+.backButton {
   flex: 1;
-
-  padding: 10px;
+  padding: 12px;
   font-size: 16px;
   text-align: center;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: 0.3s ease-in-out;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 500;
 }
 
-
+/* Material green for Save */
 .saveBtn {
-  background-color: #28a745;
-  color: white;
+  background-color: #4caf50;
+  color: #fff;
 }
-
-.cancelBtn {
-  background-color: #dc3545;
-  color: white;
-}
-
 
 .saveBtn:hover {
-  background-color: #218838;
+  background-color: #43a047;
+  box-shadow: 0 2px 5px rgba(67, 160, 71, 0.2);
+}
+
+/* Material red for Cancel */
+.cancelBtn {
+  background-color: #f44336;
+  color: #fff;
 }
 
 .cancelBtn:hover {
-  background-color: #c82333;
+  background-color: #e53935;
+  box-shadow: 0 2px 5px rgba(229, 57, 53, 0.2);
 }
 
+.backButton {
+  background-color: #1b86eb;
+  color: #fff;
+}
 
+.backButton:hover {
+  background-color: #0277e6;
+  box-shadow: 0 2px 5px rgba(67, 160, 71, 0.2);
+}
+
+/* Product Row Container */
+.productRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Inputs inside the product row */
+.productRow input {
+  all: unset;
+  flex: 1;
+  text-align: left;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: #fdfdfd;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Focus style for product row inputs */
+.productRow input:focus {
+  border-color: #42a5f5;
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
+}
+
+.addRemoveBtnGroup {
+  display: flex;
+  gap: 5px;
+}
+
+/* Add Product Button */
+.addProductBtn {
+  all: unset;
+  background-color: #42a5f5;
+  color: #fff;
+  padding: 5px;
+  font-size: 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  display: grid;
+  place-items: center;
+}
+
+.addProductBtn:hover {
+  background-color: #1e88e5;
+  box-shadow: 0 2px 5px rgba(30, 136, 229, 0.2);
+}
+
+/* Remove Product Button */
+.removeProductBtn {
+  all: unset;
+  background-color: #f44336;
+  color: #fff;
+  padding: 5px;
+  font-size: 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  display: grid;
+  place-items: center;
+}
+
+.removeProductBtn:hover {
+  background-color: #e53935;
+  box-shadow: 0 2px 5px rgba(229, 57, 53, 0.2);
+}
 
 /* Tablets (768px and below) */
 @media screen and (max-width: 768px) {
@@ -117,9 +229,14 @@
     min-width: 100px;
   }
 
-  .inputWrapper input {
+  .inputWrapper input,
+  .productRow input,
+  .inputWrapper textarea {
     font-size: 14px;
+  }
 
+  .productRow {
+    gap: 5px;
   }
 }
 
@@ -127,6 +244,7 @@
 @media screen and (max-width: 480px) {
   .page {
     min-width: 200px;
+    padding: 15px;
   }
 
   .formContainer {
@@ -139,5 +257,17 @@
   .cancelBtn {
     font-size: 14px;
     padding: 12px;
+  }
+
+  .addRemoveBtnGroup {
+    flex: 1 1 100%;
+  }
+
+  .addProductBtn , .removeProductBtn {
+    width: 100%;
+  }
+
+  .buttonGroup {
+    flex:1 1 100%;
   }
 }

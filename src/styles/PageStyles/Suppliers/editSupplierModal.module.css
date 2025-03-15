@@ -1,114 +1,240 @@
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px;
+/* Container for the entire page */
+.page {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 1200px;
+  margin: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  font-family: "Roboto", sans-serif;
 }
 
-.modal {
-  background: white;
+/* Form Container */
+.formContainer {
   padding: 10px;
   border-radius: 8px;
   min-width: 300px;
-  width: 50%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  box-sizing: border-box;
 
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 1rem;
   align-items: stretch;
 }
 
-.modal h3 {
-  text-align: center;
-}
-
+/* Each input wrapper (label + input) */
 .inputWrapper {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 5px;
+  align-items: stretch;
 }
 
+/* Label style */
 .inputWrapper label {
-  font-weight: bold;
+  text-align: left;
+  color: #444;
+  font-weight: 500;
+  font-size: 0.95rem;
 }
 
+/* Input fields (text, etc.) */
 .inputWrapper input {
   all: unset;
-  flex: 1;
   text-align: left;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: 16px;
+  background-color: #fdfdfd;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Focused state for inputs */
 .inputWrapper input:focus {
-  border-color: #3498db;
-  font-size: 16px;
+  border-color: #42a5f5;
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
 }
 
-
-.inputWrapper input:focus {
-  border-color: #3498db;
+/* Textarea style */
+.inputWrapper textarea {
+  all: unset;
+  resize: vertical;
+  text-align: left;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   font-size: 16px;
+  min-height: 60px;
+  background-color: #fdfdfd;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Focused state for textarea */
+.inputWrapper textarea:focus {
+  border-color: #42a5f5;
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
+}
 
+/* Full width input wrapper */
+.fullWidth {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Buttons Container */
 .buttonGroup {
   display: flex;
   justify-content: space-between;
   gap: 10px;
+  flex: 1;
+  margin-top: 10px;
 }
 
+/* Save & Cancel Buttons */
 .saveBtn,
-.cancelBtn {
+.cancelBtn,
+.backButton {
   flex: 1;
-  padding: 10px;
-  font-size: 14px;
+  padding: 12px;
+  font-size: 16px;
   text-align: center;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 500;
 }
 
+/* Material blue for Back Button */
+.backButton {
+  background-color: #1b86eb;
+  color: #fff;
+  margin-bottom: 15px;
+}
 
+.backButton:hover {
+  background-color: #0277e6;
+  box-shadow: 0 2px 5px rgba(67, 160, 71, 0.2);
+}
+
+/* Material green for Save */
 .saveBtn {
-  background-color: #007bff;
-  color: white;
+  background-color: #4caf50;
+  color: #fff;
 }
 
+.saveBtn:hover {
+  background-color: #43a047;
+  box-shadow: 0 2px 5px rgba(67, 160, 71, 0.2);
+}
+
+/* Material red for Cancel */
 .cancelBtn {
-  background-color: #dc3545;
-  color: white;
+  background-color: #f44336;
+  color: #fff;
 }
 
+.cancelBtn:hover {
+  background-color: #e53935;
+  box-shadow: 0 2px 5px rgba(229, 57, 53, 0.2);
+}
 
+/* Additional styles for product rows */
+.productRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.productRow input {
+  all: unset;
+  flex: 1;
+  text-align: left;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: #fdfdfd;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.productRow input:focus {
+  border-color: #42a5f5;
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
+}
+
+.addRemoveBtnGroup {
+  display: flex;
+  gap: 5px;
+}
+
+.addProductBtn,
+.removeProductBtn {
+  all: unset;
+  background-color: #42a5f5;
+  color: #fff;
+  padding: 5px;
+  font-size: 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  display: grid;
+  place-items: center;
+}
+
+.addProductBtn:hover {
+  background-color: #1e88e5;
+  box-shadow: 0 2px 5px rgba(30, 136, 229, 0.2);
+}
+
+.removeProductBtn {
+  background-color: #f44336;
+}
+
+.removeProductBtn:hover {
+  background-color: #e53935;
+  box-shadow: 0 2px 5px rgba(229, 57, 53, 0.2);
+}
+
+/* Responsive Styles */
 
 /* Tablets (768px and below) */
 @media screen and (max-width: 768px) {
-  .modal {
-    width: 80%;
+  .formContainer {
+    width: 95%;
+    min-width: 100px;
+  }
+
+  .inputWrapper input,
+  .inputWrapper textarea {
+    font-size: 14px;
   }
 }
 
 /* Mobile (480px and below) */
 @media screen and (max-width: 480px) {
-  .modal {
-    width: 100%;
-    max-width: 95%;
+  .page {
+    min-width: 200px;
     padding: 15px;
   }
 
+  .formContainer {
+    width: 95%;
+    max-width: none;
+    padding: 10px;
+  }
+
   .saveBtn,
-  .cancelBtn {
-    font-size: 16px;
+  .cancelBtn,
+  .backButton {
+    font-size: 14px;
     padding: 12px;
   }
 }

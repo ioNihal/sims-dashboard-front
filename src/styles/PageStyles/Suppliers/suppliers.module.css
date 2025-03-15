@@ -12,7 +12,6 @@
     margin-bottom: 15px;
 }
 
-
 .actions {
     display: flex;
     justify-content: space-between;
@@ -63,37 +62,34 @@
     border-bottom: 1px solid #ddd;
     text-align: left;
     white-space: nowrap;
-    white-space: nowrap;
     overflow: hidden;
 }
 
 .table td {
-    white-space: nowrap;
-    overflow: hidden; 
     text-overflow: ellipsis;
-    max-width: 250px; 
+    max-width: 250px;
 }
 
 .table th {
     background-color: #f1f1f1;
     font-weight: bold;
-    text-overflow: ellipsis;
 }
 
 .table tbody tr:hover {
     background-color: #f9f9f9;
 }
 
-
 /* Buttons */
 .editBtn,
-.deleteBtn {
+.deleteBtn,
+.viewBtn {
     border: none;
     padding: 6px 10px;
     margin: 0 5px;
     border-radius: 5px;
     font-size: 14px;
     cursor: pointer;
+    transition: background 0.3s;
 }
 
 .editBtn {
@@ -114,6 +110,15 @@
     background-color: #c82333;
 }
 
+.viewBtn {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.viewBtn:hover {
+    background-color: #138496;
+}
+
 /* RESPONSIVENESS */
 
 /* Tablets (below 1024px) */
@@ -123,8 +128,6 @@
         gap: 10px;
         align-items: flex-start;
     }
-
-
 
     .tableContainer {
         padding: 10px;
@@ -139,7 +142,6 @@
 
     .table {
         font-size: 14px;
-        /* Reduce text size */
         min-width: 100%;
     }
 
@@ -159,7 +161,8 @@
     }
 
     .editBtn,
-    .deleteBtn {
+    .deleteBtn,
+    .viewBtn {
         padding: 5px 8px;
         font-size: 12px;
     }
@@ -180,7 +183,8 @@
     }
 
     .editBtn,
-    .deleteBtn {
+    .deleteBtn,
+    .viewBtn {
         font-size: 10px;
         padding: 4px 6px;
     }

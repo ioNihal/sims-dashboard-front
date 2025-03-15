@@ -1,36 +1,18 @@
-
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/PageStyles/Suppliers/suppliers.module.css";
 import SearchBar from "../../components/SearchBar";
-import AddSupplierModal from "./AddSupplierModal";
-import EditSupplierModal from "./EditSupplierModal";
 import { Link } from "react-router-dom";
 
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedSupplier, setSelectedSupplier] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const savedSuppliers = localStorage.getItem("suppliers");
-
-    setSuppliers(JSON.parse(savedSuppliers));
+    setSuppliers(savedSuppliers ? JSON.parse(savedSuppliers) : []);
     setLoading(false);
   }, []);
-
-  
-
-  const handleEditSupplier = (updatedSupplier) => {
-    const updatedSuppliers = suppliers.map((supplier) =>
-      supplier.id === updatedSupplier.id ? updatedSupplier : supplier
-    );
-    setSuppliers(updatedSuppliers);
-    localStorage.setItem("suppliers", JSON.stringify(updatedSuppliers));
-    setIsEditModalOpen(false);
-  };
 
   const handleDeleteSupplier = (id) => {
     const updatedSuppliers = suppliers.filter((supplier) => supplier.id !== id);
@@ -50,8 +32,8 @@ const Suppliers = () => {
     <div className={styles.page}>
       <h1>Suppliers</h1>
       <div className={styles.actions}>
-        <Link to={`/suppliers/add`}>
-          <button className={styles.addBtn} onClick={() => setIsAddModalOpen(true)}>Add Supplier</button>
+        <Link to="/suppliers/add">
+          <button className={styles.addBtn}>Add Supplier</button>
         </Link>
         <SearchBar
           placeholder="Search suppliers..."
@@ -59,8 +41,6 @@ const Suppliers = () => {
           setSearchQuery={setSearchQuery}
         />
       </div>
-
-      {isEditModalOpen && <EditSupplierModal supplier={selectedSupplier} onSave={handleEditSupplier} onCancel={() => setIsEditModalOpen(false)} />}
 
       {loading ? (
         <div className={styles.tableContainer}>
@@ -88,11 +68,18 @@ const Suppliers = () => {
                   <td>{supplier.phone}</td>
                   <td>{supplier.address}</td>
                   <td>
-                    <button className={styles.editBtn} onClick={() => {
-                      setSelectedSupplier(supplier);
-                      setIsEditModalOpen(true);
-                    }}>Edit</button>
-                    <button className={styles.deleteBtn} onClick={() => handleDeleteSupplier(supplier.id)}>Delete</button>
+                    <Link to={`/suppliers/view/${supplier.id}`}>
+                      <button className={styles.viewBtn}>View</button>
+                    </Link>
+                    <Link to={`/suppliers/edit/${supplier.id}`}>
+                      <button className={styles.editBtn}>Edit</button>
+                    </Link>
+                    <button
+                      className={styles.deleteBtn}
+                      onClick={() => handleDeleteSupplier(supplier.id)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}

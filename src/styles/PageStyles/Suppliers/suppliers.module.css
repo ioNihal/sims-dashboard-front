@@ -71,12 +71,13 @@
 }
 
 .table th {
-    background-color: #f1f1f1;
-    font-weight: bold;
+    background-color: #e3f2fd;
+    font-weight: 600;
+    color: #1e88e5;
 }
 
 .table tbody tr:hover {
-    background-color: #f9f9f9;
+    background-color: #f1f8ff;
 }
 
 /* Buttons */

@@ -24,7 +24,7 @@
 
 /* Each input wrapper (label + input) */
 .inputWrapper {
-  flex: 1 1 100%;
+  flex: 1 1 300px;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -141,9 +141,11 @@
 
 /* Inputs inside the product row */
 .productRow input {
-  width: 100%;
-  max-width: 100%;
   box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  flex: 1 1 300px;
+  text-align: left;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -237,10 +239,6 @@
   .productRow input {
     width: 100%;
     max-width: 100%;
-  }
-
-  .productRow {
-    flex-direction: column;
   }
 
   .saveBtn,

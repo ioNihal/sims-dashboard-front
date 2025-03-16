@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "../../styles/PageStyles/Suppliers/editSupplierModal.module.css";
+import { GiCancel } from "react-icons/gi";
+import { MdAdd } from "react-icons/md";
 
 const EditSupplierPage = ({ onSave }) => {
   const { supplierId } = useParams();
@@ -173,7 +175,7 @@ const EditSupplierPage = ({ onSave }) => {
                   className={styles.addProductBtn}
                   onClick={addProductField}
                 >
-                  +
+                  <MdAdd />
                 </button>
                 {updatedSupplier.products.length > 1 && (
                   <button
@@ -181,7 +183,7 @@ const EditSupplierPage = ({ onSave }) => {
                     className={styles.removeProductBtn}
                     onClick={() => removeProductField(index)}
                   >
-                    –
+                    <GiCancel />
                   </button>
                 )}
               </div>

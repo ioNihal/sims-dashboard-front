@@ -1,16 +1,12 @@
 /* Container for the entire page */
 .page {
   background-color: #ffffff;
-  /* White background for a clean, material look */
   padding: 20px;
   border-radius: 12px;
-  /* Slightly larger radius for a softer look */
   max-width: 1200px;
   margin: auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
-  /* More pronounced shadow for a "card" effect */
   font-family: "Roboto", sans-serif;
-  /* Typical Material Design font */
 }
 
 /* Form Container */
@@ -20,7 +16,6 @@
   min-width: 300px;
   text-align: center;
   box-sizing: border-box;
-
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -29,26 +24,28 @@
 
 /* Each input wrapper (label + input) */
 .inputWrapper {
-  flex: 1;
+  flex: 1 1 100%;
   display: flex;
   flex-direction: column;
   gap: 5px;
   align-items: stretch;
+  min-width: 0; /* Allows input to shrink properly */
 }
 
 /* Label style */
 .inputWrapper label {
   text-align: left;
   color: #444;
-  /* Subtle text color */
   font-weight: 500;
-  /* Slightly bolder label */
   font-size: 0.95rem;
 }
 
 /* Input fields (text, email, etc.) */
-.inputWrapper input {
-  all: unset;
+.inputWrapper input,
+.inputWrapper textarea {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   text-align: left;
   padding: 12px;
   border: 1px solid #ccc;
@@ -56,38 +53,22 @@
   font-size: 16px;
   background-color: #fdfdfd;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.inputWrapper textarea {
+  resize: vertical;
+  min-height: 100px;
 }
 
 /* Focused state for inputs */
-.inputWrapper input:focus {
-  border-color: #42a5f5;
-  /* Material blue accent */
-  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
-}
-
-/* Textarea style */
-.inputWrapper textarea {
-  all: unset;
-  resize: vertical;
-  text-align: left;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
-  min-height: 60px;
-  background-color: #fdfdfd;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Focused state for textarea */
+.inputWrapper input:focus,
 .inputWrapper textarea:focus {
+  outline: none;
   border-color: #42a5f5;
   box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
 }
 
-/* Full width input wrapper (for address, etc.) */
-
-
+/* Full width input wrapper */
 .fullWidth {
   flex: 1 1 100%;
   display: flex;
@@ -104,7 +85,7 @@
   margin-top: 10px;
 }
 
-/* Save & Cancel Buttons (Material Green & Red) */
+/* Save & Cancel Buttons */
 .saveBtn,
 .cancelBtn,
 .backButton {
@@ -119,7 +100,6 @@
   font-weight: 500;
 }
 
-/* Material green for Save */
 .saveBtn {
   background-color: #4caf50;
   color: #fff;
@@ -130,7 +110,6 @@
   box-shadow: 0 2px 5px rgba(67, 160, 71, 0.2);
 }
 
-/* Material red for Cancel */
 .cancelBtn {
   background-color: #f44336;
   color: #fff;
@@ -151,7 +130,7 @@
   box-shadow: 0 2px 5px rgba(67, 160, 71, 0.2);
 }
 
-/* Product Row Container */
+/* Product Row */
 .productRow {
   display: flex;
   gap: 10px;
@@ -162,9 +141,9 @@
 
 /* Inputs inside the product row */
 .productRow input {
-  all: unset;
-  flex: 1;
-  text-align: left;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -173,22 +152,21 @@
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Focus style for product row inputs */
 .productRow input:focus {
+  outline: none;
   border-color: #42a5f5;
   box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
 }
 
+/* Add & Remove Buttons */
 .addRemoveBtnGroup {
   display: flex;
   gap: 5px;
 }
 
-/* Add Product Button */
-.addProductBtn {
+.addProductBtn,
+.removeProductBtn {
   all: unset;
-  background-color: #42a5f5;
-  color: #fff;
   padding: 5px;
   font-size: 1.5rem;
   border-radius: 6px;
@@ -196,6 +174,11 @@
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   display: grid;
   place-items: center;
+}
+
+.addProductBtn {
+  background-color: #42a5f5;
+  color: #fff;
 }
 
 .addProductBtn:hover {
@@ -203,18 +186,9 @@
   box-shadow: 0 2px 5px rgba(30, 136, 229, 0.2);
 }
 
-/* Remove Product Button */
 .removeProductBtn {
-  all: unset;
   background-color: #f44336;
   color: #fff;
-  padding: 5px;
-  font-size: 1.5rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  display: grid;
-  place-items: center;
 }
 
 .removeProductBtn:hover {
@@ -222,7 +196,7 @@
   box-shadow: 0 2px 5px rgba(229, 57, 53, 0.2);
 }
 
-/* Tablets (768px and below) */
+/* Responsive Fixes */
 @media screen and (max-width: 768px) {
   .formContainer {
     width: 95%;
@@ -240,7 +214,6 @@
   }
 }
 
-/* Mobile (480px and below) */
 @media screen and (max-width: 480px) {
   .page {
     min-width: 200px;
@@ -248,9 +221,26 @@
   }
 
   .formContainer {
-    width: 95%;
+    display: flex;
+    flex-direction: column;
+    width: auto;
     max-width: none;
     padding: 10px;
+  }
+
+  .inputWrapper {
+    flex: 1 1 100%;
+  }
+
+  .inputWrapper input,
+  .inputWrapper textarea,
+  .productRow input {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .productRow {
+    flex-direction: column;
   }
 
   .saveBtn,
@@ -261,13 +251,15 @@
 
   .addRemoveBtnGroup {
     flex: 1 1 100%;
+    width: 100%;
   }
 
-  .addProductBtn , .removeProductBtn {
+  .addProductBtn,
+  .removeProductBtn {
     width: 100%;
   }
 
   .buttonGroup {
-    flex:1 1 100%;
+    flex: 1 1 100%;
   }
 }

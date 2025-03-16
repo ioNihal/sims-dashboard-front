@@ -1,12 +1,16 @@
 /* Container for the entire page */
 .page {
   background-color: #ffffff;
+  /* White background for a clean, material look */
   padding: 20px;
   border-radius: 12px;
+  /* Slightly larger radius for a softer look */
   max-width: 1200px;
   margin: auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  /* More pronounced shadow for a "card" effect */
   font-family: "Roboto", sans-serif;
+  /* Typical Material Design font */
 }
 
 /* Form Container */
@@ -16,7 +20,6 @@
   min-width: 300px;
   text-align: center;
   box-sizing: border-box;
-
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -24,8 +27,9 @@
 }
 
 /* Each input wrapper (label + input) */
+/* Updated to use a flex basis of 300px so that items wrap when space is limited */
 .inputWrapper {
-  flex: 1;
+  flex: 1 1 300px;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -34,14 +38,12 @@
 
 /* Label style */
 .inputWrapper label {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
   text-align: left;
   color: #444;
+  /* Subtle text color */
   font-weight: 500;
+  /* Slightly bolder label */
   font-size: 0.95rem;
-  min-width: 0;
 }
 
 /* Input fields (text, etc.) */
@@ -49,12 +51,11 @@
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  min-width: 0;
   text-align: left;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 16px;
   background-color: #fdfdfd;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -92,10 +93,6 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  min-width: 0;
 }
 
 /* Buttons Container */
@@ -165,16 +162,17 @@
   width: 100%;
 }
 
+/* Updated product row inputs to use flex: 1 1 300px for auto-wrapping */
 .productRow input {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  flex: 1;
+  flex: 1 1 300px;
   text-align: left;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 16px;
   background-color: #fdfdfd;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -223,13 +221,18 @@
 /* Tablets (768px and below) */
 @media screen and (max-width: 768px) {
   .formContainer {
-    width: 100%;
-    min-width: 200px;
+    width: 95%;
+    min-width: 100px;
   }
 
   .inputWrapper input,
+  .productRow input,
   .inputWrapper textarea {
     font-size: 14px;
+  }
+
+  .productRow {
+    gap: 5px;
   }
 }
 
@@ -247,19 +250,21 @@
   }
 
   .saveBtn,
-  .cancelBtn,
-  .backButton {
+  .cancelBtn {
     font-size: 14px;
     padding: 12px;
   }
 
-  .addProductBtn,
-  .removeProductBtn {
-    padding: 5px 20px;
+  .addRemoveBtnGroup {
+    flex: 1 1 100%;
   }
 
-  .productRow input {
-    min-width: 0;
+  .addProductBtn,
+  .removeProductBtn {
+    width: 100%;
+  }
+
+  .buttonGroup {
     flex: 1 1 100%;
   }
 }

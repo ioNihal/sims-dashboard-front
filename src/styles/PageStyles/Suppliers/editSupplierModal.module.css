@@ -169,8 +169,7 @@
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  min-width: 0;
-  flex: 1 1 100%;
+  flex: 1;
   text-align: left;
   padding: 10px;
   border: 1px solid #ccc;
@@ -257,5 +256,10 @@
   .addProductBtn,
   .removeProductBtn {
     padding: 5px 20px;
+  }
+
+  .productRow input {
+    min-width: 0;
+    flex: 1 1 100%;
   }
 }

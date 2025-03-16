@@ -64,7 +64,7 @@ const ItemDetails = () => {
                 </p>
                 <p>
                     <strong>Supplier: </strong>
-                    <Link className={styles.link} to={`/suppliers/${item.supplier}`}>
+                    <Link className={styles.link} to={`/suppliers/view/${item.supplierId}`}>
                         {item.supplier}
                     </Link>
                 </p>

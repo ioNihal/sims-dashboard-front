@@ -15,13 +15,10 @@ import ViewOrder from './pages/Orders/ViewOrder';
 import AddSupplierModal from './pages/Suppliers/AddSupplierModal';
 import EditSupplierModal from './pages/Suppliers/EditSupplierModal';
 import AddItemPage from './pages/Inventory/AddItemPage';
+import EditItemPage from './pages/Inventory/EditItemPage';
 
 function App() {
-  const handleAddItem = (newItem) => {
-    const updatedItems = [...items, newItem];
-    setItems(updatedItems);
-    localStorage.setItem("inventoryItems", JSON.stringify(updatedItems));
-  };
+ 
 
   return (
     <Router>
@@ -32,6 +29,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/inventory/:id" element={<ItemDetails />} />
+            <Route path="/inventory/edit/:id" element={<EditItemPage />} />
             <Route path="/inventory/add" element={<AddItemPage />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/suppliers" element={<Suppliers />} />

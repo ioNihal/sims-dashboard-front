@@ -3,6 +3,7 @@
   padding: 20px;
   border-radius: 8px;
   max-width: 1200px;
+  min-width: 100px;
   margin: auto;
 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -22,6 +23,9 @@
 }
 
 .addBtn {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   background-color: #007bff;
   color: white;
   border: none;
@@ -185,6 +189,7 @@
 @media (max-width: 480px) {
   .page h1 {
     font-size: 20px;
+
   }
 
   .tableContainer {

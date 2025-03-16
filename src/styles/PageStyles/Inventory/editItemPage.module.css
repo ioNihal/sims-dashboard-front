@@ -1,0 +1,127 @@
+.pageContainer {
+  max-width: 1200px;
+  min-width: 200px;
+  margin: 20px auto;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.backBtn {
+  flex: 1;
+  padding: 12px;
+  font-size: 16px;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 500;
+  background-color: #1b86eb;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.backBtn:hover {
+  background-color: #0277e6;
+  box-shadow: 0 2px 5px rgba(67, 160, 71, 0.2);
+}
+
+h3 {
+  text-align: center;
+  margin-bottom: 5px;
+  font-size: 24px;
+  color: #333;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 10px;
+}
+
+.inputWrapper label {
+  font-weight: 500;
+  color: #555;
+  font-size: 14px;
+}
+
+.inputWrapper input {
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  background-color: #fdfdfd;
+}
+
+.inputWrapper input:focus {
+  border-color: #1b86eb;
+  outline: none;
+  box-shadow: 0 0 8px rgba(27, 134, 235, 0.3);
+}
+
+.inputWrapper input:disabled {
+  background-color: #eee;
+  color: #777;
+  cursor: not-allowed;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 15px;
+}
+
+.saveBtn,
+.cancelBtn {
+  flex: 1;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  font-weight: 500;
+}
+
+.saveBtn {
+  background-color: #1b86eb;
+  color: #fff;
+}
+
+.saveBtn:hover {
+  background-color: #0277e6;
+  box-shadow: 0 4px 10px rgba(27, 134, 235, 0.4);
+}
+
+.cancelBtn {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.cancelBtn:hover {
+  background-color: #c82333;
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.4);
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .pageContainer {
+    width: 85%;
+    padding: 20px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .pageContainer {
+    width: 95%;
+    padding: 15px;
+  }
+  .saveBtn,
+  .cancelBtn {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

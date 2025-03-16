@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Inventory/inventory.module.css";
 import SearchBar from "../../components/SearchBar";
-import EditItemModal from "./EditItemModal";
+import EditItemModal from "./EditItemPage";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -10,6 +10,7 @@ const Inventory = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedItems = localStorage.getItem("inventoryItems");
@@ -120,8 +121,7 @@ const Inventory = () => {
                     <button
                       className={styles.editBtn}
                       onClick={() => {
-                        setSelectedItem(item);
-                        setIsEditModalOpen(true);
+                        navigate(`/inventory/edit/${item.id}`);
                       }}
                     >
                       Edit

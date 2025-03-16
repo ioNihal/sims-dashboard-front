@@ -66,9 +66,11 @@ const AddItemPage = () => {
     const newQty = parseInt(quantity, 10);
     const supplierName = supplier ? supplier.name : "";
 
-    // Check if the item already exists based on supplier and product name.
+    // Check if the item already exists based on supplier id and product name.
     const existingIndex = items.findIndex(
-      (item) => item.supplier === supplierName && item.name === selectedProduct
+      (item) =>
+        item.supplierId === (supplier ? supplier.id : null) &&
+        item.name === selectedProduct
     );
 
     if (existingIndex !== -1) {
@@ -81,6 +83,7 @@ const AddItemPage = () => {
       const newItem = {
         id: Date.now(),
         supplier: supplierName,
+        supplierId: supplier ? supplier.id : null,
         name: selectedProduct,
         category: productDetails.category,
         priceperunit: productDetails.price,

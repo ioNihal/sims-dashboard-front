@@ -16,6 +16,9 @@ import AddSupplierModal from './pages/Suppliers/AddSupplierModal';
 import EditSupplierModal from './pages/Suppliers/EditSupplierModal';
 import AddItemPage from './pages/Inventory/AddItemPage';
 import EditItemPage from './pages/Inventory/EditItemPage';
+import AddCustomerPage from './pages/Customers/AddCustomerPage';
+import EditCustomerPage from './pages/Customers/EditCustomerPage';
+import CustomerDetails from './pages/Customers/CustomerDetails';
 
 function App() {
  
@@ -32,6 +35,9 @@ function App() {
             <Route path="/inventory/edit/:id" element={<EditItemPage />} />
             <Route path="/inventory/add" element={<AddItemPage />} />
             <Route path="/customers" element={<Customers />} />
+            <Route path="/customers/add" element={<AddCustomerPage />} />
+            <Route path="/customers/edit/:id" element={<EditCustomerPage />} />
+            <Route path="/customers/view/:id" element={<CustomerDetails />} />
             <Route path="/suppliers" element={<Suppliers />} />
             <Route path="/suppliers/view/:id" element={<SupplierDetail />} />
             <Route path="/suppliers/add" element={<AddSupplierModal />} />

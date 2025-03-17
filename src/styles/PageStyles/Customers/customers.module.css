@@ -83,6 +83,7 @@
 
 
 /* Buttons */
+.viewBtn,
 .editBtn,
 .deleteBtn {
     border: none;
@@ -91,6 +92,17 @@
     border-radius: 5px;
     font-size: 14px;
     cursor: pointer;
+}
+
+
+
+.viewBtn {
+    background-color: #4083ff;
+    color: white;
+}
+
+.viewBtn:hover {
+    background-color: #2563d8;
 }
 
 .editBtn {

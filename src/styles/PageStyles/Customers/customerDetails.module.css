@@ -76,14 +76,35 @@
 }
 
 /* Toggle Button for Password */
-.toggleBtn {
+.resetBtn {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 20px;
-  margin-left: 10px;
-  display: flex;
-  align-items: center;
+  font-size: 1rem;
+  padding: 0;
+  color: rgb(17, 120, 255);
+  transition: color 0.3s;
+  position: relative;
+}
+
+.resetBtn::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background-color: rgb(17, 81, 255);
+  bottom: 0;
+  left: 0;
+  transition: width 0.3s ease;
+
+}
+
+.resetBtn:hover {
+  color: rgb(17, 81, 255);
+}
+
+.resetBtn:hover::before {
+  width: 100%;
 }
 
 /* Loading Text */

@@ -167,6 +167,7 @@
         text-align: center;
     }
 
+    .viewBtn,
     .editBtn,
     .deleteBtn {
         padding: 5px 8px;
@@ -188,6 +189,7 @@
         font-size: 12px;
     }
 
+    .viewBtn,
     .editBtn,
     .deleteBtn {
         font-size: 10px;

@@ -1,0 +1,99 @@
+.page {
+  max-width: 1200px;
+  min-width: 200px;
+  margin: 2rem auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Roboto", sans-serif;
+}
+
+.page h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup label {
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: #555;
+}
+
+.inputGroup input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.inputGroup input:focus {
+  border-color: #3498db;
+}
+
+.error {
+  font-size: 12px;
+  color: red;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.saveBtn,
+.cancelBtn {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.saveBtn {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.cancelBtn {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.saveBtn:hover {
+  background-color: #0056b3;
+}
+
+.cancelBtn:hover {
+  background-color: #c82333;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .page {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  .saveBtn,
+  .cancelBtn {
+    font-size: 14px;
+    padding: 8px;
+  }
+}

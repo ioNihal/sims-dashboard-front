@@ -1,14 +1,12 @@
 // pages/Customers/CustomerDetails.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import styles from "../../styles/PageStyles/Customers/customerDetails.module.css";
 
 const CustomerDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [customer, setCustomer] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const savedCustomers = localStorage.getItem("customers");
@@ -28,6 +26,38 @@ const CustomerDetails = () => {
       navigate("/customers");
     }
   }, [id, navigate]);
+
+  const handleResetPassword = async () => {
+    try {
+      // Example API call (update URL, method, and headers as needed)
+      const response = await fetch(`/api/resetPassword?id=${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // Optionally, send a body if your API requires it.
+        // body: JSON.stringify({ customerId: id }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to reset password");
+      }
+      const data = await response.json();
+      // Assume the API returns the new password as data.newPassword
+      const updatedCustomer = { ...customer, password: data.newPassword };
+      setCustomer(updatedCustomer);
+      
+      // Update the customer in localStorage
+      const savedCustomers = JSON.parse(localStorage.getItem("customers") || "[]");
+      const updatedCustomers = savedCustomers.map((cust) =>
+        String(cust.id) === id ? updatedCustomer : cust
+      );
+      localStorage.setItem("customers", JSON.stringify(updatedCustomers));
+      alert("Password has been reset!");
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while resetting the password.");
+    }
+  };
 
   if (!customer) {
     return <div className={styles.loading}>Loading...</div>;
@@ -62,18 +92,11 @@ const CustomerDetails = () => {
             <span className={styles.detailValue}>{customer.address}</span>
           </div>
           <div className={styles.detailItem}>
-            <span className={styles.detailLabel}>Password:</span>
-            <span className={styles.detailValue}>
-              {showPassword
-                ? customer.password
-                : "*".repeat(customer.password.length)}
-            </span>
             <button
-              className={styles.toggleBtn}
-              onClick={() => setShowPassword((prev) => !prev)}
-              aria-label={showPassword ? "Hide password" : "Show password"}
+              className={styles.resetBtn}
+              onClick={handleResetPassword}
             >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
+              Reset Password?
             </button>
           </div>
         </div>

@@ -19,6 +19,9 @@ import EditItemPage from './pages/Inventory/EditItemPage';
 import AddCustomerPage from './pages/Customers/AddCustomerPage';
 import EditCustomerPage from './pages/Customers/EditCustomerPage';
 import CustomerDetails from './pages/Customers/CustomerDetails';
+import AddStaffPage from './pages/Staffs/AddStaffPage';
+import EditStaffPage from './pages/Staffs/EditStaffPage';
+import StaffDetails from './pages/Staffs/StaffDetails';
 
 function App() {
  
@@ -43,6 +46,10 @@ function App() {
             <Route path="/suppliers/add" element={<AddSupplierModal />} />
             <Route path="/suppliers/edit/:supplierId" element={<EditSupplierModal />} />
             <Route path="/staffs" element={<Staffs />} />
+            <Route path="/staffs/add" element={<AddStaffPage />} />
+            <Route path="/staffs/edit/:id" element={<EditStaffPage />} />
+            <Route path="/staffs/view/:id" element={<StaffDetails />} />
+
             <Route path="/orders" element={<Orders />} />
             <Route path="/orders/:id" element={<ViewOrder />} />
             <Route path="/reports" element={<Reports />} />

@@ -1,13 +1,14 @@
 /* orders.module.css */
-
 .page {
-    background-color: #ffffff;
-    padding: 24px;
-    border-radius: 12px;
     max-width: 1200px;
-    margin: 24px auto;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-    font-family: 'Roboto', sans-serif;
+    min-width: 200px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem 3rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: "Roboto", sans-serif;
+    transition: padding 0.3s;
 }
 
 .page h1 {
@@ -25,20 +26,9 @@
     flex-wrap: wrap;
 }
 
-.addBtn {
-    background-color: #6200ea;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    box-shadow: 0 4px 6px rgba(98, 0, 234, 0.3);
-}
-
-.addBtn:hover {
-    background-color: #4b00c1;
+.searchBar {
+    flex: 1;
+    margin-left: 16px;
 }
 
 .loading {
@@ -81,6 +71,29 @@
     background-color: #eeeeee;
 }
 
+/* Status indicator */
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.pending {
+    background-color: #ff9800;
+    /* Orange for pending */
+}
+
+.completed {
+    background-color: #4caf50;
+    /* Green for completed */
+}
+
+.cancelled {
+    background-color: #d32f2f;
+    /* Red for cancelled */
+}
+
 /* Button Styles */
 .viewBtn {
     background-color: #03a9f4;
@@ -95,21 +108,6 @@
 
 .viewBtn:hover {
     background-color: #0288d1;
-}
-
-.editBtn {
-    background-color: #ffab00;
-    color: #ffffff;
-    padding: 8px 14px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-right: 6px;
-    transition: background 0.3s ease;
-}
-
-.editBtn:hover {
-    background-color: #e69500;
 }
 
 .deleteBtn {
@@ -157,14 +155,8 @@
         padding: 10px;
     }
 
-    .addBtn {
-        width: 100%;
-        text-align: center;
-    }
-
-    .editBtn,
-    .deleteBtn,
-    .viewBtn {
+    .viewBtn,
+    .deleteBtn {
         padding: 6px 10px;
         font-size: 14px;
     }

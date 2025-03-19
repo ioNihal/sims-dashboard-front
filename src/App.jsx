@@ -11,7 +11,6 @@ import Suppliers from './pages/Suppliers/Suppliers';
 import './App.css';
 import ItemDetails from './pages/Inventory/ItemDetails';
 import SupplierDetail from './pages/Suppliers/SupplierDetail';
-import ViewOrder from './pages/Orders/ViewOrder';
 import AddSupplierModal from './pages/Suppliers/AddSupplierModal';
 import EditSupplierModal from './pages/Suppliers/EditSupplierModal';
 import AddItemPage from './pages/Inventory/AddItemPage';
@@ -22,6 +21,7 @@ import CustomerDetails from './pages/Customers/CustomerDetails';
 import AddStaffPage from './pages/Staffs/AddStaffPage';
 import EditStaffPage from './pages/Staffs/EditStaffPage';
 import StaffDetails from './pages/Staffs/StaffDetails';
+import OrderDetails from './pages/Orders/OrderDetails';
 
 function App() {
  
@@ -51,7 +51,7 @@ function App() {
             <Route path="/staffs/view/:id" element={<StaffDetails />} />
 
             <Route path="/orders" element={<Orders />} />
-            <Route path="/orders/:id" element={<ViewOrder />} />
+            <Route path="/orders/:id" element={<OrderDetails />} />
             <Route path="/reports" element={<Reports />} />
           </Routes>
         </div>

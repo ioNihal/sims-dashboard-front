@@ -1,0 +1,212 @@
+/* orderDetails.module.css */
+.page {
+    max-width: 1200px;
+    min-width: 200px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem 3rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: "Roboto", sans-serif;
+  }
+  
+  .backButton {
+    background-color: #03a9f4;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    transition: background 0.3s;
+  }
+  
+  .backButton:hover {
+    background-color: #0288d1;
+  }
+  
+  .card {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: padding 0.3s;
+  }
+  
+  .title {
+    margin-bottom: 1.5rem;
+    font-size: 28px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .detailGroup {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .label {
+    font-weight: 600;
+    color: #555;
+    min-width: 150px;
+  }
+  
+  .value {
+    color: #333;
+    flex: 1;
+    min-width: 150px;
+  }
+  
+  .statusDropdown {
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .statusDropdown:focus {
+    border-color: #03a9f4;
+    box-shadow: 0 0 5px rgba(3, 169, 244, 0.5);
+  }
+  
+  .itemsSection {
+    margin-top: 2rem;
+  }
+  
+  .itemsSection h3 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .itemRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 0.75rem;
+  }
+  
+  .itemName {
+    font-weight: bold;
+    color: #444;
+    flex: 1;
+  }
+  
+  .itemQuantity,
+  .itemPrice {
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .saveBtn {
+    margin-top: 2rem;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 16px;
+  }
+  
+  .saveBtn:hover {
+    background-color: #388e3c;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 20px;
+    padding: 2rem;
+    color: #666;
+  }
+  
+  /* RESPONSIVENESS */
+  
+  /* For tablets and below */
+  @media (max-width: 768px) {
+    .page {
+      padding: 1.5rem 2rem;
+    }
+    
+    .card {
+      padding: 1.5rem;
+    }
+    
+    .title {
+      font-size: 24px;
+    }
+    
+    .label {
+      min-width: 120px;
+    }
+    
+    .value {
+      font-size: 15px;
+    }
+    
+    .statusDropdown {
+      font-size: 15px;
+      padding: 6px 10px;
+    }
+    
+    .saveBtn {
+      font-size: 15px;
+      padding: 10px 16px;
+    }
+  }
+  
+  /* For mobile screens */
+  @media (max-width: 480px) {
+    .page {
+      padding: 1rem 1.5rem;
+    }
+    
+    .card {
+      padding: 1rem;
+    }
+    
+    .title {
+      font-size: 20px;
+    }
+    
+    .label,
+    .value {
+      font-size: 14px;
+      min-width: auto;
+    }
+    
+    .detailGroup {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .statusDropdown {
+      font-size: 14px;
+      padding: 5px 8px;
+    }
+    
+    .itemsSection h3 {
+      font-size: 18px;
+    }
+    
+    .itemQuantity,
+    .itemPrice {
+      font-size: 12px;
+    }
+    
+    .saveBtn {
+      font-size: 14px;
+      padding: 8px 12px;
+    }
+  }
+  

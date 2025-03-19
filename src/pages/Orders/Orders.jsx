@@ -1,20 +1,18 @@
+// pages/Orders/Orders.jsx
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Orders/orders.module.css";
 import SearchBar from "../../components/SearchBar";
-import EditOrderModal from "./EditOrderModal";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   // Retrieve orders from localStorage or initialize with sample data
   useEffect(() => {
     const storedOrders = localStorage.getItem("orders");
-    // let parsedOrders = storedOrders ? JSON.parse(storedOrders) : [];
     if (storedOrders && storedOrders.length > 0) {
       setOrders(JSON.parse(storedOrders));
       setLoading(false);
@@ -30,8 +28,8 @@ const Orders = () => {
           orderDate: "2025-02-28",
           orderedItems: [
             { id: 1, name: "Item A", quantity: 1, price: 50 },
-            { id: 2, name: "Item B", quantity: 2, price: 50 }
-          ]
+            { id: 2, name: "Item B", quantity: 2, price: 50 },
+          ],
         },
         {
           id: 2,
@@ -43,8 +41,8 @@ const Orders = () => {
           orderDate: "2025-02-27",
           orderedItems: [
             { id: 3, name: "Item C", quantity: 3, price: 50 },
-            { id: 4, name: "Item D", quantity: 2, price: 50 }
-          ]
+            { id: 4, name: "Item D", quantity: 2, price: 50 },
+          ],
         },
         {
           id: 3,
@@ -54,14 +52,10 @@ const Orders = () => {
           totalAmount: 80,
           orderStatus: "Cancelled",
           orderDate: "2025-02-26",
-          orderedItems: [
-            { id: 5, name: "Item E", quantity: 2, price: 40 }
-          ]
-        }
+          orderedItems: [{ id: 5, name: "Item E", quantity: 2, price: 40 }],
+        },
       ];
-      // Save sample orders to localStorage immediately
       localStorage.setItem("orders", JSON.stringify(sampleOrders));
-      // Mimic an async loading with a timeout
       setTimeout(() => {
         setOrders(sampleOrders);
         setLoading(false);
@@ -74,14 +68,6 @@ const Orders = () => {
     localStorage.setItem("orders", JSON.stringify(updatedOrders));
   };
 
-  const handleEditOrder = (updatedOrder) => {
-    const updatedOrders = orders.map((order) =>
-      order.id === updatedOrder.id ? updatedOrder : order
-    );
-    updateLocalStorage(updatedOrders);
-    setIsEditModalOpen(false);
-  };
-
   const handleDeleteOrder = (id) => {
     const updatedOrders = orders.filter((order) => order.id !== id);
     updateLocalStorage(updatedOrders);
@@ -89,9 +75,16 @@ const Orders = () => {
 
   const filteredOrders = orders.filter(
     (order) =>
-      (order.orderNumber || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (order.customer || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (order.orderStatus || "").toLowerCase().includes(searchQuery.toLowerCase())
+      String(order.id).includes(searchQuery) ||
+      (order.customer || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      (order.orderStatus || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      (order.orderDate || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -106,14 +99,6 @@ const Orders = () => {
         />
       </div>
 
-      {isEditModalOpen && (
-        <EditOrderModal
-          order={selectedOrder}
-          onSave={handleEditOrder}
-          onCancel={() => setIsEditModalOpen(false)}
-        />
-      )}
-
       {loading ? (
         <div className={styles.tableContainer}>
           <p className={styles.loading}>Loading orders...</p>
@@ -124,9 +109,7 @@ const Orders = () => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Order Number</th>
                 <th>Customer</th>
-                <th>Items</th>
                 <th>Total Amount</th>
                 <th>Status</th>
                 <th>Order Date</th>
@@ -137,24 +120,23 @@ const Orders = () => {
               {filteredOrders.map((order) => (
                 <tr key={order.id}>
                   <td>{order.id}</td>
-                  <td>{order.orderNumber}</td>
                   <td>{order.customer}</td>
-                  <td>{order.items}</td>
                   <td>{order.totalAmount}</td>
-                  <td>{order.orderStatus}</td>
+                  <td>
+                    <span
+                      className={`${styles.status} ${styles[order.orderStatus.toLowerCase()]
+                        }`}
+                    >
+                      {order.orderStatus}
+                    </span>
+                  </td>
                   <td>{order.orderDate}</td>
                   <td>
-                    <Link to={`/orders/${order.id}`}>
-                      <button className={styles.viewBtn}>View</button>
-                    </Link>
                     <button
-                      className={styles.editBtn}
-                      onClick={() => {
-                        setSelectedOrder(order);
-                        setIsEditModalOpen(true);
-                      }}
+                      className={styles.viewBtn}
+                      onClick={() => navigate(`/orders/${order.id}`)}
                     >
-                      Edit
+                      View
                     </button>
                     <button
                       className={styles.deleteBtn}

@@ -1,0 +1,168 @@
+/* reportDetails.module.css */
+.page {
+    max-width: 1200px;
+    min-width: 200px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem 3rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(87, 66, 66, 0.1);
+    font-family: "Roboto", sans-serif;
+    transition: padding 0.3s;
+}
+
+.backButton {
+    background-color: #03a9f4;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    transition: background 0.3s;
+}
+
+.backButton:hover {
+    background-color: #0288d1;
+}
+
+.card {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reportDate {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 0.5rem;
+}
+
+.reportType {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.reportTitle {
+    font-size: 20px;
+    color: #6200ea;
+    margin-bottom: 0.5rem;
+}
+
+.reportDescription {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+.reportDetails {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+.chartSection {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.noChart {
+    color: #999;
+    font-size: 14px;
+    text-align: center;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.printBtn,
+.deleteBtn {
+    background-color: #6200ea;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    box-shadow: 0 3px 6px rgba(98, 0, 234, 0.2);
+}
+
+.printBtn:hover,
+.deleteBtn:hover {
+    background-color: #4b00c1;
+}
+
+.loading {
+    text-align: center;
+    font-size: 18px;
+    padding: 2rem;
+}
+
+/* Responsive for tablets */
+@media (max-width: 768px) {
+    .page {
+        padding: 1.5rem 2rem;
+    }
+
+    .reportType {
+        font-size: 20px;
+    }
+
+    .reportTitle {
+        font-size: 18px;
+    }
+
+    .reportDescription {
+        font-size: 15px;
+    }
+
+    .chartSection {
+        padding: 1rem;
+    }
+
+    .printBtn,
+    .deleteBtn {
+        font-size: 15px;
+        padding: 8px 16px;
+    }
+}
+
+/* Responsive for mobile screens (below 480px) */
+@media (max-width: 480px) {
+    .page {
+        padding: 1rem 1.5rem;
+    }
+
+    .reportType {
+        font-size: 18px;
+    }
+
+    .reportTitle {
+        font-size: 16px;
+    }
+
+    .reportDescription,
+    .reportDetails {
+        font-size: 14px;
+    }
+
+    .chartSection {
+        padding: 0.75rem;
+    }
+
+    .printBtn,
+    .deleteBtn {
+        width: 100%;
+        font-size: 16px;
+        padding: 8px 12px;
+    }
+}

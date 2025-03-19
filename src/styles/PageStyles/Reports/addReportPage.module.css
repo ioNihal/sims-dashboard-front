@@ -1,0 +1,134 @@
+/* addReportPage.module.css */
+
+.page {
+    max-width: 1200px;
+    min-width: 150px;
+    margin: 2rem auto;
+    background: #ffffff;
+    padding: 2rem 3rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: "Roboto", sans-serif;
+    color: #333;
+    transition: padding 0.3s;
+  }
+  
+  .title {
+    font-size: 26px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #333;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .inputGroup label {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .input {
+    padding: 10px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .input:focus {
+    border-color: #03a9f4;
+  }
+  
+  textarea.input {
+    resize: vertical;
+  }
+  
+  .error {
+    font-size: 12px;
+    color: red;
+  }
+  
+  .buttonGroup {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .generateBtn,
+  .cancelBtn {
+    padding: 10px 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    box-shadow: 0 3px 6px rgba(98, 0, 234, 0.2);
+  }
+  
+  .generateBtn {
+    background-color: #6200ea;
+    color: #fff;
+  }
+  
+  .generateBtn:hover {
+    background-color: #4b00c1;
+  }
+  
+  .cancelBtn {
+    background-color: #d50000;
+    color: #fff;
+  }
+  
+  .cancelBtn:hover {
+    background-color: #b00000;
+  }
+  
+  /* Responsive design for tablets */
+  @media (max-width: 768px) {
+    .page {
+      padding: 1.5rem 2rem;
+    }
+    .title {
+      font-size: 22px;
+    }
+    .input {
+      font-size: 15px;
+      padding: 8px 10px;
+    }
+    .generateBtn,
+    .cancelBtn {
+      font-size: 15px;
+      padding: 8px 14px;
+    }
+  }
+  
+  /* Mobile screens (below 480px) */
+  @media (max-width: 480px) {
+    .page {
+      padding: 1rem 1.5rem;
+    }
+    .title {
+      font-size: 20px;
+    }
+    .input {
+      font-size: 14px;
+      padding: 6px 8px;
+    }
+    .generateBtn,
+    .cancelBtn {
+      font-size: 14px;
+      padding: 6px 10px;
+    }
+  }
+  

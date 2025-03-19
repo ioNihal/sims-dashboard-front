@@ -6,7 +6,7 @@ import Inventory from './pages/Inventory/Inventory';
 import Customers from './pages/Customers/Customers';
 import Staffs from './pages/Staffs/Staffs';
 import Orders from './pages/Orders/Orders';
-import Reports from './pages/Reports';
+import Reports from './pages/Reports/Reports';
 import Suppliers from './pages/Suppliers/Suppliers';
 import './App.css';
 import ItemDetails from './pages/Inventory/ItemDetails';
@@ -22,9 +22,11 @@ import AddStaffPage from './pages/Staffs/AddStaffPage';
 import EditStaffPage from './pages/Staffs/EditStaffPage';
 import StaffDetails from './pages/Staffs/StaffDetails';
 import OrderDetails from './pages/Orders/OrderDetails';
+import ReportDetails from './pages/Reports/ReportDetails';
+import AddReportPage from './pages/Reports/AddReportPage';
 
 function App() {
- 
+
 
   return (
     <Router>
@@ -49,10 +51,11 @@ function App() {
             <Route path="/staffs/add" element={<AddStaffPage />} />
             <Route path="/staffs/edit/:id" element={<EditStaffPage />} />
             <Route path="/staffs/view/:id" element={<StaffDetails />} />
-
             <Route path="/orders" element={<Orders />} />
             <Route path="/orders/:id" element={<OrderDetails />} />
             <Route path="/reports" element={<Reports />} />
+            <Route path="/reports/view/:id" element={<ReportDetails />} />
+            <Route path="/reports/add" element={<AddReportPage />} />
           </Routes>
         </div>
       </div>

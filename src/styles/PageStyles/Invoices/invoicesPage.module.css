@@ -1,0 +1,158 @@
+/* pages/Invoices/invoicesPage.module.css */
+.page {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  font-family: "Roboto", sans-serif;
+  background: #f9f9f9;
+}
+
+.title {
+  font-size: 26px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333;
+}
+
+/* Actions container with both selection form and search bar */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Selection Form */
+.selectionForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.formRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.formRow label {
+  min-width: 70px;
+  font-size: 14px;
+  color: #555;
+  font-weight: 600;
+}
+
+.formRow select {
+  flex: 1;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s;
+}
+
+.formRow select:focus {
+  border-color: #03a9f4;
+}
+
+/* Generate Invoice Button */
+.generateBtn {
+  align-self: flex-start;
+  background-color: #6200ea;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 3px 6px rgba(98, 0, 234, 0.2);
+}
+
+.generateBtn:hover {
+  background-color: #4b00c1;
+  transform: translateY(-2px);
+}
+
+/* SearchBar Wrapper */
+.searchBarWrapper {
+  display: flex;
+  align-items: center;
+  height: auto;
+}
+
+/* Table styles */
+.tableContainer {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.table th,
+.table td {
+  padding: 14px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+  font-size: 16px;
+  color: #424242;
+}
+
+.table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+.viewBtn {
+  background-color: #03a9f4;
+  color: #fff;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 14px;
+}
+
+.viewBtn:hover {
+  background-color: #0288d1;
+}
+
+/* Responsive for tablets */
+@media (max-width: 768px) {
+  .page {
+    padding: 1rem;
+  }
+  .table th,
+  .table td {
+    padding: 10px;
+    font-size: 14px;
+  }
+  .generateBtn,
+  .viewBtn {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}
+
+/* Responsive for mobile (below 480px) */
+@media (max-width: 480px) {
+  .table {
+    font-size: 12px;
+  }
+  .generateBtn,
+  .viewBtn {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}

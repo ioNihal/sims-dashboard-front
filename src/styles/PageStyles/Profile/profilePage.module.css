@@ -1,0 +1,189 @@
+/* pages/Profile/profilePage.module.css */
+.page {
+  max-width: 600px;
+  min-width: 200px;
+  margin: 2rem auto;
+  background: #fff;
+  padding: 2rem 3rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+  transition: padding 0.3s;
+}
+
+.profileHeader {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  font-size: 80px;
+  color: #6200ea;
+}
+
+.title {
+  font-size: 28px;
+  color: #333;
+  font-weight: 500;
+  margin: 0;
+}
+
+.role {
+  font-size: 16px;
+  color: #777;
+}
+
+.profileInfo {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 16px;
+  color: #555;
+}
+
+.infoRow label {
+  font-weight: 600;
+  min-width: 80px; /* Ensures label doesn't shrink too much */
+  margin-right: 1rem;
+}
+
+.valueOrInput {
+  flex: 1; /* Take remaining space */
+  display: flex;
+  align-items: center;
+}
+
+.valueOrInput span {
+  font-size: 16px;
+  color: #555;
+}
+
+.editInput {
+  flex: 1;
+  padding: 8px 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.editInput:focus {
+  border-color: #03a9f4;
+  box-shadow: 0 0 5px rgba(3, 169, 244, 0.5);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #03a9f4;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 3px 6px rgba(3, 169, 244, 0.2);
+}
+
+.actionBtn:hover {
+  background-color: #0288d1;
+  transform: translateY(-2px);
+}
+
+.logoutBtn {
+  background-color: #d50000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 3px 6px rgba(213, 0, 0, 0.2);
+}
+
+.logoutBtn:hover {
+  background-color: #b00000;
+  transform: translateY(-2px);
+}
+
+.icon {
+  font-size: 18px;
+}
+
+/* Responsive design for tablets */
+@media (max-width: 768px) {
+  .page {
+    padding: 1.5rem 2rem;
+  }
+  .title {
+    font-size: 24px;
+  }
+  .avatar {
+    font-size: 60px;
+  }
+  .actionBtn,
+  .logoutBtn {
+    font-size: 15px;
+    padding: 8px 14px;
+  }
+  .editInput {
+    width: 100%;
+  }
+}
+
+/* Responsive design for mobile screens (below 480px) */
+@media (max-width: 480px) {
+  .page {
+    padding: 1rem 1.5rem;
+  }
+  .title {
+    font-size: 22px;
+  }
+  .avatar {
+    font-size: 50px;
+  }
+  .infoRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .infoRow label {
+    margin-bottom: 0.5rem;
+  }
+  .valueOrInput {
+    width: 100%;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actionBtn,
+  .logoutBtn {
+    flex: 1;
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+  .editInput {
+    font-size: 14px;
+  }
+}

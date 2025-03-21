@@ -33,6 +33,21 @@ const Orders = () => {
         },
         {
           id: 2,
+          orderNumber: "ORD004",
+          customer: "Alice Johnson",
+          items: 3,
+          totalAmount: 200,
+          orderStatus: "Completed",
+          orderDate: "2025-01-28",
+          orderedItems: [
+            { id: 3, name: "Item A", quantity: 1, price: 70 },
+            { id: 4, name: "Item B", quantity: 2, price: 65 },
+            { id: 5, name: "Item C", quantity: 1, price: 70 },
+            { id: 6, name: "Item D", quantity: 2, price: 100 },
+          ],
+        },
+        {
+          id: 3,
           orderNumber: "ORD002",
           customer: "Bob Smith",
           items: 4,
@@ -40,12 +55,12 @@ const Orders = () => {
           orderStatus: "Completed",
           orderDate: "2025-02-27",
           orderedItems: [
-            { id: 3, name: "Item C", quantity: 2, price: 100 },
-            { id: 4, name: "Item D", quantity: 2, price: 50 },
+            { id: 7, name: "Item E", quantity: 2, price: 100 },
+            { id: 8, name: "Item D", quantity: 2, price: 50 },
           ],
         },
         {
-          id: 3,
+          id: 4,
           orderNumber: "ORD003",
           customer: "Carol Lee",
           items: 2,
@@ -53,7 +68,7 @@ const Orders = () => {
           orderStatus: "Cancelled",
           orderDate: "2025-02-26",
           orderedItems: [
-            { id: 5, name: "Item E", quantity: 2, price: 75 },
+            { id: 9, name: "Item E", quantity: 2, price: 75 },
           ],
         },
       ];

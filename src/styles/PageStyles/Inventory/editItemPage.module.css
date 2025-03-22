@@ -1,8 +1,8 @@
-.pageContainer {
+.page {
   max-width: 1200px;
   min-width: 200px;
   margin: 20px auto;
-  background: #ffffff;
+  background: var(--bg);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -18,13 +18,13 @@
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   font-weight: 500;
-  background-color: #1b86eb;
+  background-color: var(--btn);
   color: #fff;
   margin-bottom: 15px;
 }
 
 .backBtn:hover {
-  background-color: #0277e6;
+  background-color: var(--btn-hover);
   box-shadow: 0 2px 5px rgba(67, 160, 71, 0.2);
 }
 
@@ -32,7 +32,7 @@ h3 {
   text-align: center;
   margin-bottom: 5px;
   font-size: 24px;
-  color: #333;
+  color: var(--text);
 }
 
 .inputWrapper {
@@ -44,28 +44,29 @@ h3 {
 
 .inputWrapper label {
   font-weight: 500;
-  color: #555;
+  color: var(--text);
   font-size: 14px;
 }
 
 .inputWrapper input {
+  color: var(--text);
   padding: 12px;
   font-size: 16px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
   border-radius: 6px;
   transition: border-color 0.3s, box-shadow 0.3s;
-  background-color: #fdfdfd;
+  background-color: var(--bg);
 }
 
 .inputWrapper input:focus {
-  border-color: #1b86eb;
+  border-color: var(--blue);
   outline: none;
   box-shadow: 0 0 8px rgba(27, 134, 235, 0.3);
 }
 
 .inputWrapper input:disabled {
-  background-color: #eee;
-  color: #777;
+  background-color: var(--bg);
+  color: var(--text);
   cursor: not-allowed;
 }
 
@@ -87,35 +88,35 @@ h3 {
 }
 
 .saveBtn {
-  background-color: #1b86eb;
+  background-color: var(--btn-edit);
   color: #fff;
 }
 
 .saveBtn:hover {
-  background-color: #0277e6;
+  background-color: var(--btn-edit-hover);
   box-shadow: 0 4px 10px rgba(27, 134, 235, 0.4);
 }
 
 .cancelBtn {
-  background-color: #dc3545;
+  background-color: var(--btn-delete);
   color: #fff;
 }
 
 .cancelBtn:hover {
-  background-color: #c82333;
+  background-color: var(--btn-delete-hover);
   box-shadow: 0 4px 10px rgba(220, 53, 69, 0.4);
 }
 
 /* Responsive styles */
 @media screen and (max-width: 768px) {
-  .pageContainer {
+  .page {
     width: 85%;
     padding: 20px;
   }
 }
 
 @media screen and (max-width: 480px) {
-  .pageContainer {
+  .page {
     width: 95%;
     padding: 15px;
   }

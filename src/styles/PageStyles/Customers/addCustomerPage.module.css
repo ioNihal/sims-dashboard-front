@@ -3,7 +3,7 @@
   max-width: 1200px;
   min-width: 200px;
   margin: 2rem auto;
-  background: #fff;
+  background:var(--bg);
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -14,7 +14,7 @@ h1 {
   text-align: center;
   margin-bottom: 1.5rem;
   font-family: "Roboto", sans-serif;
-  color: #333;
+  color:var(--text);
 }
 
 /* Form styling */
@@ -32,15 +32,16 @@ h1 {
 
 .inputGroup label {
   font-size: 14px;
-  color: #555;
+  color: var(--text);
   margin-bottom: 4px;
   font-family: "Roboto", sans-serif;
 }
 
 .inputGroup input {
+  background-color: var(--bg-dim);
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
   border-radius: 5px;
   outline: none;
   transition: border-color 0.3s;
@@ -48,13 +49,13 @@ h1 {
 }
 
 .inputGroup input:focus {
-  border-color: #3498db;
+  border-color: var(--blue);
 }
 
 /* Styling for disabled input */
 .inputGroup input:disabled {
-  background-color: #f0f0f0;
-  color: #888;
+  background-color: var(--bg-dim);
+  color: var(--text);
 }
 
 /* Button group styling */
@@ -76,24 +77,24 @@ h1 {
   font-family: "Roboto", sans-serif;
 }
 
-/* Save button styling */
 .saveBtn {
-  background-color: #28a745;
+  background-color: var(--btn-edit);
   color: #fff;
 }
 
 .saveBtn:hover {
-  background-color: #218838;
+  background-color: var(--btn-edit-hover);
+  box-shadow: 0 4px 10px rgba(48, 238, 10, 0.356);
 }
 
-/* Cancel button styling */
 .cancelBtn {
-  background-color: #dc3545;
+  background-color: var(--btn-delete);
   color: #fff;
 }
 
 .cancelBtn:hover {
-  background-color: #c82333;
+  background-color: var(--btn-delete-hover);
+  box-shadow: 0 4px 10px rgba(220, 53, 53, 0.4);
 }
 
 /* Responsive styling for smaller screens */

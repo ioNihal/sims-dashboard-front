@@ -112,7 +112,7 @@ const AddItemPage = () => {
   };
 
   return (
-    <div className={styles.pageContainer}>
+    <div className={styles.page}>
       <button className={styles.backBtn} onClick={() => navigate(-1)}>
         Back
       </button>

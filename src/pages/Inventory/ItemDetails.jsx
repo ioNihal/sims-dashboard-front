@@ -49,7 +49,7 @@ const ItemDetails = () => {
     return (
         <div className={styles.container}>
             <button className={styles.backButton} onClick={() => navigate("/inventory")}>
-                Back to Inventory
+                Back
             </button>
             <h2 className={styles.title}>{item.name} Details</h2>
             <div className={styles.detailSection}>

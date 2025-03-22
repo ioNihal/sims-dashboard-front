@@ -48,10 +48,10 @@ const EditItemPage = () => {
   };
 
   if (!updatedItem)
-    return <div className={styles.pageContainer}>Loading...</div>;
+    return <div className={styles.page}>Loading...</div>;
 
   return (
-    <div className={styles.pageContainer}>
+    <div className={styles.page}>
       <button className={styles.backBtn} onClick={handleCancel}>
         Back
       </button>

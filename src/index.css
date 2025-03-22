@@ -1,4 +1,39 @@
-:root, html, body {
+:root,
+html,
+body {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+/* Light mode variables*/
+:root {
+  --bg: #ffffff;
+  --bg-dim: #f5f5f5;
+  --btn: #4e66ec;
+  --btn-hover: #4057da;
+  --btn-edit: #4CAF50;
+  --btn-edit-hover: #43A047;
+  --btn-delete: #F44336;
+  --btn-delete-hover: #E53935;
+  --text: #333333;
+  --blue: #3498db;
+  --border: #9c9c9c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161616;
+    --bg-dim: #1f1f1f;
+    --btn: #4e66ec;
+    --btn-hover: #4057da;
+    --btn-edit:  #66BB6A;
+    --btn-edit-hover: #81C784;
+    --btn-delete: #E57373;
+    --btn-delete-hover:  #EF9A9A;
+    --text: #ebebeb;
+    --blue: #3498db;
+    --border: #3a3a3a;
+  }
 }

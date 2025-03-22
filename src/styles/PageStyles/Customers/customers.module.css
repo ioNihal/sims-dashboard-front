@@ -1,5 +1,5 @@
 .page {
-    background-color: #f8f9fa;
+    background-color: var(--bg);
     padding: 20px;
     border-radius: 8px;
     max-width: 1200px;
@@ -10,6 +10,7 @@
 .page h1 {
     font-size: 24px;
     margin-bottom: 15px;
+    color: var(--text);
 }
 
 
@@ -22,7 +23,7 @@
 }
 
 .addBtn {
-    background-color: #007bff;
+    background-color: var(--btn);
     color: white;
     border: none;
     padding: 8px 16px;
@@ -33,7 +34,7 @@
 }
 
 .addBtn:hover {
-    background-color: #0056b3;
+    background-color: var(--btn-hover);
 }
 
 .loading {
@@ -44,11 +45,12 @@
 
 .tableContainer {
     min-height: 300px;
-    background: white;
+    background: var(--bg-dim);
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow-x: auto;
+    color: var(--text);
 }
 
 .table {
@@ -60,25 +62,25 @@
 .table th,
 .table td {
     padding: 10px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--border);
     text-align: left;
     white-space: nowrap;
 }
 
 .table td {
     white-space: nowrap;
-    overflow: hidden; 
+    overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 250px; 
+    max-width: 250px;
 }
 
 .table th {
-    background-color: #f1f1f1;
+    background: var(--bg-dim);
     font-weight: bold;
 }
 
 .table tbody tr:hover {
-    background-color: #f9f9f9;
+    background: var(--bg);
 }
 
 
@@ -97,30 +99,30 @@
 
 
 .viewBtn {
-    background-color: #4083ff;
+    background-color: var(--btn);
     color: white;
 }
 
 .viewBtn:hover {
-    background-color: #2563d8;
+    background-color: var(--btn-hover);
 }
 
 .editBtn {
-    background-color: #28a745;
+    background-color:var(--btn-edit);
     color: white;
 }
 
 .editBtn:hover {
-    background-color: #218838;
+    background-color: var(--btn-edit-hover);
 }
 
 .deleteBtn {
-    background-color: #dc3545;
+    background-color: var(--btn-delete);
     color: white;
 }
 
 .deleteBtn:hover {
-    background-color: #c82333;
+    background-color: var(--btn-delete-hover);
 }
 
 /* RESPONSIVENESS */

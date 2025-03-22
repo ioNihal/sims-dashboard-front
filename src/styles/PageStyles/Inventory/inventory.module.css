@@ -1,5 +1,5 @@
 .page {
-  background-color: #f8f9fa;
+  background-color: var(--bg);
   padding: 20px;
   border-radius: 8px;
   max-width: 1200px;
@@ -7,11 +7,13 @@
   margin: auto;
 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color:var(--text);
 }
 
 .page h1 {
   font-size: 24px;
   margin-bottom: 15px;
+  color: var(--text);
 }
 
 .actions {
@@ -27,7 +29,7 @@
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  background-color: #007bff;
+  background-color: var(--btn);
   color: white;
   border: none;
   padding: 8px 16px;
@@ -38,7 +40,7 @@
 }
 
 .addBtn:hover {
-  background-color: #0056b3;
+  background-color: var(--btn-hover);
 }
 
 .loading {
@@ -49,7 +51,7 @@
 
 .tableContainer {
   min-height: 300px;
-  background: white;
+  background: var(--bg-dim);
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -65,18 +67,18 @@
 .table th,
 .table td {
   padding: 10px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--bg);
   text-align: left;
   white-space: nowrap;
 }
 
 .table th {
-  background-color: #f1f1f1;
+  background-color: var(--bg-dim);
   font-weight: bold;
 }
 
 .table tbody tr:hover {
-  background-color: #f9f9f9;
+  background-color: var(--bg);
 }
 
 .inStock {
@@ -95,7 +97,7 @@
 }
 
 .viewBtn {
-  background-color: #17a2b8;
+  background-color: var(--btn);
   color: white;
   padding: 5px 10px;
   border: none;
@@ -105,11 +107,11 @@
 }
 
 .viewBtn:hover {
-  background-color: #117a8b;
+  background-color: var(--btn-hover);
 }
 
 .editBtn {
-  background-color: #ffc107;
+  background-color: var(--btn-edit);
   color: white;
   padding: 5px 10px;
   border: none;
@@ -119,11 +121,11 @@
 }
 
 .editBtn:hover {
-  background-color: #ffca2a;
+  background-color: var(--btn-edit-hover);
 }
 
 .deleteBtn {
-  background-color: #dc3545;
+  background-color: var(--btn-delete);
   color: white;
   padding: 5px 10px;
   border: none;
@@ -132,7 +134,7 @@
 }
 
 .deleteBtn:hover {
-  background-color: #f14e5f;
+  background-color: var(--btn-delete-hover);
 }
 
 

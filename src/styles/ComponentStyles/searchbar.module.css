@@ -1,14 +1,15 @@
 .searchInput {
   padding: 8px;
   width: 250px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--bg-dim);
   border-radius: 4px;
   outline: none;
   transition: border-color 0.2s ease;
+  background-color: var(--bg);
 }
 
 .searchInput:focus {
-  border-color: #3498db;
+  border-color: var(--blue);
 }
 
 /* RESPONSIVENESS */

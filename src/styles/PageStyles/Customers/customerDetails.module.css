@@ -1,6 +1,6 @@
 /* Container for the entire page */
 .page {
-  background-color: #f5f5f5;
+  background-color: var(--bg);
   padding: 30px 20px;
   margin: auto;
   min-height: 100vh;
@@ -14,7 +14,7 @@
 /* Back Button */
 .backButton {
   align-self: flex-start;
-  background-color: #1e88e5;
+  background-color:var(--btn);
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -26,17 +26,17 @@
 }
 
 .backButton:hover {
-  background-color: #1565c0;
+  background-color:var(--btn-hover);
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
 }
 
 /* Card container for customer details */
 .card {
-  background: #ffffff;
+  background: var(--bg-dim);
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   padding: 30px;
-  width: 100%;
+  width: 90%;
   overflow-x: auto;
 }
 
@@ -45,7 +45,7 @@
   font-size: 28px;
   font-weight: 500;
   margin-bottom: 20px;
-  color: #333;
+  color: var(--text);
 }
 
 /* Customer Details Section */
@@ -59,7 +59,6 @@
   flex-wrap: wrap;
   margin-bottom: 10px;
   font-size: 16px;
-  color: #555;
   align-items: center;
 }
 
@@ -67,12 +66,12 @@
 .detailLabel {
   font-weight: 500;
   margin-right: 10px;
-  color: #1e88e5;
+  color: var(--text);
 }
 
 /* Detail Value */
 .detailValue {
-  color: #555;
+  color: var(--text);
 }
 
 /* Toggle Button for Password */
@@ -82,7 +81,7 @@
   cursor: pointer;
   font-size: 1rem;
   padding: 0;
-  color: rgb(17, 120, 255);
+  color: var(--blue);
   transition: color 0.3s;
   position: relative;
 }
@@ -92,25 +91,21 @@
   position: absolute;
   width: 0;
   height: 2px;
-  background-color: rgb(17, 81, 255);
-  bottom: 0;
+  background-color: var(--blue);
+  bottom: -5px;
   left: 0;
   transition: width 0.3s ease;
 
 }
 
-.resetBtn:hover {
-  color: rgb(17, 81, 255);
-}
-
 .resetBtn:hover::before {
-  width: 100%;
+  width: 99%;
 }
 
 /* Loading Text */
 .loading {
   font-size: 18px;
-  color: #666;
+  color:var(--text);
   margin-top: 50px;
 }
 

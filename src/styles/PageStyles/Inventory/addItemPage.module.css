@@ -1,10 +1,15 @@
-.pageContainer {
+.page {
   max-width: 1200px;
   margin: 20px auto;
-  background: #ffffff;
+  background: var(--bg);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  
+}
+
+.page h3 {
+  color: var(--text);
 }
 
 .backBtn {
@@ -17,13 +22,13 @@
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   font-weight: 500;
-  background-color: #1b86eb;
+  background-color: var(--btn);
   color: #fff;
   margin-bottom: 15px;
 }
 
 .backBtn:hover {
-  background-color: #0277e6;
+  background-color: var(--btn-hover);
   box-shadow: 0 2px 5px rgba(67, 160, 71, 0.2);
 }
 
@@ -37,21 +42,23 @@
 .formGroup label {
   margin-bottom: 5px;
   font-weight: 500;
-  color: #333;
+  color: var(--text);
 }
 
 .formGroup input,
 .formGroup select {
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #ccc;
+  background-color: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
   border-radius: 5px;
   transition: border-color 0.3s;
 }
 
 .formGroup input:focus,
 .formGroup select:focus {
-  border-color: #3498db;
+  border-color: var(--blue);
   outline: none;
 }
 
@@ -73,33 +80,33 @@
 }
 
 .saveBtn {
-  background-color: #28a745;
+  background-color: var(--btn-edit);
   color: white;
 }
 
 .cancelBtn {
-  background-color: #dc3545;
+  background-color: var(--btn-delete);
   color: white;
 }
 
 .saveBtn:hover {
-  background-color: #218838;
+  background-color: var(--btn-edit-hover);
 }
 
 .cancelBtn:hover {
-  background-color: #c82333;
+  background-color: var(--btn-delete-hover);
 }
 
 /* Responsive styles */
 @media screen and (max-width: 768px) {
-  .pageContainer {
+  .page {
     width: 80%;
     padding: 15px;
   }
 }
 
 @media screen and (max-width: 480px) {
-  .pageContainer {
+  .page {
     width: 95%;
     padding: 10px;
   }

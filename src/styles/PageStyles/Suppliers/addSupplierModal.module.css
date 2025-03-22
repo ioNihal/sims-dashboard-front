@@ -1,6 +1,6 @@
 /* Container for the entire page */
 .page {
-  background-color: #ffffff;
+  background-color: var(--bg);
   padding: 20px;
   border-radius: 12px;
   max-width: 1200px;
@@ -29,13 +29,14 @@
   flex-direction: column;
   gap: 5px;
   align-items: stretch;
-  min-width: 0; /* Allows input to shrink properly */
+  min-width: 0;
+  /* Allows input to shrink properly */
 }
 
 /* Label style */
 .inputWrapper label {
   text-align: left;
-  color: #444;
+  color: var(--text);
   font-weight: 500;
   font-size: 0.95rem;
 }
@@ -48,10 +49,10 @@
   box-sizing: border-box;
   text-align: left;
   padding: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   border-radius: 6px;
   font-size: 16px;
-  background-color: #fdfdfd;
+  background-color: var(--bg);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -64,7 +65,7 @@
 .inputWrapper input:focus,
 .inputWrapper textarea:focus {
   outline: none;
-  border-color: #42a5f5;
+  border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
 }
 
@@ -101,33 +102,30 @@
 }
 
 .saveBtn {
-  background-color: #4caf50;
+  background-color: var(--btn-edit);
   color: #fff;
 }
 
 .saveBtn:hover {
-  background-color: #43a047;
-  box-shadow: 0 2px 5px rgba(67, 160, 71, 0.2);
+  background-color: var(--btn-edit-hover);
 }
 
 .cancelBtn {
-  background-color: #f44336;
+  background-color: var(--btn-delete);
   color: #fff;
 }
 
 .cancelBtn:hover {
-  background-color: #e53935;
-  box-shadow: 0 2px 5px rgba(229, 57, 53, 0.2);
+  background-color: var(--btn-delete-hover);
 }
 
 .backButton {
-  background-color: #1b86eb;
+  background-color: var(--btn);
   color: #fff;
 }
 
 .backButton:hover {
-  background-color: #0277e6;
-  box-shadow: 0 2px 5px rgba(67, 160, 71, 0.2);
+  background-color: var(--btn-hover);
 }
 
 /* Product Row */
@@ -139,6 +137,10 @@
   width: 100%;
 }
 
+.fullWidth h4 {
+  color: var(--text);
+}
+
 /* Inputs inside the product row */
 .productRow input {
   box-sizing: border-box;
@@ -147,16 +149,16 @@
   flex: 1 1 300px;
   text-align: left;
   padding: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   border-radius: 6px;
   font-size: 16px;
-  background-color: #fdfdfd;
+  background-color: var(--bg);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .productRow input:focus {
   outline: none;
-  border-color: #42a5f5;
+  border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
 }
 
@@ -179,23 +181,21 @@
 }
 
 .addProductBtn {
-  background-color: #42a5f5;
+  background-color: var(--btn);
   color: #fff;
 }
 
 .addProductBtn:hover {
-  background-color: #1e88e5;
-  box-shadow: 0 2px 5px rgba(30, 136, 229, 0.2);
+  background-color: var(--btn-hover);
 }
 
 .removeProductBtn {
-  background-color: #f44336;
+  background-color:var(--btn-delete);
   color: #fff;
 }
 
 .removeProductBtn:hover {
-  background-color: #e53935;
-  box-shadow: 0 2px 5px rgba(229, 57, 53, 0.2);
+  background-color:var(--btn-delete);
 }
 
 /* Responsive Fixes */

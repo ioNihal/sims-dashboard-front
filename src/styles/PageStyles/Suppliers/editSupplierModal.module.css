@@ -1,16 +1,12 @@
 /* Container for the entire page */
 .page {
-  background-color: #ffffff;
-  /* White background for a clean, material look */
+  background-color: var(--bg);
   padding: 20px;
   border-radius: 12px;
-  /* Slightly larger radius for a softer look */
   max-width: 1200px;
   margin: auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
-  /* More pronounced shadow for a "card" effect */
   font-family: "Roboto", sans-serif;
-  /* Typical Material Design font */
 }
 
 /* Form Container */
@@ -39,51 +35,51 @@
 /* Label style */
 .inputWrapper label {
   text-align: left;
-  color: #444;
-  /* Subtle text color */
+  color: var(--text);
   font-weight: 500;
-  /* Slightly bolder label */
   font-size: 0.95rem;
 }
 
 /* Input fields (text, etc.) */
 .inputWrapper input {
+  color: var(--text);
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   text-align: left;
   padding: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   border-radius: 6px;
   font-size: 16px;
-  background-color: #fdfdfd;
+  background-color: var(--bg);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Focused state for inputs */
 .inputWrapper input:focus {
   outline: none;
-  border-color: #42a5f5;
+  border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
 }
 
 /* Textarea style */
 .inputWrapper textarea {
   all: unset;
+  color: var(--text);
   resize: vertical;
   text-align: left;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   border-radius: 6px;
   font-size: 1rem;
   min-height: 60px;
-  background-color: #fdfdfd;
+  background-color: var(--bg);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Focused state for textarea */
 .inputWrapper textarea:focus {
-  border-color: #42a5f5;
+  border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
 }
 
@@ -93,6 +89,10 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.fullWidth h4 {
+  color: var(--text);
 }
 
 /* Buttons Container */
@@ -121,36 +121,33 @@
 
 /* Material blue for Back Button */
 .backButton {
-  background-color: #1b86eb;
+  background-color: var(--btn);
   color: #fff;
   margin-bottom: 15px;
 }
 
 .backButton:hover {
-  background-color: #0277e6;
-  box-shadow: 0 2px 5px rgba(67, 160, 71, 0.2);
+  background-color: var(--btn-hover);
 }
 
 /* Material green for Save */
 .saveBtn {
-  background-color: #4caf50;
+  background-color: var(--btn-edit);
   color: #fff;
 }
 
 .saveBtn:hover {
-  background-color: #43a047;
-  box-shadow: 0 2px 5px rgba(67, 160, 71, 0.2);
+  background-color: var(--btn-edit-hover);
 }
 
 /* Material red for Cancel */
 .cancelBtn {
-  background-color: #f44336;
+  background-color: var(--btn-delete);
   color: #fff;
 }
 
 .cancelBtn:hover {
-  background-color: #e53935;
-  box-shadow: 0 2px 5px rgba(229, 57, 53, 0.2);
+  background-color: var(--btn-delete-hover);
 }
 
 /* Additional styles for product rows */
@@ -164,22 +161,23 @@
 
 /* Updated product row inputs to use flex: 1 1 300px for auto-wrapping */
 .productRow input {
+  color: var(--text);
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   flex: 1 1 300px;
   text-align: left;
   padding: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   border-radius: 6px;
   font-size: 16px;
-  background-color: #fdfdfd;
+  background-color: var(--bg);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .productRow input:focus {
   outline: none;
-  border-color: #42a5f5;
+  border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
 }
 
@@ -191,7 +189,7 @@
 .addProductBtn,
 .removeProductBtn {
   all: unset;
-  background-color: #42a5f5;
+  background-color: var(--btn);
   color: #fff;
   padding: 5px;
   font-size: 1.5rem;
@@ -203,17 +201,15 @@
 }
 
 .addProductBtn:hover {
-  background-color: #1e88e5;
-  box-shadow: 0 2px 5px rgba(30, 136, 229, 0.2);
+  background-color: var(--btn-hover);
 }
 
 .removeProductBtn {
-  background-color: #f44336;
+  background-color: var(--btn-delete);
 }
 
 .removeProductBtn:hover {
-  background-color: #e53935;
-  box-shadow: 0 2px 5px rgba(229, 57, 53, 0.2);
+  background-color: var(--btn-delete-hover);
 }
 
 /* Responsive Styles */

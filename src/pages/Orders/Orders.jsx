@@ -141,7 +141,7 @@ const Orders = () => {
                   <td>{order.totalAmount}</td>
                   <td>
                     <span
-                      className={`${styles.status} ${styles[order.orderStatus.toLowerCase()]
+                      className={`${styles.status} ${styles[order.orderStatus ? order.orderStatus.toLowerCase() : ""]
                         }`}
                     >
                       {order.orderStatus}

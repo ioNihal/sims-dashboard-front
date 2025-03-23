@@ -2,7 +2,7 @@
   max-width: 1200px;
   min-width: 200px;
   margin: 2rem auto;
-  background: #fff;
+  background:var(--bg);
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -12,7 +12,7 @@
 .page h1 {
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #333;
+  color: var(--text);
 }
 
 .form {
@@ -35,14 +35,14 @@
 .inputGroup input {
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
   border-radius: 5px;
   outline: none;
   transition: border-color 0.3s;
 }
 
 .inputGroup input:focus {
-  border-color: #3498db;
+  border-color:var(--blue);
 }
 
 .error {
@@ -68,21 +68,21 @@
 }
 
 .saveBtn {
-  background-color: #007bff;
+  background-color: var(--btn-edit);
   color: #fff;
 }
 
 .cancelBtn {
-  background-color: #dc3545;
+  background-color: var(--btn-delete);
   color: #fff;
 }
 
 .saveBtn:hover {
-  background-color: #0056b3;
+  background-color: var(--btn-edit-hover);
 }
 
 .cancelBtn:hover {
-  background-color: #c82333;
+  background-color: var(--btn-delete-hover);
 }
 
 /* Responsive */

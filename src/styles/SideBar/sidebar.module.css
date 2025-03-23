@@ -1,23 +1,29 @@
+/* sidebar.module.css */
+
 .sidebar {
-    height: calc(100vh -40px);
     background-color: var(--bg);
     color: var(--text);
     padding: 20px 10px;
     transition: width 0.3s ease;
     position: relative;
-}
-
-/* Sidebar width when open vs. closed */
-.sidebar.open {
+    /* Remove forced height and overflow so it grows with content. */
+    /* height: 100vh; */
+    /* overflow: hidden; */
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+  }
+  
+  /* Sidebar width when open vs. closed */
+  .sidebar.open {
     width: 200px;
-}
-
-.sidebar.closed {
+  }
+  
+  .sidebar.closed {
     width: 40px;
-}
-
-/* Toggle button styles */
-.toggleBtn {
+  }
+  
+  /* Toggle button styles */
+  .toggleBtn {
     position: absolute;
     top: 20px;
     right: 10px;
@@ -30,37 +36,37 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-}
-
-/* Logo text (shown when sidebar is open) */
-.logo {
+  }
+  
+  /* Logo text (shown when sidebar is open) */
+  .logo {
     position: absolute;
     top: 5px;
     left: 14px;
-}
-
-.sidebar.closed .logo {
-    /* display: none; */
+  }
+  
+  .sidebar.closed .logo {
     text-align: center;
-
-}
-
-/* Navigation list styling */
-.sidebar nav {
-    margin-top: 100px;
-}
-
-.sidebar nav ul {
+  }
+  
+  /* Navigation list styling */
+  .sidebar nav {
+    margin-top: 100px; /* Space for toggle & logo */
+    /* Let nav grow naturally with no forced scrolling */
+  }
+  
+  .sidebar nav ul {
     list-style-type: none;
     padding: 0;
-}
-
-.sidebar nav ul li {
+    margin: 0;
+  }
+  
+  .sidebar nav ul li {
     margin-bottom: 20px;
-}
-
-/* Styling for navigation links */
-.sidebar nav ul li a {
+  }
+  
+  /* Styling for navigation links */
+  .sidebar nav ul li a {
     color: var(--text);
     text-decoration: none;
     display: flex;
@@ -68,33 +74,32 @@
     padding: 10px;
     border-radius: 4px;
     transition: background-color 0.2s ease;
-}
-
-
-.sidebar nav ul li a:hover,
-.sidebar nav ul li a.active {
+  }
+  
+  .sidebar nav ul li a:hover,
+  .sidebar nav ul li a.active {
     background-color: var(--bg-dim);
-}
-
-/* Icon styling (default) */
-.sidebar nav ul li a .icon {
+  }
+  
+  /* Icon styling (default) */
+  .sidebar nav ul li a .icon {
     font-size: 1.2rem;
     margin-right: 10px;
     transition: all 0.3s ease;
-
-}
-
-/* Hide the text when the sidebar is closed */
-.sidebar.closed nav ul li a span {
+  }
+  
+  /* Hide the text when the sidebar is closed */
+  .sidebar.closed nav ul li a span {
     display: none;
-}
-
-/* Center and enlarge icons in closed state */
-.sidebar.closed nav ul li a {
+  }
+  
+  /* Center and enlarge icons in closed state */
+  .sidebar.closed nav ul li a {
     justify-content: center;
-}
-
-.sidebar.closed nav ul li a .icon {
+  }
+  
+  .sidebar.closed nav ul li a .icon {
     margin-right: 0;
     font-size: 1.4rem;
-}
+  }
+  

@@ -1,12 +1,19 @@
+/* app.css */
+
+/* Let .dashboard grow as needed, no forced height or overflow. */
 .dashboard {
   display: flex;
-  height: 100vh;
+  min-height: 100vh; /* Ensures at least full viewport height, but can grow */
   font-family: Arial, sans-serif;
+  /* Remove overflow here so the entire page can scroll if content is too tall */
+  overflow: visible;
 }
 
+/* .content takes the remaining horizontal space, can also grow vertically. */
 .content {
   flex: 1;
   padding: 20px;
   background-color: var(--bg-dim);
-  overflow-y: auto;
+  /* Remove overflow-y: auto so the entire page (including sidebar) scrolls together */
+  overflow-x: auto;
 }

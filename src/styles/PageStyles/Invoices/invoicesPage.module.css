@@ -4,14 +4,14 @@
   margin: 2rem auto;
   padding: 2rem;
   font-family: "Roboto", sans-serif;
-  background: #f9f9f9;
+  background: var(--bg);
 }
 
 .title {
   font-size: 26px;
   margin-bottom: 1.5rem;
   text-align: center;
-  color: #333;
+  color: var(--text);
 }
 
 /* Actions container with both selection form and search bar */
@@ -41,7 +41,7 @@
 .formRow label {
   min-width: 70px;
   font-size: 14px;
-  color: #555;
+  color: var(--text);
   font-weight: 600;
 }
 
@@ -49,19 +49,21 @@
   flex: 1;
   padding: 8px;
   font-size: 14px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
   border-radius: 6px;
   transition: border-color 0.3s;
 }
 
 .formRow select:focus {
-  border-color: #03a9f4;
+  border-color: var(--blue);
 }
 
 /* Generate Invoice Button */
 .generateBtn {
   align-self: flex-start;
-  background-color: #6200ea;
+  background-color: var(--btn-edit);
   color: #fff;
   border: none;
   padding: 10px 16px;
@@ -73,7 +75,7 @@
 }
 
 .generateBtn:hover {
-  background-color: #4b00c1;
+  background-color:var(--btn-edit-hover);
   transform: translateY(-2px);
 }
 
@@ -86,7 +88,7 @@
 
 /* Table styles */
 .tableContainer {
-  background: #fff;
+  background: var(--bg-dim);
   padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
@@ -102,19 +104,19 @@
 .table th,
 .table td {
   padding: 14px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--border);
   text-align: left;
   font-size: 16px;
-  color: #424242;
+  color:var(--text);
 }
 
 .table th {
-  background-color: #f5f5f5;
+  background-color: var(--bg);
   font-weight: 600;
 }
 
 .viewBtn {
-  background-color: #03a9f4;
+  background-color: var(--btn);
   color: #fff;
   padding: 8px 14px;
   border: none;
@@ -125,7 +127,7 @@
 }
 
 .viewBtn:hover {
-  background-color: #0288d1;
+  background-color: var(--btn-hover);
 }
 
 /* Responsive for tablets */
@@ -133,11 +135,13 @@
   .page {
     padding: 1rem;
   }
+
   .table th,
   .table td {
     padding: 10px;
     font-size: 14px;
   }
+
   .generateBtn,
   .viewBtn {
     font-size: 13px;
@@ -150,6 +154,7 @@
   .table {
     font-size: 12px;
   }
+
   .generateBtn,
   .viewBtn {
     padding: 6px 8px;

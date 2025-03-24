@@ -3,7 +3,7 @@
     max-width: 1200px;
     min-width: 200px;
     margin: 2rem auto;
-    background: #fff;
+    background: var(--bg);
     padding: 2rem 3rem;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -15,7 +15,7 @@
     font-size: 28px;
     font-weight: 500;
     margin-bottom: 20px;
-    color: #333333;
+    color: var(--text);
 }
 
 .actions {
@@ -35,11 +35,11 @@
     text-align: center;
     font-size: 20px;
     padding: 30px;
-    color: #666666;
+    color: var(--text);
 }
 
 .tableContainer {
-    background: #fafafa;
+    background: var(--bg-dim);
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
@@ -55,20 +55,20 @@
 .table th,
 .table td {
     padding: 14px;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid var(--border);
     text-align: left;
     white-space: nowrap;
     font-size: 16px;
-    color: #424242;
+    color:var(--text);
 }
 
 .table th {
-    background-color: #f5f5f5;
+    background-color: var(--bg);
     font-weight: 600;
 }
 
 .table tbody tr:hover {
-    background-color: #eeeeee;
+    background-color: var(--bg);
 }
 
 /* Status indicator */
@@ -81,22 +81,19 @@
 
 .pending {
     background-color: #ff9800;
-    /* Orange for pending */
 }
 
 .completed {
     background-color: #4caf50;
-    /* Green for completed */
 }
 
 .cancelled {
     background-color: #d32f2f;
-    /* Red for cancelled */
 }
 
 /* Button Styles */
 .viewBtn {
-    background-color: #03a9f4;
+    background-color: var(--btn);
     color: #ffffff;
     padding: 8px 14px;
     border: none;
@@ -107,11 +104,11 @@
 }
 
 .viewBtn:hover {
-    background-color: #0288d1;
+    background-color: var(--btn-hover);
 }
 
 .deleteBtn {
-    background-color: #d50000;
+    background-color: var(--btn-delete);
     color: #ffffff;
     padding: 8px 14px;
     border: none;
@@ -121,7 +118,7 @@
 }
 
 .deleteBtn:hover {
-    background-color: #b00000;
+    background-color: var(--btn-delete-hover);
 }
 
 /* RESPONSIVENESS */

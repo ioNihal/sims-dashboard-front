@@ -3,7 +3,7 @@
     max-width: 1200px;
     min-width: 200px;
     margin: 2rem auto;
-    background: #fff;
+    background:var(--bg);
     padding: 2rem 3rem;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -11,7 +11,7 @@
   }
   
   .backButton {
-    background-color: #03a9f4;
+    background-color: var(--btn);
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -22,11 +22,11 @@
   }
   
   .backButton:hover {
-    background-color: #0288d1;
+    background-color:var(--btn-hover);
   }
   
   .card {
-    background-color: #f5f5f5;
+    background-color: var(--bg-dim);
     border-radius: 8px;
     padding: 2rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -37,7 +37,7 @@
     margin-bottom: 1.5rem;
     font-size: 28px;
     font-weight: 500;
-    color: #333;
+    color: var(--text);
   }
   
   .detailGroup {
@@ -50,12 +50,12 @@
   
   .label {
     font-weight: 600;
-    color: #555;
+    color:var(--text);
     min-width: 150px;
   }
   
   .value {
-    color: #333;
+    color: var(--text);
     flex: 1;
     min-width: 150px;
   }
@@ -63,14 +63,16 @@
   .statusDropdown {
     padding: 8px 12px;
     font-size: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
     border-radius: 6px;
     outline: none;
     transition: border-color 0.3s, box-shadow 0.3s;
   }
   
   .statusDropdown:focus {
-    border-color: #03a9f4;
+    border-color: var(--blue);
     box-shadow: 0 0 5px rgba(3, 169, 244, 0.5);
   }
   
@@ -80,7 +82,7 @@
   
   .itemsSection h3 {
     font-size: 22px;
-    color: #333;
+    color: var(--text);
     margin-bottom: 1rem;
   }
   
@@ -88,8 +90,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: var(--bg);
+    border: 1px solid var(--border);
     border-radius: 6px;
     padding: 12px;
     margin-bottom: 0.75rem;
@@ -97,19 +99,19 @@
   
   .itemName {
     font-weight: bold;
-    color: #444;
+    color: var(--text);
     flex: 1;
   }
   
   .itemQuantity,
   .itemPrice {
-    color: #666;
+    color: var(--text);
     font-size: 14px;
   }
   
   .saveBtn {
     margin-top: 2rem;
-    background-color: #4caf50;
+    background-color: var(--btn-edit);
     color: #fff;
     border: none;
     padding: 12px 20px;
@@ -120,14 +122,14 @@
   }
   
   .saveBtn:hover {
-    background-color: #388e3c;
+    background-color: var(--btn-edit-hover);
   }
   
   .loading {
     text-align: center;
     font-size: 20px;
     padding: 2rem;
-    color: #666;
+    color: var(--text);
   }
   
   /* RESPONSIVENESS */

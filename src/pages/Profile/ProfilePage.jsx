@@ -92,16 +92,16 @@ const ProfilePage = () => {
       <div className={styles.actions}>
         {isEditing ? (
           <>
-            <button className={styles.actionBtn} onClick={handleSave}>
+            <button className={`${styles.actionBtn} ${styles.editBtn}`} onClick={handleSave}>
               <FaSave className={styles.icon} /> Save
             </button>
-            <button className={styles.actionBtn} onClick={handleCancel}>
+            <button className={`${styles.actionBtn} ${styles.logoutBtn}`} onClick={handleCancel}>
               <FaTimes className={styles.icon} /> Cancel
             </button>
           </>
         ) : (
           <>
-            <button className={styles.actionBtn} onClick={handleEditToggle}>
+            <button className={`${styles.actionBtn} ${styles.editBtn}`} onClick={handleEditToggle}>
               <FaEdit className={styles.icon} /> Edit Profile
             </button>
             <button className={styles.actionBtn} onClick={handleChangePassword}>

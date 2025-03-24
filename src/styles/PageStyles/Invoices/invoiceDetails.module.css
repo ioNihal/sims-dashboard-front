@@ -3,15 +3,14 @@
     max-width: 800px;
     margin: 2rem auto;
     padding: 2rem 3rem;
-    background: #fff;
+    background: var(--bg);
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     font-family: "Roboto", sans-serif;
-    transition: padding 0.3s;
   }
   
   .backButton {
-    background-color: #03a9f4;
+    background-color: var(--btn);
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -22,11 +21,11 @@
   }
   
   .backButton:hover {
-    background-color: #0288d1;
+    background-color: var(--btn-hover);
   }
   
   .invoiceCard {
-    background-color: #f5f5f5;
+    background-color:var(--bg-dim);
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -41,11 +40,11 @@
   
   .header h1 {
     font-size: 28px;
-    color: #333;
+    color:var(--text);
   }
   
   .printBtn {
-    background-color: #03a9f4;
+    background-color: var(--btn-edit);
     color: #fff;
     border: none;
     padding: 8px 14px;
@@ -57,7 +56,7 @@
   }
   
   .printBtn:hover {
-    background-color: #0288d1;
+    background-color: var(--btn-edit-hover);
     transform: translateY(-2px);
   }
   
@@ -70,18 +69,18 @@
   .ordersSection h2 {
     font-size: 20px;
     margin-bottom: 0.5rem;
-    color: #444;
+    color:var(--text);
   }
   
   .customerSection p,
   .orderHeader p {
     margin: 0.25rem 0;
     font-size: 15px;
-    color: #555;
+    color: var(--text);
   }
   
   .orderBlock {
-    background: #fafafa;
+    background: var(--bg-dim);
     margin-bottom: 1rem;
     padding: 1rem;
     border-radius: 8px;
@@ -99,7 +98,7 @@
     flex: 1 1 150px;
     margin: 0;
     font-size: 14px;
-    color: #555;
+    color: var(--text);
   }
   
   .itemsTable {
@@ -112,14 +111,22 @@
   .itemsTable td {
     text-align: left;
     padding: 8px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--border);
     font-size: 14px;
-    color: #555;
+    color: var(--text);
   }
   
   .itemsTable th {
-    background: #f5f5f5;
+    background: var(--bg);
     font-weight: 600;
+  }
+
+  .itemsTable tr {
+    background: var(--bg-dim);;
+  }
+
+  .itemsTable tr:hover {
+    background: var(--bg);
   }
   
   .combinedTotal {
@@ -129,7 +136,7 @@
   
   .combinedTotal h3 {
     font-size: 16px;
-    color: #333;
+    color: var(--text);
   }
   
   .actions {
@@ -139,7 +146,7 @@
   }
   
   .deleteBtn {
-    background-color: #d50000;
+    background-color: var(--btn-delete);
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -151,14 +158,14 @@
   }
   
   .deleteBtn:hover {
-    background-color: #b00000;
+    background-color: var(--btn-delete-hover);
     transform: translateY(-2px);
   }
   
   .loading {
     text-align: center;
     font-size: 18px;
-    color: #666;
+    color: var(--text);
   }
   
   /* Responsive for tablets */

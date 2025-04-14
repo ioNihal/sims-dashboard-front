@@ -1,13 +1,29 @@
 .page {
-    background-color: var(--bg);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    color: var(--text);
+  max-width: 1200px;
+  min-width: 200px;
+  margin: auto;
+  padding: 1rem;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.dashboard h1 {
+  margin-bottom: 1rem;
+}
+
+.widgetsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .widgetsGrid {
+    flex-direction: column;
   }
-  
-  .page h1 {
-    margin-top: 0;
-    color: var(--text)
-  }
-  
+}

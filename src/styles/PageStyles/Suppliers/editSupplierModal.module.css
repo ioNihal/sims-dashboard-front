@@ -212,6 +212,16 @@
   background-color: var(--btn-delete-hover);
 }
 
+.loading {
+  color: var(--text);
+}
+
+.error {
+  color: red;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
 /* Responsive Styles */
 
 /* Tablets (768px and below) */

@@ -1,7 +1,21 @@
+// src/pages/Suppliers/Suppliers.jsx
+/*
+API Endpoint: GET /api/supplier/
+Response structure can be either:
+  { success: boolean, message: string, supplier: [ { _id, name, email, phone, address } ] }
+or directly an array of supplier objects.
+Each supplier object should contain:
+  - _id (or id): unique identifier
+  - name: string
+  - email: string
+  - phone: string
+  - address: string
+*/
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/PageStyles/Suppliers/suppliers.module.css";
 import SearchBar from "../../components/SearchBar";
 import { Link } from "react-router-dom";
+import { capitalize } from "../../utils/validators";
 
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
@@ -9,15 +23,40 @@ const Suppliers = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const savedSuppliers = localStorage.getItem("suppliers");
-    setSuppliers(savedSuppliers ? JSON.parse(savedSuppliers) : []);
-    setLoading(false);
+    const fetchSuppliers = async () => {
+      try {
+        const res = await fetch("https://suims.vercel.app/api/supplier/");
+        const data = await res.json();
+        const supplierArray = data.supplier || data;
+        // Map _id to id for consistency
+        const formattedSuppliers = supplierArray.map((s) => ({
+          ...s,
+          id: s._id,
+        }));
+        setSuppliers(formattedSuppliers);
+      } catch (err) {
+        console.error("Error fetching suppliers:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSuppliers();
   }, []);
 
-  const handleDeleteSupplier = (id) => {
-    const updatedSuppliers = suppliers.filter((supplier) => supplier.id !== id);
-    setSuppliers(updatedSuppliers);
-    localStorage.setItem("suppliers", JSON.stringify(updatedSuppliers));
+  const handleDeleteSupplier = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this supplier?");
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch(`https://suims.vercel.app/api/supplier/${id}`, { method: "DELETE" });
+      if (!response.ok) {
+        throw new Error("Failed to delete supplier");
+      }
+      setSuppliers((prev) => prev.filter((supplier) => supplier.id !== id));
+    } catch (error) {
+      console.error("Error deleting supplier:", error);
+      alert("Error deleting supplier");
+    }
   };
 
   const filteredSuppliers = suppliers.filter(
@@ -62,8 +101,8 @@ const Suppliers = () => {
             <tbody>
               {filteredSuppliers.map((supplier) => (
                 <tr key={supplier.id}>
-                  <td>{supplier.id}</td>
-                  <td>{supplier.name}</td>
+                  <td>{`SU${supplier.id.substring(8, 12).toUpperCase()}`}</td>
+                  <td>{capitalize(supplier.name)}</td>
                   <td>{supplier.email}</td>
                   <td>{supplier.phone}</td>
                   <td>{supplier.address}</td>
@@ -83,6 +122,13 @@ const Suppliers = () => {
                   </td>
                 </tr>
               ))}
+              {filteredSuppliers.length === 0 && (
+                <tr>
+                  <td colSpan="6" className={styles.noResults}>
+                    No suppliers found.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

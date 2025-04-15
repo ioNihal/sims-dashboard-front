@@ -44,6 +44,7 @@
 /* Input fields (text, email, etc.) */
 .inputWrapper input,
 .inputWrapper textarea {
+  color: var(--text);
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
@@ -143,6 +144,7 @@
 
 /* Inputs inside the product row */
 .productRow input {
+  color: var(--text);
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -195,7 +197,12 @@
 }
 
 .removeProductBtn:hover {
-  background-color:var(--btn-delete);
+  background-color:var(--btn-delete-hover);
+}
+
+.error {
+  color: red;
+  font-size: 0.8rem;
 }
 
 /* Responsive Fixes */

@@ -1,29 +1,43 @@
+// src/pages/Suppliers/SupplierDetail.jsx
+
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Suppliers/supplierDetail.module.css";
+import { capitalize } from "../../utils/validators";
 
 const SupplierDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [supplier, setSupplier] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const savedSuppliers = localStorage.getItem("suppliers");
-    if (savedSuppliers) {
-      const suppliers = JSON.parse(savedSuppliers);
-      const foundSupplier = suppliers.find(
-        (supplier) => supplier.id.toString() === id
-      );
-      if (foundSupplier) {
-        setSupplier(foundSupplier);
-      } else {
-        alert("Supplier not found!");
+    const fetchSupplier = async () => {
+      try {
+        const res = await fetch(`https://suims.vercel.app/api/supplier/${id}`);
+        const data = await res.json();
+        const fetchedSupplier = data.supplier || data;
+        if (!fetchedSupplier) {
+          alert("Supplier not found!");
+          navigate("/suppliers");
+          return;
+        }
+        // Convert _id to id for consistency
+        fetchedSupplier.id = fetchedSupplier._id;
+        setSupplier(fetchedSupplier);
+      } catch (err) {
+        console.error("Error fetching supplier:", err);
+        alert("Error fetching supplier");
         navigate("/suppliers");
+      } finally {
+        setLoading(false);
       }
-    }
+    };
+
+    fetchSupplier();
   }, [id, navigate]);
 
-  if (!supplier) {
+  if (loading) {
     return (
       <div className={styles.page}>
         <p className={styles.loading}>Loading supplier details...</p>
@@ -31,13 +45,18 @@ const SupplierDetail = () => {
     );
   }
 
+  if (!supplier) return null;
+
   return (
     <div className={styles.page}>
-      <button className={styles.backButton} onClick={() => navigate("/suppliers")}>
+      <button 
+        className={styles.backButton} 
+        onClick={() => navigate("/suppliers")}
+      >
         Back
       </button>
       <div className={styles.card}>
-        <h2 className={styles.title}>{supplier.name}</h2>
+        <h2 className={styles.title}>{capitalize(supplier.name)}</h2>
         <div className={styles.details}>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Email:</span>
@@ -64,11 +83,11 @@ const SupplierDetail = () => {
                 </tr>
               </thead>
               <tbody>
-                {supplier.products.map((product, index) => (
-                  <tr key={index}>
-                    <td>{product.name}</td>
-                    <td>{product.category}</td>
-                    <td>{product.price}</td>
+                {supplier.products.map((product) => (
+                  <tr key={product._id}>
+                    <td>{capitalize(product.name)}</td>
+                    <td>{capitalize(product.category)}</td>
+                    <td>₹{product.pricePerItem}</td>
                   </tr>
                 ))}
               </tbody>

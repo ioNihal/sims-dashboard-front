@@ -117,7 +117,7 @@
 /* Loading Text */
 .loading {
   font-size: 18px;
-  color: #666;
+  color: var(--text);
   margin-top: 50px;
 }
 

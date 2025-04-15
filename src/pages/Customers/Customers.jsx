@@ -1,4 +1,5 @@
-// pages/Customers.js
+// src/pages/Customers/Customers.jsx
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Customers/customers.module.css";
@@ -11,19 +12,45 @@ const Customers = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const savedCustomers = localStorage.getItem("customers");
-    if (savedCustomers) {
-      setCustomers(JSON.parse(savedCustomers));
-    }
-    setLoading(false);
+    const fetchCustomers = async () => {
+      try {
+        const res = await fetch("https://suims.vercel.app/api/customer/");
+        const data = await res.json();
+        // Support both response formats: either data.customer or data as an array.
+        const customerArray = data.data || data;
+        
+        // Map _id to id for consistency.
+        const formattedCustomers = customerArray.map((cust) => ({
+          ...cust,
+          id: cust._id,
+        }));
+        setCustomers(formattedCustomers);
+      } catch (err) {
+        console.error("Error fetching customers:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCustomers();
   }, []);
 
-  const handleDeleteCustomer = (id) => {
-    const updatedCustomers = customers.filter(
-      (customer) => customer.id !== id
-    );
-    setCustomers(updatedCustomers);
-    localStorage.setItem("customers", JSON.stringify(updatedCustomers));
+  const handleDeleteCustomer = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this customer?");
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(`https://suims.vercel.app/api/customer/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        throw new Error("Failed to delete customer");
+      }
+      setCustomers((prev) => prev.filter((customer) => customer.id !== id));
+    } catch (err) {
+      console.error("Error deleting customer:", err);
+      alert("Error deleting customer");
+    }
   };
 
   const filteredCustomers = customers.filter(
@@ -39,17 +66,10 @@ const Customers = () => {
       <h1>Customers</h1>
       <div className={styles.actions}>
         {/* Navigate to the dynamic add customer page */}
-        <button
-          className={styles.addBtn}
-          onClick={() => navigate("/customers/add")}
-        >
+        <button className={styles.addBtn} onClick={() => navigate("/customers/add")}>
           Add Customer
         </button>
-        <SearchBar
-          placeholder="Search customers..."
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-        />
+        <SearchBar placeholder="Search customers..." searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       </div>
 
       {loading ? (
@@ -72,35 +92,31 @@ const Customers = () => {
             <tbody>
               {filteredCustomers.map((customer) => (
                 <tr key={customer.id}>
-                  <td>{customer.id}</td>
+                  <td>{`CU${customer.id.substring(9,13).toUpperCase()}`}</td>
                   <td>{customer.name}</td>
                   <td>{customer.email}</td>
                   <td>{customer.phone}</td>
                   <td>{customer.address}</td>
                   <td>
-                    <button
-                      className={styles.viewBtn}
-                      onClick={() =>
-                        navigate(`/customers/view/${customer.id}`)
-                      }
-                    >
+                    <button className={styles.viewBtn} onClick={() => navigate(`/customers/view/${customer.id}`)}>
                       View
                     </button>
-                    <button
-                      className={styles.editBtn}
-                      onClick={() => navigate(`/customers/edit/${customer.id}`)}
-                    >
+                    <button className={styles.editBtn} onClick={() => navigate(`/customers/edit/${customer.id}`)}>
                       Edit
                     </button>
-                    <button
-                      className={styles.deleteBtn}
-                      onClick={() => handleDeleteCustomer(customer.id)}
-                    >
+                    <button className={styles.deleteBtn} onClick={() => handleDeleteCustomer(customer.id)}>
                       Delete
                     </button>
                   </td>
                 </tr>
               ))}
+              {filteredCustomers.length === 0 && (
+                <tr>
+                  <td colSpan="6" className={styles.noResults}>
+                    No customers found.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

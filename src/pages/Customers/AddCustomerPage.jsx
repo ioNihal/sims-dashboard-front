@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+// src/pages/Customers/AddCustomerPage.jsx
+
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { generatePassword } from "../../utils/passwordUtils";
 import styles from "../../styles/PageStyles/Customers/addCustomerPage.module.css";
+import { validateName, validateEmail, validatePhone, validateAddress } from "../../utils/validators";
+import { generatePassword } from "../../utils/passwordUtils";
 
 const AddCustomerPage = () => {
   const [customer, setCustomer] = useState({
@@ -9,39 +12,49 @@ const AddCustomerPage = () => {
     email: "",
     phone: "",
     address: "",
-    password: ""
   });
+  const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  // Generate password on component mount
-  useEffect(() => {
-    const newPassword = generatePassword();
-    setCustomer((prev) => ({ ...prev, password: newPassword }));
-  }, []);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleChange = (e) => {
     setCustomer({ ...customer, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    if (!customer.name || !customer.email || !customer.phone || !customer.address) {
-      alert("Please fill in all required fields.");
+  const handleSubmit = async () => {
+    const newCustomer = { ...customer, password: generatePassword() };
+  
+    setError("");
+    setIsSaving(true);
+  
+    const nameError = validateName(newCustomer.name);
+    const emailError = validateEmail(newCustomer.email);
+    const phoneError = validatePhone(newCustomer.phone);
+    const addressError = validateAddress(newCustomer.address);
+  
+    if (nameError || emailError || phoneError || addressError) {
+      setError(nameError || emailError || phoneError || addressError);
+      setIsSaving(false);
       return;
     }
-
-    // Retrieve existing customers and add the new one
-    const savedCustomers = localStorage.getItem("customers")
-      ? JSON.parse(localStorage.getItem("customers"))
-      : [];
-    const updatedCustomers = [
-      ...savedCustomers,
-      { ...customer, id: Date.now() }
-    ];
-    localStorage.setItem("customers", JSON.stringify(updatedCustomers));
-
-    // Navigate back to the customers list after saving
-    navigate("/customers");
-  };
+  
+    try {
+      const response = await fetch("https://suims.vercel.app/api/customer/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newCustomer),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to add customer");
+      }
+      const data = await response.json();
+      navigate("/customers");
+    } catch (err) {
+      console.error("Error adding customer:", err);
+      setError("Error adding customer. Please try again.");
+      setIsSaving(false);
+    }
+  };  
 
   const handleCancel = () => {
     navigate("/customers");
@@ -50,6 +63,7 @@ const AddCustomerPage = () => {
   return (
     <div className={styles.container}>
       <h1>Add New Customer</h1>
+      {error && <p className={styles.error}>{error}</p>}
       <div className={styles.form}>
         <div className={styles.inputGroup}>
           <label htmlFor="name">Customer Name</label>
@@ -64,7 +78,7 @@ const AddCustomerPage = () => {
         <div className={styles.inputGroup}>
           <label htmlFor="email">Email</label>
           <input
-            type="text"
+            type="email"
             id="email"
             name="email"
             placeholder="Enter email"
@@ -83,27 +97,16 @@ const AddCustomerPage = () => {
         </div>
         <div className={styles.inputGroup}>
           <label htmlFor="address">Address</label>
-          <input
-            type="text"
+          <textarea
             id="address"
             name="address"
             placeholder="Enter address"
             onChange={handleChange}
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label htmlFor="password">Generated Password</label>
-          <input
-            type="text"
-            id="password"
-            name="password"
-            value={customer.password}
-            disabled
-          />
+          ></textarea>
         </div>
         <div className={styles.buttonGroup}>
-          <button onClick={handleSubmit} className={styles.saveBtn}>
-            Save
+          <button onClick={handleSubmit} className={styles.saveBtn} disabled={isSaving}>
+            {`${isSaving ? "Saving..." : "Save"}`}
           </button>
           <button onClick={handleCancel} className={styles.cancelBtn}>
             Cancel

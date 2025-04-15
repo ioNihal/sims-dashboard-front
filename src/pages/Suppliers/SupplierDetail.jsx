@@ -56,8 +56,16 @@ const SupplierDetail = () => {
         Back
       </button>
       <div className={styles.card}>
-        <h2 className={styles.title}>{capitalize(supplier.name)}</h2>
+        <h2 className={styles.title}>Supplier Details</h2>
         <div className={styles.details}>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>ID:</span>
+            <span>SU{supplier.id.substring(8, 12).toUpperCase()}</span>
+          </div>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Supplier Name:</span>
+            <span>{capitalize(supplier.name)}</span>
+          </div>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Email:</span>
             <span>{supplier.email}</span>

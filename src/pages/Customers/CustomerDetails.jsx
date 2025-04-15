@@ -1,4 +1,4 @@
-// pages/Customers/CustomerDetails.jsx
+// src/pages/Customers/CustomerDetails.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Customers/customerDetails.module.css";
@@ -7,60 +7,37 @@ const CustomerDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [customer, setCustomer] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const savedCustomers = localStorage.getItem("customers");
-    if (savedCustomers) {
-      const customers = JSON.parse(savedCustomers);
-      const foundCustomer = customers.find(
-        (cust) => String(cust.id) === id
-      );
-      if (foundCustomer) {
-        setCustomer(foundCustomer);
-      } else {
-        alert("Customer not found");
-        navigate("/customers");
+    const fetchCustomer = async () => {
+      try {
+        const res = await fetch(`https://suims.vercel.app/api/customer/${id}`);
+        if (!res.ok) {
+          throw new Error("Failed to fetch customer details");
+        }
+        const data = await res.json();
+        // Support both response formats: either data.customer or the customer object directly.
+        const customerData = data.data || data;
+        setCustomer(customerData);
+      } catch (err) {
+        console.error("Error fetching customer details:", err);
+        setError("Error fetching customer details. Please try again later.");
+      } finally {
+        setLoading(false);
       }
-    } else {
-      alert("No customers available");
-      navigate("/customers");
-    }
-  }, [id, navigate]);
+    };
 
-  const handleResetPassword = async () => {
-    try {
-      // Example API call (update URL, method, and headers as needed)
-      const response = await fetch(`/api/resetPassword?id=${id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // Optionally, send a body if your API requires it.
-        // body: JSON.stringify({ customerId: id }),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to reset password");
-      }
-      const data = await response.json();
-      // Assume the API returns the new password as data.newPassword
-      const updatedCustomer = { ...customer, password: data.newPassword };
-      setCustomer(updatedCustomer);
-      
-      // Update the customer in localStorage
-      const savedCustomers = JSON.parse(localStorage.getItem("customers") || "[]");
-      const updatedCustomers = savedCustomers.map((cust) =>
-        String(cust.id) === id ? updatedCustomer : cust
-      );
-      localStorage.setItem("customers", JSON.stringify(updatedCustomers));
-      alert("Password has been reset!");
-    } catch (error) {
-      console.error(error);
-      alert("An error occurred while resetting the password.");
-    }
-  };
+    fetchCustomer();
+  }, [id]);
 
-  if (!customer) {
+  if (loading) {
     return <div className={styles.loading}>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className={styles.error}>{error}</div>;
   }
 
   return (
@@ -73,7 +50,7 @@ const CustomerDetails = () => {
         <div className={styles.details}>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>ID:</span>
-            <span className={styles.detailValue}>{customer.id}</span>
+            <span className={styles.detailValue}>{`CU${customer._id.substring(9,13).toUpperCase() || customer.id.substring(9,13).toUpperCase()}`}</span>
           </div>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Name:</span>
@@ -90,14 +67,6 @@ const CustomerDetails = () => {
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Address:</span>
             <span className={styles.detailValue}>{customer.address}</span>
-          </div>
-          <div className={styles.detailItem}>
-            <button
-              className={styles.resetBtn}
-              onClick={handleResetPassword}
-            >
-              Reset Password?
-            </button>
           </div>
         </div>
       </div>

@@ -49,8 +49,8 @@ const SupplierDetail = () => {
 
   return (
     <div className={styles.page}>
-      <button 
-        className={styles.backButton} 
+      <button
+        className={styles.backButton}
         onClick={() => navigate("/suppliers")}
       >
         Back
@@ -69,6 +69,32 @@ const SupplierDetail = () => {
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Address:</span>
             <span>{supplier.address}</span>
+          </div>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Created At:</span>
+            <span className={styles.date}>
+              {new Date(supplier.createdAt).toLocaleString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+              })}
+            </span>
+          </div>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Updated At:</span>
+            <span className={styles.date}>
+              {new Date(supplier.updatedAt).toLocaleString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+              })}
+              </span>
           </div>
         </div>
         <div className={styles.products}>

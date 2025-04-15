@@ -106,7 +106,15 @@
 .loading {
   font-size: 18px;
   color:var(--text);
-  margin-top: 50px;
+  display: grid;
+  place-items: center;
+}
+
+.error {
+  display: grid;
+  place-items:center;
+  color: red;
+  margin-top: 2rem;
 }
 
 /* Responsiveness */

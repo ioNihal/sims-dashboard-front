@@ -41,6 +41,7 @@
     text-align: center;
     font-size: 18px;
     padding: 20px;
+    color: var(--text);
 }
 
 .tableContainer {
@@ -188,13 +189,13 @@
     }
 
     .table {
-        font-size: 12px;
+        font-size: 0.9rem;
     }
 
     .viewBtn,
     .editBtn,
     .deleteBtn {
-        font-size: 10px;
+        font-size: 0.8rem;
         padding: 4px 6px;
     }
 }

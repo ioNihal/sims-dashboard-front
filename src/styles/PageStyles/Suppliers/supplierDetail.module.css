@@ -65,6 +65,9 @@
   margin-right: 10px;
   color:var(--text);
 }
+.date {
+  color: rgb(0, 195, 255);
+}
 
 /* Products Section */
 .products {

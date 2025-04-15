@@ -4,7 +4,7 @@
 .dashboard {
   display: flex;
   min-height: 100vh; /* Ensures at least full viewport height, but can grow */
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
   /* Remove overflow here so the entire page can scroll if content is too tall */
   overflow: visible;
 }
@@ -16,4 +16,8 @@
   background-color: var(--bg-dim);
   /* Remove overflow-y: auto so the entire page (including sidebar) scrolls together */
   overflow-x: auto;
+}
+
+* {
+  font-family: 'Inter', sans-serif !important;
 }

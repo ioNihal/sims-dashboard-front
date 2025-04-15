@@ -1,8 +1,8 @@
 // src/pages/Home.jsx
 import React from "react";
 import styles from "../styles/PageStyles/page.module.css";
-import ProfileWidget from "../widgets/ProfileWidget";
-import WidgetCard from "../widgets/WidgetCard";
+import ProfileWidget from "../components/widgets/ProfileWidget";
+import WidgetCard from "../components/widgets/WidgetCard";
 
 const Home = () => {
   // Example user data, which you might get from context or an API.

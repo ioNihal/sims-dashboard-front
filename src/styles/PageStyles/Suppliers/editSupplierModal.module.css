@@ -4,32 +4,30 @@
   padding: 20px;
   border-radius: 12px;
   max-width: 1200px;
+  min-width: 180px;
   margin: auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
   font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
 }
 
 /* Form Container */
 .formContainer {
-  padding: 10px;
-  border-radius: 8px;
-  min-width: 300px;
-  text-align: center;
-  box-sizing: border-box;
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
-  gap: 1rem;
-  align-items: stretch;
+  justify-content: space-between;
+  gap: 10px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
-/* Each input wrapper (label + input) */
-/* Updated to use a flex basis of 300px so that items wrap when space is limited */
 .inputWrapper {
-  flex: 1 1 300px;
+  flex:1 1 300px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  align-items: stretch;
+  gap: 1rem;
 }
 
 /* Label style */
@@ -40,8 +38,9 @@
   font-size: 0.95rem;
 }
 
-/* Input fields (text, etc.) */
+
 .inputWrapper input {
+  width: 100%;
   color: var(--text);
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -50,20 +49,24 @@
   padding: 12px;
   border: 1px solid var(--border);
   border-radius: 6px;
-  font-size: 16px;
+  font-size: 1rem;
   background-color: var(--bg);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Focused state for inputs */
+
 .inputWrapper input:focus {
   outline: none;
   border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
 }
 
-/* Textarea style */
+
 .inputWrapper textarea {
+  width: 100%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   all: unset;
   color: var(--text);
   resize: vertical;
@@ -77,18 +80,22 @@
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Focused state for textarea */
+
 .inputWrapper textarea:focus {
   border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
 }
 
-/* Full width input wrapper */
+
 .fullWidth {
   flex: 1 1 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
 .fullWidth h4 {
@@ -100,7 +107,9 @@
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  flex: 1;
+  flex: 1 1 100%;
+  width: 100%;
+  box-sizing: border-box;
   margin-top: 10px;
 }
 
@@ -110,7 +119,7 @@
 .backButton {
   flex: 1;
   padding: 12px;
-  font-size: 16px;
+  font-size: 1.2rem;
   text-align: center;
   border: none;
   border-radius: 6px;
@@ -157,20 +166,19 @@
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
+  box-sizing: border-box;
 }
 
 /* Updated product row inputs to use flex: 1 1 300px for auto-wrapping */
 .productRow input {
   color: var(--text);
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
   flex: 1 1 300px;
+  width: 100%;
   text-align: left;
   padding: 12px;
   border: 1px solid var(--border);
   border-radius: 6px;
-  font-size: 16px;
+  font-size: 1rem;
   background-color: var(--bg);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -228,13 +236,12 @@
 @media screen and (max-width: 768px) {
   .formContainer {
     width: 95%;
-    min-width: 100px;
   }
 
   .inputWrapper input,
   .productRow input,
   .inputWrapper textarea {
-    font-size: 14px;
+    font-size: 0.9rem;
   }
 
   .productRow {
@@ -245,7 +252,6 @@
 /* Mobile (480px and below) */
 @media screen and (max-width: 480px) {
   .page {
-    min-width: 200px;
     padding: 15px;
   }
 
@@ -256,13 +262,15 @@
   }
 
   .saveBtn,
-  .cancelBtn {
-    font-size: 14px;
-    padding: 12px;
+  .cancelBtn,
+  .backButton {
+    font-size: 0.9rem;
+    padding: 10px;
   }
 
   .addRemoveBtnGroup {
     flex: 1 1 100%;
+
   }
 
   .addProductBtn,
@@ -271,6 +279,6 @@
   }
 
   .buttonGroup {
-    flex: 1 1 100%;
+    width: 100%;
   }
 }

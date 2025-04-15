@@ -1,16 +1,5 @@
 // src/pages/Suppliers/Suppliers.jsx
-/*
-API Endpoint: GET /api/supplier/
-Response structure can be either:
-  { success: boolean, message: string, supplier: [ { _id, name, email, phone, address } ] }
-or directly an array of supplier objects.
-Each supplier object should contain:
-  - _id (or id): unique identifier
-  - name: string
-  - email: string
-  - phone: string
-  - address: string
-*/
+
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/PageStyles/Suppliers/suppliers.module.css";
 import SearchBar from "../../components/SearchBar";

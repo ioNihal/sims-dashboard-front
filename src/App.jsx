@@ -30,12 +30,14 @@ import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import InvoicesPage from './pages/Invoices/InvoicesPage';
 import InvoiceDetails from './pages/Invoices/InvoiceDetails';
+import RegisterPage from './pages/Login/RegisterPage';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route
           path="/*"
           element={

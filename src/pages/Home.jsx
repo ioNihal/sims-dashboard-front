@@ -5,13 +5,11 @@ import ProfileWidget from "../components/widgets/ProfileWidget";
 import WidgetCard from "../components/widgets/WidgetCard";
 
 const Home = () => {
-  // Example user data, which you might get from context or an API.
-  const user = {
-    name: "Jane Doe",
-    avatarUrl: "https://example.com/path/to/avatar.jpg",
-  };
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser 
+    ? JSON.parse(storedUser) 
+    : { name: "Jane Doe", id: "DEFAULT_ID", avatarUrl: "https://example.com/path/to/avatar.jpg" };
 
-  // Placeholder metrics for dashboard overview.
   const dashboardMetrics = [
     { title: "Inventory", value: "1500 Items", description: "Stock levels overview", link: "/inventory" },
     { title: "Suppliers", value: "12 Active", description: "Supplier details", link: "/suppliers" },

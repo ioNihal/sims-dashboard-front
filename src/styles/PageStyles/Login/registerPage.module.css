@@ -1,5 +1,5 @@
 
-.loginPage {
+.registerPage {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,8 +8,7 @@
     padding: 20px;
   }
   
-
-  .loginCard {
+  .registerCard {
     background: var(--bg-dim);
     padding: 2rem;
     border-radius: 10px;
@@ -22,8 +21,9 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
   }
-  .loginCard:hover {
-    background: rgba(36, 36, 36, 0.95);
+  
+  .registerCard:hover {
+    background: rgba(43, 43, 43, 0.95);
   }
   
   .title {
@@ -33,11 +33,9 @@
     font-weight: 500;
   }
   
-  
   .form {
     display: flex;
     flex-direction: column;
-    margin: auto;
     gap: 1rem;
   }
   
@@ -55,9 +53,6 @@
   }
   
   .inputGroup input {
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     width: 100%;
     padding: 10px;
     font-size: 1rem;
@@ -67,6 +62,9 @@
     border-radius: 6px;
     outline: none;
     transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
   }
   
   .inputGroup input:focus {
@@ -74,11 +72,11 @@
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
   }
   
- 
-  .loginBtn {
+  
+  .registerBtn {
     padding: 10px;
     font-size: 1rem;
-    background-color: var(--btn);
+    background-color: var(--btn-edit);
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -86,8 +84,8 @@
     transition: background 0.3s, transform 0.2s;
   }
   
-  .loginBtn:hover {
-    background-color: var(--btn-hover);
+  .registerBtn:hover {
+    background-color: var(--btn-edit-hover);
     transform: translateY(-2px);
   }
   
@@ -108,15 +106,15 @@
     text-decoration: underline;
   }
   
-
+  /* Responsive adjustments */
   @media (max-width: 480px) {
-    .loginCard {
+    .registerCard {
       padding: 1.5rem;
     }
     .title {
       font-size: 1.2rem;
     }
-    .loginBtn {
+    .registerBtn {
       font-size: 1rem;
     }
   }

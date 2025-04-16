@@ -1,25 +1,11 @@
-// pages/LoginPage.jsx
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Login/loginPage.module.css";
+import useLogin from "../../hooks/useLogin";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const { email, setEmail, password, setPassword, error, isLogging, handleLogin } = useLogin();
   const navigate = useNavigate();
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (!email.trim() || !password.trim()) {
-      setError("Please enter email and password");
-      return;
-    }
-    // Simulate authentication (replace with your API call)
-    localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("adminEmail", email);
-    navigate("/");
-  };
 
   return (
     <div className={styles.loginPage}>
@@ -49,9 +35,15 @@ const LoginPage = () => {
               required
             />
           </div>
-          <button type="submit" className={styles.loginBtn}>
-            Login
+          <button type="submit" className={styles.loginBtn} disabled={isLogging}>
+            {isLogging ? "Logging in..." : "Login"}
           </button>
+          <p className={styles.switchText}>
+            Don't have an account?{" "}
+            <span onClick={() => navigate("/register")} className={styles.link}>
+              Register here
+            </span>
+          </p>
         </form>
       </div>
     </div>

@@ -1,23 +1,30 @@
-// pages/ProfilePage.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserCircle, FaEdit, FaKey, FaSave, FaTimes } from "react-icons/fa";
 import styles from "../../styles/PageStyles/Profile/profilePage.module.css";
+import { capitalize } from "../../utils/validators";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
-  const storedEmail = localStorage.getItem("adminEmail") || "admin@example.com";
-  
-  const [profile, setProfile] = useState({
-    name: "Admin User",
-    email: storedEmail,
-    password: "********",
-    role: "Administrator",
-  });
+  const [profile, setProfile] = useState({});
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      setProfile({
+        name: user.name || "Admin User",
+        email: user.email || "placeholder@email.com",
+        role: user.isAdmin ? "Administrator" : "Hacker",
+        id: user.id ? `AD.${user.id.substring(10, 15).toUpperCase()}` : "AdminID",
+      });
+    }
+  }, []);
 
   const [isEditing, setIsEditing] = useState(false);
   const [tempProfile, setTempProfile] = useState(profile);
 
+  // Sync temporary profile when profile state changes.
   useEffect(() => {
     setTempProfile(profile);
   }, [profile]);
@@ -32,7 +39,7 @@ const ProfilePage = () => {
   const handleSave = () => {
     setProfile(tempProfile);
     setIsEditing(false);
-    // Update localStorage or send to backend if needed
+    // Optionally, update localStorage or make API update call here.
   };
 
   const handleCancel = () => {
@@ -54,22 +61,27 @@ const ProfilePage = () => {
     <div className={styles.page}>
       <div className={styles.profileHeader}>
         <FaUserCircle className={styles.avatar} />
-        {isEditing ? (
-          <input
-            type="text"
-            name="name"
-            value={tempProfile.name}
-            onChange={handleChange}
-            className={styles.editInput}
-          />
-        ) : (
-          <h1 className={styles.title}>{profile.name}</h1>
-        )}
+        <h1 className={styles.title}>{profile.id}</h1>
         <p className={styles.role}>{profile.role}</p>
       </div>
 
       <div className={styles.profileInfo}>
-        {/* Email row */}
+        <div className={styles.infoRow}>
+          <label>Name:</label>
+          <div className={styles.valueOrInput}>
+            {isEditing ? (
+              <input
+                type="text"
+                name="name"
+                value={tempProfile.name || ""}
+                onChange={handleChange}
+                className={styles.editInput}
+              />
+            ) : (
+              <span>{capitalize(profile.name)}</span>
+            )}
+          </div>
+        </div>
         <div className={styles.infoRow}>
           <label>Email:</label>
           <div className={styles.valueOrInput}>
@@ -77,7 +89,7 @@ const ProfilePage = () => {
               <input
                 type="email"
                 name="email"
-                value={tempProfile.email}
+                value={tempProfile.email || ""}
                 onChange={handleChange}
                 className={styles.editInput}
               />
@@ -86,22 +98,31 @@ const ProfilePage = () => {
             )}
           </div>
         </div>
-        
+
       </div>
 
       <div className={styles.actions}>
         {isEditing ? (
           <>
-            <button className={`${styles.actionBtn} ${styles.editBtn}`} onClick={handleSave}>
+            <button
+              className={`${styles.actionBtn} ${styles.editBtn}`}
+              onClick={handleSave}
+            >
               <FaSave className={styles.icon} /> Save
             </button>
-            <button className={`${styles.actionBtn} ${styles.logoutBtn}`} onClick={handleCancel}>
+            <button
+              className={`${styles.actionBtn} ${styles.logoutBtn}`}
+              onClick={handleCancel}
+            >
               <FaTimes className={styles.icon} /> Cancel
             </button>
           </>
         ) : (
           <>
-            <button className={`${styles.actionBtn} ${styles.editBtn}`} onClick={handleEditToggle}>
+            <button
+              className={`${styles.actionBtn} ${styles.editBtn}`}
+              onClick={handleEditToggle}
+            >
               <FaEdit className={styles.icon} /> Edit Profile
             </button>
             <button className={styles.actionBtn} onClick={handleChangePassword}>

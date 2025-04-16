@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Suppliers/supplierDetail.module.css";
-import { capitalize } from "../../utils/validators";
+import { capitalize, formatDate } from "../../utils/validators";
 
 const SupplierDetail = () => {
   const { id } = useParams();
@@ -56,7 +56,7 @@ const SupplierDetail = () => {
         Back
       </button>
       <div className={styles.card}>
-        <h2 className={styles.title}>Supplier Details</h2>
+        <h4 className={styles.title}>Supplier Details</h4>
         <div className={styles.details}>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>ID:</span>
@@ -81,28 +81,14 @@ const SupplierDetail = () => {
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Created At:</span>
             <span className={styles.date}>
-              {new Date(supplier.createdAt).toLocaleString("en-IN", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              })}
+              {formatDate(supplier.createdAt)}
             </span>
           </div>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Updated At:</span>
             <span className={styles.date}>
-              {new Date(supplier.updatedAt).toLocaleString("en-IN", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              })}
-              </span>
+              {formatDate(supplier.updatedAt)}
+            </span>
           </div>
         </div>
         <div className={styles.products}>
@@ -113,7 +99,7 @@ const SupplierDetail = () => {
                 <tr>
                   <th>Name</th>
                   <th>Category</th>
-                  <th>Price per Item</th>
+                  <th>Unit Price</th>
                 </tr>
               </thead>
               <tbody>

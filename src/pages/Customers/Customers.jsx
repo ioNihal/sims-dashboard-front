@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Customers/customers.module.css";
 import SearchBar from "../../components/SearchBar";
+import { capitalize } from "../../utils/validators";
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
@@ -92,11 +93,11 @@ const Customers = () => {
             <tbody>
               {filteredCustomers.map((customer) => (
                 <tr key={customer.id}>
-                  <td>{`CU${customer.id.substring(9,13).toUpperCase()}`}</td>
-                  <td>{customer.name}</td>
+                  <td>{`CU${customer.id.substring(5,10).toUpperCase()}`}</td>
+                  <td>{capitalize(customer.name)}</td>
                   <td>{customer.email}</td>
                   <td>{customer.phone}</td>
-                  <td>{customer.address}</td>
+                  <td>{capitalize(customer.address)}</td>
                   <td>
                     <button className={styles.viewBtn} onClick={() => navigate(`/customers/view/${customer.id}`)}>
                       View

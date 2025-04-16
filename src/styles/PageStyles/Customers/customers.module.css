@@ -3,16 +3,19 @@
     padding: 20px;
     border-radius: 8px;
     max-width: 1200px;
+    min-width: 180px;
     margin: auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .page h1 {
-    font-size: 24px;
+    font-size: 1.4rem;
     margin-bottom: 15px;
     color: var(--text);
 }
-
 
 .actions {
     display: flex;
@@ -28,7 +31,7 @@
     border: none;
     padding: 8px 16px;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 1rem;
     cursor: pointer;
     transition: background 0.3s;
 }
@@ -39,7 +42,7 @@
 
 .loading {
     text-align: center;
-    font-size: 18px;
+    font-size: 1rem;
     padding: 20px;
     color: var(--text);
 }
@@ -58,6 +61,9 @@
     width: 100%;
     border-collapse: collapse;
     min-width: 600px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .table th,
@@ -76,12 +82,15 @@
 }
 
 .table th {
-    background: var(--bg-dim);
+    background: var(--bg);
     font-weight: bold;
 }
 
-.table tbody tr:hover {
+.table tr {
     background: var(--bg);
+}
+.table tbody tr:hover {
+    background: var(--bg-dim);
 }
 
 
@@ -93,7 +102,7 @@
     padding: 6px 10px;
     margin: 0 5px;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 1rem;
     cursor: pointer;
 }
 
@@ -109,7 +118,7 @@
 }
 
 .editBtn {
-    background-color:var(--btn-edit);
+    background-color: var(--btn-edit);
     color: white;
 }
 
@@ -126,7 +135,6 @@
     background-color: var(--btn-delete-hover);
 }
 
-/* RESPONSIVENESS */
 
 /* Tablets (below 1024px) */
 @media (max-width: 1024px) {
@@ -150,8 +158,7 @@
     }
 
     .table {
-        font-size: 14px;
-        /* Reduce text size */
+        font-size: 0.9rem;
         min-width: 100%;
     }
 
@@ -174,14 +181,18 @@
     .editBtn,
     .deleteBtn {
         padding: 5px 8px;
-        font-size: 12px;
+        font-size: 0.9rem;
     }
 }
 
 /* Extra small screens (below 480px) */
 @media (max-width: 480px) {
     .page h1 {
-        font-size: 20px;
+        font-size: 1.3rem;
+    }
+
+    .addBtn {
+        font-size: 0.9rem;
     }
 
     .tableContainer {
@@ -189,13 +200,13 @@
     }
 
     .table {
-        font-size: 0.9rem;
+        font-size: 0.7rem;
     }
 
     .viewBtn,
     .editBtn,
     .deleteBtn {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         padding: 4px 6px;
     }
 }

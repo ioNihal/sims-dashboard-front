@@ -1,24 +1,26 @@
-/* Container for the entire page */
 .page {
   background-color: var(--bg);
+  border-radius: 10px;
   padding: 30px 20px;
   margin: auto;
-  min-height: 100vh;
   max-width: 1200px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: "Roboto", sans-serif;
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
-/* Back Button */
+
 .backButton {
   align-self: flex-start;
-  background-color:var(--btn);
+  background-color: var(--btn);
   color: #fff;
   border: none;
   padding: 10px 20px;
-  border-radius: 50px;
+  border-radius: 10px;
   cursor: pointer;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, box-shadow 0.3s;
@@ -26,11 +28,11 @@
 }
 
 .backButton:hover {
-  background-color:var(--btn-hover);
+  background-color: var(--btn-hover);
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* Card container for customer details */
+
 .card {
   background: var(--bg-dim);
   border-radius: 12px;
@@ -38,43 +40,46 @@
   padding: 30px;
   width: 90%;
   overflow-x: auto;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
-/* Customer Title */
+
 .title {
-  font-size: 28px;
-  font-weight: 500;
+  font-size: 1.4rem;
   margin-bottom: 20px;
   color: var(--text);
 }
 
-/* Customer Details Section */
+
 .details {
   margin-bottom: 30px;
 }
 
-/* Detail Item */
 .detailItem {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   align-items: center;
 }
 
-/* Detail Label */
 .detailLabel {
   font-weight: 500;
   margin-right: 10px;
   color: var(--text);
 }
 
-/* Detail Value */
+
 .detailValue {
   color: var(--text);
 }
 
-/* Toggle Button for Password */
+.date {
+  color: var(--blue);
+}
+
 .resetBtn {
   background: none;
   border: none;
@@ -102,17 +107,17 @@
   width: 99%;
 }
 
-/* Loading Text */
+
 .loading {
-  font-size: 18px;
-  color:var(--text);
+  font-size: 1rem;
+  color: var(--text);
   display: grid;
   place-items: center;
 }
 
 .error {
   display: grid;
-  place-items:center;
+  place-items: center;
   color: red;
   margin-top: 2rem;
 }
@@ -122,13 +127,13 @@
   .card {
     padding: 20px;
   }
-  
+
   .title {
-    font-size: 24px;
+    font-size: 1.3rem;
   }
-  
+
   .detailItem {
-    font-size: 14px;
+    font-size: 0.9rem;
   }
 }
 
@@ -136,15 +141,15 @@
 @media (max-width: 480px) {
   .page {
     min-width: 200px;
-    padding: 15px;
+    padding: 10px;
   }
-  
+
   .card {
     padding: 15px;
     overflow-x: auto;
   }
-  
+
   .detailItem {
-    font-size: 12px;
+    font-size: 0.7rem;
   }
 }

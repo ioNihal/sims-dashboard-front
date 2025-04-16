@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Customers/customerDetails.module.css";
+import { capitalize, formatDate } from "../../utils/validators";
 
 const CustomerDetails = () => {
   const { id } = useParams();
@@ -17,9 +18,9 @@ const CustomerDetails = () => {
         if (!res.ok) {
           throw new Error("Failed to fetch customer details");
         }
-        const data = await res.json();
-        // Support both response formats: either data.customer or the customer object directly.
-        const customerData = data.data || data;
+        const json = await res.json();
+        // Expecting the API to return the customer data in the `data` field
+        const customerData = json.data;
         setCustomer(customerData);
       } catch (err) {
         console.error("Error fetching customer details:", err);
@@ -50,11 +51,13 @@ const CustomerDetails = () => {
         <div className={styles.details}>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>ID:</span>
-            <span className={styles.detailValue}>{`CU${customer._id.substring(9,13).toUpperCase() || customer.id.substring(9,13).toUpperCase()}`}</span>
+            <span className={styles.detailValue}>
+              {`CU${customer._id.substring(5, 10).toUpperCase()}`}
+            </span>
           </div>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Name:</span>
-            <span className={styles.detailValue}>{customer.name}</span>
+            <span className={styles.detailValue}>{capitalize(customer.name)}</span>
           </div>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Email:</span>
@@ -66,7 +69,19 @@ const CustomerDetails = () => {
           </div>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Address:</span>
-            <span className={styles.detailValue}>{customer.address}</span>
+            <span className={styles.detailValue}>{capitalize(customer.address)}</span>
+          </div>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Created At:</span>
+            <span className={`${styles.detailValue} ${styles.date}`}>
+              {formatDate(customer.createdAt)}
+            </span>
+          </div>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Updated At:</span>
+            <span className={`${styles.detailValue} ${styles.date}`}>
+              {formatDate(customer.updatedAt)}
+            </span>
           </div>
         </div>
       </div>

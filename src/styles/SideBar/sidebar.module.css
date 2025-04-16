@@ -6,14 +6,11 @@
     padding: 20px 10px;
     transition: width 0.3s ease;
     position: relative;
-    /* Remove forced height and overflow so it grows with content. */
-    /* height: 100vh; */
-    /* overflow: hidden; */
     display: flex;
-    flex-direction: column; /* Stack children vertically */
+    flex-direction: column; 
   }
   
-  /* Sidebar width when open vs. closed */
+  
   .sidebar.open {
     width: 200px;
   }
@@ -22,7 +19,7 @@
     width: 40px;
   }
   
-  /* Toggle button styles */
+  
   .toggleBtn {
     position: absolute;
     top: 20px;
@@ -38,7 +35,7 @@
     cursor: pointer;
   }
   
-  /* Logo text (shown when sidebar is open) */
+  
   .logo {
     position: absolute;
     top: 5px;
@@ -49,10 +46,9 @@
     text-align: center;
   }
   
-  /* Navigation list styling */
+  
   .sidebar nav {
-    margin-top: 100px; /* Space for toggle & logo */
-    /* Let nav grow naturally with no forced scrolling */
+    margin-top: 100px;
   }
   
   .sidebar nav ul {
@@ -65,7 +61,7 @@
     margin-bottom: 20px;
   }
   
-  /* Styling for navigation links */
+  
   .sidebar nav ul li a {
     color: var(--text);
     text-decoration: none;
@@ -81,19 +77,19 @@
     background-color: var(--bg-dim);
   }
   
-  /* Icon styling (default) */
+  
   .sidebar nav ul li a .icon {
     font-size: 1.2rem;
     margin-right: 10px;
     transition: all 0.3s ease;
   }
   
-  /* Hide the text when the sidebar is closed */
+  
   .sidebar.closed nav ul li a span {
     display: none;
   }
   
-  /* Center and enlarge icons in closed state */
+  
   .sidebar.closed nav ul li a {
     justify-content: center;
   }
@@ -102,4 +98,10 @@
     margin-right: 0;
     font-size: 1.4rem;
   }
+
+  @media (max-width: 1400px) {
+    .sidebar nav {
+      margin-top: 50px;
+    }
+  } 
   

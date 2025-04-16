@@ -174,7 +174,7 @@ const AddSupplierModal = () => {
       <button className={styles.backButton} onClick={() => navigate("/suppliers")}>
         Back
       </button>
-      <h3>Add New Supplier</h3>
+      <h4>Add New Supplier</h4>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
         {/* Supplier Fields */}
         <div className={styles.inputWrapper}>

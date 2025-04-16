@@ -213,7 +213,7 @@ const EditSupplierModal = ({ onSave }) => {
       <button className={styles.backButton} onClick={() => navigate("/suppliers")}>
         Back
       </button>
-      <h3>Edit Supplier</h3>
+      <h4>Edit Supplier</h4>
       {submitError && <p className={styles.error}>{submitError}</p>}
       <form className={styles.formContainer} onSubmit={handleSubmit}>
         <div className={styles.inputWrapper}>

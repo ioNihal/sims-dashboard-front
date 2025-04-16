@@ -1,65 +1,151 @@
+// src/pages/Customers/EditCustomerPage.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "../../styles/PageStyles/Customers/editCustomerPage.module.css";
+import {
+  validateName,
+  validateEmail,
+  validatePhone,
+  validateAddress,
+} from "../../utils/validators";
 
 const EditCustomerPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [updatedCustomer, setUpdatedCustomer] = useState(null);
 
+  // State to hold the customer's data
+  const [updatedCustomer, setUpdatedCustomer] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+  });
+  // Field-specific errors for live validation
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+  });
+  // Global error for fetch or submission failures
+  const [submitError, setSubmitError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+
+  // Fetch the customer's current data on mount
   useEffect(() => {
-    const savedCustomers = localStorage.getItem("customers");
-    if (savedCustomers) {
-      const customers = JSON.parse(savedCustomers);
-      const customer = customers.find(
-        (cust) => String(cust.id) === id
-      );
-      if (customer) {
-        setUpdatedCustomer(customer);
-      } else {
-        alert("Customer not found");
-        navigate("/customers");
+    const fetchCustomer = async () => {
+      try {
+        const res = await fetch(`https://suims.vercel.app/api/customer/${id}`);
+        if (!res.ok) {
+          throw new Error("Failed to fetch customer data");
+        }
+        const data = await res.json();
+        const customerData = data.data || data;
+        setUpdatedCustomer({
+          name: customerData.name || "",
+          email: customerData.email || "",
+          phone: customerData.phone || "",
+          address: customerData.address || "",
+        });
+      } catch (err) {
+        console.error("Error fetching customer data:", err);
+        setSubmitError("Error fetching customer data. Please try again later.");
+      } finally {
+        setLoading(false);
       }
-    } else {
-      alert("No customers available");
-      navigate("/customers");
-    }
-  }, [id, navigate]);
+    };
 
-  if (!updatedCustomer) {
-    return <div className={styles.loading}>Loading...</div>;
-  }
+    fetchCustomer();
+  }, [id]);
 
+  // Live validation as the user types
   const handleChange = (e) => {
-    setUpdatedCustomer({ ...updatedCustomer, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    const updatedData = { ...updatedCustomer, [name]: value };
+    setUpdatedCustomer(updatedData);
+
+    // Validate the field that changed
+    let errorMessage = "";
+    switch (name) {
+      case "name":
+        errorMessage = validateName(value);
+        break;
+      case "email":
+        errorMessage = validateEmail(value);
+        break;
+      case "phone":
+        errorMessage = validatePhone(value);
+        break;
+      case "address":
+        errorMessage = validateAddress(value);
+        break;
+      default:
+        break;
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMessage }));
   };
 
-  const handleSubmit = () => {
-    if (
-      !updatedCustomer.name ||
-      !updatedCustomer.email ||
-      !updatedCustomer.phone ||
-      !updatedCustomer.address
-    ) {
-      alert("Fields cannot be empty!");
+  // Validate all fields before submitting the form
+  const validateFields = () => {
+    const nameError = validateName(updatedCustomer.name);
+    const emailError = validateEmail(updatedCustomer.email);
+    const phoneError = validatePhone(updatedCustomer.phone);
+    const addressError = validateAddress(updatedCustomer.address);
+
+    setErrors({
+      name: nameError,
+      email: emailError,
+      phone: phoneError,
+      address: addressError,
+    });
+
+    return !(nameError || emailError || phoneError || addressError);
+  };
+
+  // Handle form submission
+  const handleSubmit = async () => {
+    setSubmitError("");
+    if (!validateFields()) {
       return;
     }
-    const savedCustomers = localStorage.getItem("customers");
-    let customers = savedCustomers ? JSON.parse(savedCustomers) : [];
-    customers = customers.map((customer) =>
-      customer.id === updatedCustomer.id ? updatedCustomer : customer
-    );
-    localStorage.setItem("customers", JSON.stringify(customers));
-    navigate("/customers");
+
+    setIsSaving(true);
+    
+    try {
+      // PATCH request using updateCustomerColumn API 
+      const res = await fetch(`https://suims.vercel.app/api/customer/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedCustomer),
+      });
+      const result = await res.json();
+      if (!res.ok) {
+        setSubmitError(result.message || "Failed to update customer");
+        setIsSaving(false);
+        return;
+      }
+      setIsSaving(false);
+      navigate("/customers");
+    } catch (err) {
+      console.error("Error updating customer:", err);
+      setSubmitError("Error updating customer. Please try again.");
+      setIsSaving(false);
+    }
   };
 
   const handleCancel = () => {
     navigate("/customers");
   };
 
+  if (loading) {
+    return <div className={styles.loading}>Loading...</div>;
+  }
+
   return (
     <div className={styles.container}>
       <h1>Edit Customer</h1>
+      {submitError && <p className={styles.error}>{submitError}</p>}
       <div className={styles.form}>
         <div className={styles.inputGroup}>
           <label htmlFor="name">Customer Name</label>
@@ -67,58 +153,54 @@ const EditCustomerPage = () => {
             type="text"
             id="name"
             name="name"
+            placeholder="Enter customer name"
             value={updatedCustomer.name}
             onChange={handleChange}
-            placeholder="Enter customer name"
           />
+          {errors.name && <p className={styles.error}>{errors.name}</p>}
         </div>
+
         <div className={styles.inputGroup}>
           <label htmlFor="email">Email</label>
           <input
-            type="text"
+            type="email"
             id="email"
             name="email"
+            placeholder="Enter email"
             value={updatedCustomer.email}
             onChange={handleChange}
-            placeholder="Enter email"
           />
+          {errors.email && <p className={styles.error}>{errors.email}</p>}
         </div>
+
         <div className={styles.inputGroup}>
           <label htmlFor="phone">Phone</label>
           <input
             type="text"
             id="phone"
             name="phone"
+            placeholder="Enter phone number"
             value={updatedCustomer.phone}
             onChange={handleChange}
-            placeholder="Enter phone number"
           />
+          {errors.phone && <p className={styles.error}>{errors.phone}</p>}
         </div>
+
         <div className={styles.inputGroup}>
           <label htmlFor="address">Address</label>
-          <input
-            type="text"
+          <textarea
             id="address"
             name="address"
+            placeholder="Enter address"
             value={updatedCustomer.address}
             onChange={handleChange}
-            placeholder="Enter address"
-          />
+          ></textarea>
+          {errors.address && <p className={styles.error}>{errors.address}</p>}
         </div>
-        <div className={styles.inputGroup}>
-          <label htmlFor="password">Password</label>
-          <input
-            type="text"
-            id="password"
-            name="password"
-            value={updatedCustomer.password}
-            onChange={handleChange}
-            placeholder="Update password"
-          />
-        </div>
+
         <div className={styles.buttonGroup}>
           <button onClick={handleSubmit} className={styles.saveBtn}>
-            Save
+            {`${isSaving ? "Saving..." : "Save"}`}
           </button>
           <button onClick={handleCancel} className={styles.cancelBtn}>
             Cancel

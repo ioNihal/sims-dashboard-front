@@ -6,10 +6,13 @@
     min-width: 180px;
     margin: auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .page h1 {
-    font-size: 24px;
+    font-size: 1.4rem;
     margin-bottom: 15px;
     color: var(--text);
 }
@@ -28,7 +31,7 @@
     border: none;
     padding: 8px 16px;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 1rem;
     cursor: pointer;
     transition: background 0.3s;
 }
@@ -39,7 +42,7 @@
 
 .loading {
     text-align: center;
-    font-size: 18px;
+    font-size: 1rem;
     padding: 20px;
     color: var(--text);
 }
@@ -57,6 +60,9 @@
     width: 100%;
     border-collapse: collapse;
     min-width: 600px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .table tr {
@@ -86,7 +92,7 @@
     background-color: var(--bg-dim);
 }
 
-/* Buttons */
+
 .editBtn,
 .deleteBtn,
 .viewBtn {
@@ -94,7 +100,7 @@
     padding: 6px 10px;
     margin: 0 5px;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 1rem;
     cursor: pointer;
     transition: background 0.3s;
 }
@@ -126,7 +132,7 @@
     background-color: var(--btn-hover);
 }
 
-/* RESPONSIVENESS */
+
 
 /* Tablets (below 1024px) */
 @media (max-width: 1024px) {
@@ -148,7 +154,7 @@
     }
 
     .table {
-        font-size: 14px;
+        font-size: 0.9rem;
         min-width: 100%;
     }
 
@@ -159,26 +165,26 @@
 
     .actions {
         flex-direction: column;
-        align-items: left; 
+        align-items: left;
     }
 
     .addBtn {
         width: 100%;
     }
 
-    
+
     .editBtn,
     .deleteBtn,
     .viewBtn {
         padding: 5px 8px;
-        font-size: 12px;
+        font-size: 0.9rem;
     }
 }
 
 /* Extra small screens (below 480px) */
 @media (max-width: 480px) {
     .page h1 {
-        font-size: 20px;
+        font-size: 1.3rem;
     }
 
     .tableContainer {
@@ -186,7 +192,7 @@
     }
 
     .table {
-        font-size: 12px;
+        font-size: 0.7rem;
     }
 
     .actions {
@@ -196,7 +202,7 @@
     .editBtn,
     .deleteBtn,
     .viewBtn {
-        font-size: 10px;
+        font-size: 0.6rem;
         padding: 4px 6px;
     }
 }

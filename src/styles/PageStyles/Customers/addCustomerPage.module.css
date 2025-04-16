@@ -1,59 +1,58 @@
-/* Container styling for the page */
 .container {
   max-width: 1200px;
   min-width: 200px;
   margin: 2rem auto;
-  background:var(--bg);
+  background: var(--bg);
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  font-family: "Inter", sans-serif;
 }
 
-/* Page header styling */
-h1 {
+
+.container h1 {
+  font-size: 1.4rem;
   text-align: center;
   margin-bottom: 1.5rem;
-  font-family: "Roboto", sans-serif;
-  color:var(--text);
+  color: var(--text);
 }
 
-/* Form styling */
 .form {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
 }
 
-/* Input group styling */
 .inputGroup {
   display: flex;
   flex-direction: column;
 }
 
 .inputGroup label {
-  font-size: 14px;
+  font-size: 1rem;
   color: var(--text);
   margin-bottom: 4px;
-  font-family: "Roboto", sans-serif;
 }
 
 .inputGroup input {
   color: var(--text);
   background-color: var(--bg-dim);
   padding: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   border: 1px solid var(--border);
   border-radius: 5px;
   outline: none;
   transition: border-color 0.3s;
-  font-family: "Roboto", sans-serif;
 }
 
 .inputGroup input:focus {
   border-color: var(--blue);
 }
 
-/* Styling for disabled input */
+
 .inputGroup input:disabled {
   background-color: var(--bg-dim);
   color: var(--text);
@@ -64,7 +63,7 @@ h1 {
   color: var(--text);
   background-color: var(--bg-dim);
   padding: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   border: 1px solid var(--border);
   border-radius: 5px;
   resize: vertical;
@@ -76,7 +75,7 @@ h1 {
   outline: none;
 }
 
-/* Button group styling */
+
 .buttonGroup {
   display: flex;
   justify-content: space-between;
@@ -87,12 +86,11 @@ h1 {
 .cancelBtn {
   flex: 1;
   padding: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s;
-  font-family: "Roboto", sans-serif;
 }
 
 .saveBtn {
@@ -102,7 +100,6 @@ h1 {
 
 .saveBtn:hover {
   background-color: var(--btn-edit-hover);
-  box-shadow: 0 4px 10px rgba(48, 238, 10, 0.356);
 }
 
 .cancelBtn {
@@ -112,23 +109,48 @@ h1 {
 
 .cancelBtn:hover {
   background-color: var(--btn-delete-hover);
-  box-shadow: 0 4px 10px rgba(220, 53, 53, 0.4);
 }
 
 .error {
   color: red;
+  font-size: 0.8rem;
 }
 
-/* Responsive styling for smaller screens */
-@media screen and (max-width: 480px) {
+
+
+
+/* Mobile screens (below 768px) */
+@media (max-width: 768px) {
   .container {
-    margin: 1rem;
-    padding: 1.5rem;
+    padding: 15px;
   }
 
-  .saveBtn,
-  .cancelBtn {
-    font-size: 14px;
-    padding: 8px;
+  .container h1 {
+    font-size: 1.3rem;
   }
+
+  .inputGroup label,
+  .inputGroup input,
+  .inputGroup textarea {
+    font-size: 1rem;
+  }
+
+}
+
+/* Extra small screens (below 480px) */
+@media (max-width: 480px) {
+  .container {
+    padding: 10px;
+  }
+
+  .container h1 {
+    font-size: 1.2rem;
+  }
+
+  .inputGroup label,
+  .inputGroup input,
+  .inputGroup textarea {
+    font-size: 0.9rem;
+  }
+
 }

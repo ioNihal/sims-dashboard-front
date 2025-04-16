@@ -1,24 +1,26 @@
-/* Container for the entire page */
 .page {
   background-color:var(--bg);
+  border-radius: 10px;
   padding: 30px 20px;
   margin: auto;
-  min-height: 100vh;
   max-width: 1200px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: "Roboto", sans-serif;
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
-/* Back Button */
+
 .backButton {
   align-self: flex-start;
   background-color: var(--btn);
   color: #fff;
   border: none;
   padding: 10px 20px;
-  border-radius: 50px;
+  border-radius: 5px;
   cursor: pointer;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, box-shadow 0.3s;
@@ -30,24 +32,25 @@
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* Card container for supplier details */
+
 .card {
   background: var(--bg-dim);
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   padding: 30px;
-  width: 90%;
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
-/* Supplier Title */
 .title {
-  font-size: 28px;
-  font-weight: 500;
+  font-size: 1.3rem;
   margin-bottom: 20px;
   color: var(--text);
 }
 
-/* Supplier Details Section */
+
 .details {
   margin-bottom: 30px;
 }
@@ -56,7 +59,7 @@
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   color:var(--text);
 }
 
@@ -65,17 +68,17 @@
   margin-right: 10px;
   color:var(--text);
 }
+
 .date {
   color: rgb(0, 195, 255);
 }
 
-/* Products Section */
 .products {
   margin-top: 20px;
 }
 
 .productsTitle {
-  font-size: 22px;
+  font-size: 1.3rem;
   margin-bottom: 15px;
   color:var(--text);
 }
@@ -85,6 +88,9 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 .table tr {
@@ -96,7 +102,7 @@
   padding: 12px 15px;
   text-align: left;
   border-bottom: 1px solid var(--border);
-  font-size: 15px;
+  font-size: 1rem;
   color: var(--text);
 }
 
@@ -109,9 +115,9 @@
   background-color:var(--bg-dim);
 }
 
-/* No Products Message */
+
 .noProducts {
-  font-size: 16px;
+  font-size: 1rem;
   color: #999;
   padding: 15px;
   text-align: center;
@@ -119,7 +125,7 @@
 
 /* Loading Text */
 .loading {
-  font-size: 18px;
+  font-size: 1rem;
   color: var(--text);
   margin-top: 50px;
 }
@@ -130,16 +136,15 @@
     padding: 20px;
   }
 
-  .title {
-    font-size: 24px;
-  }
-
   .detailItem {
-    font-size: 14px;
+    font-size: 1rem;
+  }
+  .title {
+    font-size: 1rem;
   }
 
   .productsTitle {
-    font-size: 20px;
+    font-size: 1rem;
   }
 
   .table th,
@@ -160,15 +165,14 @@
     padding: 15px;
   }
 
-  /* Ensure the table can scroll horizontally */
   .table {
     width: 100%;
     overflow-x: auto;
   }
   .table th,
   .table td {
-    font-size: 0.5rem;
-    padding:5px 10px;
+    font-size: 0.6rem;
+    padding:5px;
   }
 
   .detailItem {

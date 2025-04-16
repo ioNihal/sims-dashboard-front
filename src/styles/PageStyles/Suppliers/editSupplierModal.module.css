@@ -7,11 +7,15 @@
   min-width: 180px;
   margin: auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
-  font-family: "Roboto", sans-serif;
+  font-family: "Inter", sans-serif;
   box-sizing: border-box;
 }
 
-/* Form Container */
+.page h4 {
+  color: var(--text);
+  text-align: center;
+}
+
 .formContainer {
   display: flex;
   flex-direction: row;
@@ -24,7 +28,7 @@
 }
 
 .inputWrapper {
-  flex:1 1 300px;
+  flex: 1 1 300px;
   display: flex;
   flex-direction: column;
   gap: 1rem;

@@ -23,7 +23,7 @@
     -moz-box-sizing: border-box;
   }
   .loginCard:hover {
-    background: var(--bg);
+    background: var(--bg-hover);
   }
   
   .title {

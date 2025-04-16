@@ -23,7 +23,7 @@
   }
   
   .registerCard:hover {
-    background: var(-bg);
+    background: var(--bg-hover);
   }
   
   .title {

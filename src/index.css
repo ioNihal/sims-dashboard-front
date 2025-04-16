@@ -11,6 +11,7 @@ body {
 :root {
   --bg: #ffffff;
   --bg-dim: #f5f5f5;
+  --bg-hover: #dfdfdf;
   --btn: #4e66ec;
   --btn-hover: #4057da;
   --btn-edit: #4CAF50;
@@ -26,6 +27,7 @@ body {
   :root {
     --bg: #161616;
     --bg-dim: #1f1f1f;
+    --bg-hover: #252525;
     --btn: #4e66ec;
     --btn-hover: #4057da;
     --btn-edit:  #66BB6A;

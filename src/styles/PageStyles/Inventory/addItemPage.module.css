@@ -1,21 +1,27 @@
 .page {
   max-width: 1200px;
+  min-width: 200px;
   margin: 20px auto;
   background: var(--bg);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
 }
 
 .page h3 {
   color: var(--text);
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
 }
 
 .backBtn {
   flex: 1;
   padding: 12px;
-  font-size: 16px;
+  font-size: 1rem;
   text-align: center;
   border: none;
   border-radius: 6px;
@@ -40,6 +46,7 @@
 }
 
 .formGroup label {
+  font-size: 1rem;
   margin-bottom: 5px;
   font-weight: 500;
   color: var(--text);
@@ -48,7 +55,7 @@
 .formGroup input,
 .formGroup select {
   padding: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   background-color: var(--bg);
   color: var(--text);
   border: 1px solid var(--border);
@@ -71,7 +78,7 @@
 .cancelBtn {
   flex: 1;
   padding: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   text-align: center;
   border: none;
   border-radius: 5px;
@@ -108,11 +115,43 @@
     width: 80%;
     padding: 15px;
   }
+
+  .page h1 {
+    font-size: 1.3rem;
+  }
+
+  .formGroup input,
+  .formGroup select,
+  .formGroup label {
+    font-size: 1rem;
+  }
+
+  .saveBtn,
+  .cancelBtn,
+  .backBtn {
+    font-size: 0.9rem;
+  }
 }
 
 @media screen and (max-width: 480px) {
   .page {
     width: 95%;
     padding: 10px;
+  }
+
+  .page h1 {
+    font-size: 1.3rem;
+  }
+
+  .formGroup input,
+  .formGroup select,
+  .formGroup label {
+    font-size: 0.9rem;
+  }
+
+  .saveBtn,
+  .cancelBtn,
+  .backBtn {
+    font-size: 0.9rem;
   }
 }

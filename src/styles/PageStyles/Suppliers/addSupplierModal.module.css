@@ -243,10 +243,12 @@ text-align: center;
   }
 
   .inputWrapper input,
+  .inputWrapper label,
   .inputWrapper textarea,
   .productRow input {
     width: 100%;
     max-width: 100%;
+    font-size: 0.9rem;
   }
 
   .saveBtn,

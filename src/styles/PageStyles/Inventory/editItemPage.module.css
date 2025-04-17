@@ -6,12 +6,16 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
 }
 
 .backBtn {
   flex: 1;
   padding: 12px;
-  font-size: 16px;
+  font-size: 1rem;
   text-align: center;
   border: none;
   border-radius: 6px;
@@ -28,10 +32,10 @@
   box-shadow: 0 2px 5px rgba(67, 160, 71, 0.2);
 }
 
-h3 {
+.page h3 {
   text-align: center;
-  margin-bottom: 5px;
-  font-size: 24px;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
   color: var(--text);
 }
 
@@ -45,13 +49,13 @@ h3 {
 .inputWrapper label {
   font-weight: 500;
   color: var(--text);
-  font-size: 14px;
+  font-size: 1rem;
 }
 
 .inputWrapper input {
   color: var(--text);
   padding: 12px;
-  font-size: 16px;
+  font-size: 1rem;
   border: 1px solid var(--border);
   border-radius: 6px;
   transition: border-color 0.3s, box-shadow 0.3s;
@@ -79,7 +83,7 @@ h3 {
 .cancelBtn {
   flex: 1;
   padding: 12px;
-  font-size: 16px;
+  font-size: 1rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -110,6 +114,7 @@ h3 {
 .loading {
   color: var(--text);
   text-align: center;
+  font-size: 1rem;
 }
 
 .error {
@@ -123,6 +128,22 @@ h3 {
     width: 85%;
     padding: 20px;
   }
+
+  .page h3 {
+    font-size: 1.3rem;
+  }
+
+  .inputWrapper label,
+  .inputWrapper input {
+    font-size: 0.9rem
+  }
+
+  .saveBtn,
+  .cancelBtn,
+  .backBtn {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -130,9 +151,20 @@ h3 {
     width: 95%;
     padding: 15px;
   }
+
+  .page h3 {
+    font-size: 1.2rem;
+  }
+
+  .inputWrapper label,
+  .inputWrapper input {
+    font-size: 0.9rem
+  }
+
   .saveBtn,
-  .cancelBtn {
-    font-size: 14px;
+  .cancelBtn,
+  .backBtn {
+    font-size: 0.9rem;
     padding: 10px;
   }
 }

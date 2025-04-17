@@ -148,6 +148,7 @@
     padding: 15px;
   }
 
+  .detailSection p,
   .orderCard p {
     font-size: 0.7rem;
   }

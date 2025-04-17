@@ -1,13 +1,13 @@
 // Sidebar.jsx
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { 
-  FaHome, 
-  FaBoxOpen, 
-  FaUsers, 
-  FaUserTie, 
-  FaClipboardList, 
-  FaChartBar, 
+import {
+  FaHome,
+  FaBoxOpen,
+  FaUsers,
+  FaUserTie,
+  FaClipboardList,
+  FaChartBar,
   FaBars,
   FaUserCircle,
   FaFileInvoice
@@ -21,10 +21,12 @@ const Sidebar = () => {
 
   return (
     <div className={`${styles.sidebar} ${isOpen ? styles.open : styles.closed}`}>
-      <div className={styles.toggleBtn} onClick={toggleSidebar}>
-        <FaBars />
+      <div className={styles.toggleWrapper}>
+        <h2 className={styles.logo}>{isOpen && 'Dashboard'}</h2>
+        <div className={styles.toggleBtn} onClick={toggleSidebar}>
+          <FaBars />
+        </div>
       </div>
-      <h2 className={styles.logo}>{isOpen && 'Dashboard'}</h2>
       <nav>
         <ul>
           <li>
@@ -73,12 +75,6 @@ const Sidebar = () => {
             <NavLink to="/invoices" className={({ isActive }) => isActive ? styles.active : undefined}>
               <FaFileInvoice className={styles.icon} />
               {isOpen && <span>Invoices</span>}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/profile" className={({ isActive }) => isActive ? styles.active : undefined}>
-              <FaUserCircle className={styles.icon} />
-              {isOpen && <span>Profile</span>}
             </NavLink>
           </li>
         </ul>

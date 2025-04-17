@@ -31,8 +31,15 @@ import './App.css';
 import InvoicesPage from './pages/Invoices/InvoicesPage';
 import InvoiceDetails from './pages/Invoices/InvoiceDetails';
 import RegisterPage from './pages/Login/RegisterPage';
+import ProfileWidget from "./components/widgets/ProfileWidget";
 
 function App() {
+
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser 
+    ? JSON.parse(storedUser) 
+    : { name: "Jane Doe", id: "DEFAULT_ID", avatarUrl: "https://example.com/path/to/avatar.jpg" };
+
   return (
     <Router>
       <Routes>
@@ -44,6 +51,10 @@ function App() {
             <ProtectedRoute>
               <div className="dashboard">
                 <Sidebar />
+                <div className="main">
+                  <div className="topbar" >
+                    <ProfileWidget user={user} />
+                    </div>
                 <div className="content">
                   <Routes>
                     <Route path="/" element={<Home />} />
@@ -72,6 +83,7 @@ function App() {
                     <Route path="/invoice/view/:id" element={<InvoiceDetails />} />
                     <Route path="/profile" element={<ProfilePage />} />
                   </Routes>
+                </div>
                 </div>
               </div>
             </ProtectedRoute>

@@ -5,11 +5,15 @@
     color: var(--text);
     padding: 20px 10px;
     transition: width 0.3s ease;
-    position: relative;
     display: flex;
     flex-direction: column; 
+    gap: 3rem;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
   }
-  
   
   .sidebar.open {
     width: 200px;
@@ -18,12 +22,14 @@
   .sidebar.closed {
     width: 40px;
   }
-  
+
+  .toggleWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   
   .toggleBtn {
-    position: absolute;
-    top: 20px;
-    right: 10px;
     background-color: var(--bg-dim);
     color: var(--text);
     width: 40px;
@@ -37,18 +43,12 @@
   
   
   .logo {
-    position: absolute;
-    top: 5px;
-    left: 14px;
+    margin: 0;
+    padding: 0;
   }
   
   .sidebar.closed .logo {
     text-align: center;
-  }
-  
-  
-  .sidebar nav {
-    margin-top: 100px;
   }
   
   .sidebar nav ul {
@@ -100,27 +100,19 @@
   }
 
   @media (max-width: 1400px) {
-    .sidebar nav {
-      margin-top: 50px;
-    }
+    
     .sidebar.closed nav ul li a .icon {
       font-size: 1.3rem;
     }
   } 
 
   @media (max-width: 768px) {
-    .sidebar nav {
-      margin-top: 70px ;
-    }
-
     .sidebar.closed nav ul li a .icon {
       font-size: 1.2rem;
     }
   }
   @media (max-width: 480px) {
-    .sidebar nav {
-      margin-top: 80px ;
-    }
+    
 
     .sidebar.closed nav ul li a .icon {
       font-size: 1.1rem;

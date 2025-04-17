@@ -97,6 +97,11 @@
   background-color: var(--btn-delete-hover);
 }
 
+.error {
+  color: red;
+  font-size: 0.8rem;
+}
+
 /* Responsive styles */
 @media screen and (max-width: 768px) {
   .page {

@@ -20,6 +20,24 @@ export const validatePhone = (phone) => {
   return "";
 };
 
+export const validateObjectId = (id) => {
+  if (!id) {
+    return "ID Required.";
+  }
+  return "";
+};
+
+export const validateQuantity = (qty) => {
+  if (qty === "" || qty === null || qty === undefined) {
+    return "Quantity is required.";
+  }
+  const n = parseInt(qty, 10);
+  if (isNaN(n) || n < 0) {
+    return "Quantity must be a non‑negative integer.";
+  }
+  return "";
+};
+
 export const validateAddress = (address) => {
   return address.trim() ? "" : "Address is required.";
 };

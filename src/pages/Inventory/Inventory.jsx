@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Inventory/inventory.module.css";
 import SearchBar from "../../components/SearchBar";
+import { capitalize } from "../../utils/validators";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -89,9 +90,9 @@ const Inventory = () => {
             <tbody>
               {filteredItems.map((item) => (
                 <tr key={item._id}>
-                  <td>{item._id}</td>
-                  <td>{item.productName}</td>
-                  <td>{item.category}</td>
+                  <td>ITEM{item._id.substring(5,10).toUpperCase()}</td>
+                  <td>{capitalize(item.productName)}</td>
+                  <td>{capitalize(item.category)}</td>
                   <td>{item.quantity}</td>
                   <td
                     className={
@@ -108,7 +109,7 @@ const Inventory = () => {
                         ? "Low Stock"
                         : "Out of Stock"}
                   </td>
-                  <td>{item.supplierName}</td>
+                  <td>{capitalize(item.supplierName)}</td>
                   <td>
                     <Link to={`/inventory/${item._id}`}>
                       <button className={styles.viewBtn}>View</button>

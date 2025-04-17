@@ -5,6 +5,10 @@
   padding: 1rem;
   background: var(--bg);
   color: var(--text);
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 .header {
@@ -14,6 +18,7 @@
 }
 
 .dashboard h1 {
+  font-size: 1.5rem;
   margin-bottom: 1rem;
 }
 
@@ -28,8 +33,14 @@
   .widgetsGrid {
     flex-direction: column;
   }
+
+  .dashboard h1 {
+    font-size: 1.3rem;
+  }
 }
 
-
-
-
+@media (max-width: 480px) {
+  .dashboard h1 {
+    font-size: 1.1rem;
+  }
+}

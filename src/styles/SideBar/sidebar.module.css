@@ -103,5 +103,27 @@
     .sidebar nav {
       margin-top: 50px;
     }
+    .sidebar.closed nav ul li a .icon {
+      font-size: 1.3rem;
+    }
   } 
+
+  @media (max-width: 768px) {
+    .sidebar nav {
+      margin-top: 70px ;
+    }
+
+    .sidebar.closed nav ul li a .icon {
+      font-size: 1.2rem;
+    }
+  }
+  @media (max-width: 480px) {
+    .sidebar nav {
+      margin-top: 80px ;
+    }
+
+    .sidebar.closed nav ul li a .icon {
+      font-size: 1.1rem;
+    }
+  }
   

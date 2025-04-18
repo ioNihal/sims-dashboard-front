@@ -1,121 +1,145 @@
-/* sidebar.module.css */
-
 .sidebar {
-    background-color: var(--bg);
-    color: var(--text);
-    padding: 20px 10px;
-    transition: width 0.3s ease;
-    display: flex;
-    flex-direction: column; 
-    gap: 3rem;
+  background-color: var(--bg);
+  color: var(--text);
+  padding: 20px 10px;
+  transition: width 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
 
-    user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    -moz-user-select: none;
-  }
-  
-  .sidebar.open {
-    width: 200px;
-  }
-  
-  .sidebar.closed {
-    width: 40px;
-  }
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  touch-action: manipulation;
 
-  .toggleWrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .toggleBtn {
-    background-color: var(--bg-dim);
-    color: var(--text);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-  
-  
-  .logo {
-    margin: 0;
-    padding: 0;
-  }
-  
-  .sidebar.closed .logo {
-    text-align: center;
-  }
-  
-  .sidebar nav ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar nav ul li {
-    margin-bottom: 20px;
-  }
-  
-  
-  .sidebar nav ul li a {
-    color: var(--text);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
-  }
-  
-  .sidebar nav ul li a:hover,
-  .sidebar nav ul li a.active {
-    background-color: var(--bg-dim);
-  }
-  
-  
-  .sidebar nav ul li a .icon {
-    font-size: 1.2rem;
-    margin-right: 10px;
-    transition: all 0.3s ease;
-  }
-  
-  
-  .sidebar.closed nav ul li a span {
-    display: none;
-  }
-  
-  
-  .sidebar.closed nav ul li a {
-    justify-content: center;
-  }
-  
+}
+
+.sidebar.open {
+  width: 200px;
+}
+
+.sidebar.closed {
+  width: 40px;
+}
+
+.toggleWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toggleBtn {
+  background-color: var(--bg-dim);
+  color: var(--text);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+
+.logo {
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar.closed .logo {
+  text-align: center;
+}
+
+.sidebar nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar nav ul li {
+  margin-bottom: 20px;
+}
+
+
+.sidebar nav ul li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li a.active {
+  background-color: var(--bg-dim);
+}
+
+
+.sidebar nav ul li a .icon {
+  font-size: 1.2rem;
+  margin-right: 10px;
+  transition: all 0.3s ease;
+}
+
+
+.sidebar.closed nav ul li a span {
+  display: none;
+}
+
+
+.sidebar.closed nav ul li a {
+  justify-content: center;
+}
+
+.sidebar.closed nav ul li a .icon {
+  margin-right: 0;
+  font-size: 1.4rem;
+}
+
+
+
+@media (max-width: 1400px) {
+
   .sidebar.closed nav ul li a .icon {
-    margin-right: 0;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar.closed nav ul li a .icon {
+    font-size: 1.2rem;
+  }
+}
+
+@media only screen and (orientation: landscape) and (max-height: 760px) {
+  .sidebar {
+    overflow-y: auto;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+
+    height: 100%;
   }
 
-  @media (max-width: 1400px) {
-    
-    .sidebar.closed nav ul li a .icon {
-      font-size: 1.3rem;
-    }
-  } 
+  .sidebar.closed {
+    align-items: center;
+    width: 55px;
 
-  @media (max-width: 768px) {
-    .sidebar.closed nav ul li a .icon {
-      font-size: 1.2rem;
-    }
+    overflow-y: auto;
+    overflow-x: hidden;
   }
-  @media (max-width: 480px) {
-    
+}
 
-    .sidebar.closed nav ul li a .icon {
-      font-size: 1.1rem;
-    }
+@media (max-width: 480px) {
+
+
+  .sidebar.closed nav ul li a .icon {
+    font-size: 1.1rem;
   }
-  
+}
+

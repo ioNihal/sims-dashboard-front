@@ -32,3 +32,13 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
 }
+
+@media only screen and (orientation: landscape) and (max-height: 760px) {
+  .topbar {
+    padding: 0.5rem 1rem;
+  }
+
+  .content {
+    padding: 10px;
+  }
+}

@@ -103,7 +103,7 @@ const AddItemPage = () => {
       <button className={styles.backBtn} onClick={() => navigate(-1)}>
         Back
       </button>
-      <h3>Add New Inventory Item</h3>
+      <h3>Add Item</h3>
 
       <div className={styles.formGroup}>
 

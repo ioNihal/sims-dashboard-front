@@ -47,7 +47,7 @@
 
 .formGroup {
   display: flex;
-  align-content: flex-start ;
+  align-content: flex-start;
   flex-wrap: wrap;
   gap: 1rem;
   background-color: var(--bg-dim);
@@ -167,6 +167,8 @@
     padding: 10px;
   }
 }
+
+
 
 @media screen and (max-width: 480px) {
   .page {

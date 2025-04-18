@@ -11,6 +11,8 @@
   margin: 0.5rem;
   border: 1px solid var(--border);
   transition: transform 0.2s ease, background-color 0.2s ease;
+
+
 }
 
 .card:hover {
@@ -41,17 +43,17 @@
   }
 
   .title {
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin-bottom: 0.2rem;
   }
 
   .value {
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin: 0.2rem 0;
   }
 
   .description {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 
 }

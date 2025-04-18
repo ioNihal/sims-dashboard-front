@@ -9,7 +9,19 @@
     max-width: 300px;
     border: 1px solid var(--border);
     font-family: 'Inter', sans-serif;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    touch-action: manipulation;
+
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
   }
+  
   
   .avatar {
     width: 40px;
@@ -22,6 +34,7 @@
   .info {
     display: flex;
     flex-direction: column;
+    gap: 5px;
   }
   
   .username {
@@ -30,12 +43,22 @@
   }
   
   .viewProfile {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--btn);
     text-decoration: none;
   }
   
   .viewProfile:hover {
     text-decoration: underline;
+  }
+
+  @media (max-width: 480px) {
+    .username {
+      font-size: 0.9rem;
+    }
+
+    .viewProfile {
+      font-size: 0.7rem;
+    }
   }
   

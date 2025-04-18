@@ -211,6 +211,7 @@
   }
 }
 
+
 /* Extra small screens (below 480px) */
 @media (max-width: 480px) {
   .page h1 {
@@ -241,3 +242,4 @@
     padding: 4px 6px;
   }
 }
+

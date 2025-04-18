@@ -53,12 +53,12 @@ const Sidebar = () => {
               {isOpen && <span>Suppliers</span>}
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink to="/staffs" className={({ isActive }) => isActive ? styles.active : undefined}>
               <FaUserTie className={styles.icon} />
               {isOpen && <span>Staffs</span>}
             </NavLink>
-          </li>
+          </li> */}
           <li>
             <NavLink to="/orders" className={({ isActive }) => isActive ? styles.active : undefined}>
               <FaClipboardList className={styles.icon} />

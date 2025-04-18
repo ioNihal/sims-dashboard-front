@@ -160,7 +160,7 @@
     padding: 15px;
   }
 
-  .page h1 {
+  .page h3 {
     font-size: 1.3rem;
   }
 
@@ -177,20 +177,25 @@
   }
 }
 
+
 @media screen and (max-width: 480px) {
   .page {
     width: 95%;
     padding: 10px;
   }
 
-  .page h1 {
-    font-size: 1.3rem;
+  .page h3 {
+    font-size: 1.2rem;
   }
 
   .inputWrapper input,
   .inputWrapper select,
   .inputWrapper label {
     font-size: 0.9rem;
+  }
+
+  .backBtn {
+    padding: 10px;
   }
 
   .saveBtn,

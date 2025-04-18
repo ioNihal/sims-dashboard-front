@@ -27,6 +27,7 @@
 
 .form {
   display: flex;
+  align-content: flex-start ;
   flex-wrap: wrap;
   gap: 1rem;
   background-color: var(--bg-dim);

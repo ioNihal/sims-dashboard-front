@@ -56,6 +56,7 @@
   text-align: center;
   font-size: 1rem;
   padding: 20px;
+  color: var(--text);
 }
 
 .tableContainer {
@@ -104,17 +105,17 @@
 }
 
 .inStock {
-  color: green;
+  color: green !important;
   font-weight: bold;
 }
 
 .lowStock {
-  color: orange;
+  color: orange !important;
   font-weight: bold;
 }
 
 .outOfStock {
-  color: red;
+  color: red !important;
   font-weight: bold;
 }
 
@@ -230,13 +231,13 @@
   }
 
   .table {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 
   .editBtn,
   .deleteBtn,
   .viewBtn {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     padding: 4px 6px;
   }
 }

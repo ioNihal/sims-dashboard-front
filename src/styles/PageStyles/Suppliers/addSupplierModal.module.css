@@ -9,9 +9,9 @@
   height: 100%;
   max-width: 1200px;
   min-width: 200px;
-  box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
+  box-sizing: border-box;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -24,6 +24,7 @@
 
 .formContainer {
   display: flex;
+  align-content: flex-start;
   flex-wrap: wrap;
   gap: 1rem;
   background-color: var(--bg-dim);
@@ -59,6 +60,8 @@
   color: var(--text);
   width: 100%;
   max-width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
   text-align: left;
   padding: 12px;
@@ -167,9 +170,9 @@
 /* Inputs inside the product row */
 .productRow input {
   color: var(--text);
-  box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   flex: 1 1 300px;
   text-align: left;
   padding: 12px;

@@ -19,7 +19,7 @@ const EditItemPage = () => {
   });
   const [loading, setLoading] = useState(true);
 
-  
+
   const [errors, setErrors] = useState({
     quantity: "",
     threshold: "",
@@ -41,7 +41,7 @@ const EditItemPage = () => {
           productName: item.productName || "",
           category: item.category || "",
           supplierName: item.supplierName || "",
-          unitPrice: item.pricePerItem || "",
+          unitPrice: item.productPrice?.toString() || "",
           quantity: item.quantity?.toString() || "",
           threshold: item.threshold?.toString() || "",
         });
@@ -76,7 +76,7 @@ const EditItemPage = () => {
     return !quantityError && !thresholdError;
   };
 
-  
+
   const handleSubmit = async () => {
     setSubmitError("");
     if (!validateFields()) return;
@@ -122,66 +122,67 @@ const EditItemPage = () => {
         Back
       </button>
       <h3>Edit Inventory Item</h3>
-
       {submitError && <p className={styles.error}>{submitError}</p>}
+      <div className={styles.formGroup}>
 
-      <div className={styles.inputWrapper}>
-        <label>Product Name</label>
-        <input type="text" value={updatedItem.productName} disabled />
-      </div>
+        <div className={styles.inputWrapper}>
+          <label>Product Name</label>
+          <input type="text" value={updatedItem.productName} disabled />
+        </div>
 
-      <div className={styles.inputWrapper}>
-        <label>Category</label>
-        <input type="text" value={updatedItem.category} disabled />
-      </div>
+        <div className={styles.inputWrapper}>
+          <label>Category</label>
+          <input type="text" value={updatedItem.category} disabled />
+        </div>
 
-      <div className={styles.inputWrapper}>
-        <label>Unit Price</label>
-        <input type="text" value={updatedItem.unitPrice} disabled />
-      </div>
+        <div className={styles.inputWrapper}>
+          <label>Unit Price</label>
+          <input type="text" value={updatedItem.unitPrice} disabled />
+        </div>
 
-      <div className={styles.inputWrapper}>
-        <label>Supplier</label>
-        <input type="text" value={updatedItem.supplierName} disabled />
-      </div>
+        <div className={styles.inputWrapper}>
+          <label>Supplier</label>
+          <input type="text" value={updatedItem.supplierName} disabled />
+        </div>
 
-      <div className={styles.inputWrapper}>
-        <label>Quantity</label>
-        <input
-          type="number"
-          name="quantity"
-          value={updatedItem.quantity}
-          onChange={handleChange}
-        />
-        {errors.quantity && (
-          <p className={styles.error}>{errors.quantity}</p>
-        )}
-      </div>
+        <div className={styles.inputWrapper}>
+          <label>Quantity</label>
+          <input
+            type="number"
+            name="quantity"
+            value={updatedItem.quantity}
+            onChange={handleChange}
+          />
+          {errors.quantity && (
+            <p className={styles.error}>{errors.quantity}</p>
+          )}
+        </div>
 
-      <div className={styles.inputWrapper}>
-        <label>Low Stock Threshold</label>
-        <input
-          type="number"
-          name="threshold"
-          value={updatedItem.threshold}
-          onChange={handleChange}
-        />
-        {errors.threshold && (
-          <p className={styles.error}>{errors.threshold}</p>
-        )}
-      </div>
+        <div className={styles.inputWrapper}>
+          <label>Low Stock Threshold</label>
+          <input
+            type="number"
+            name="threshold"
+            value={updatedItem.threshold}
+            onChange={handleChange}
+          />
+          {errors.threshold && (
+            <p className={styles.error}>{errors.threshold}</p>
+          )}
+        </div>
 
-      <div className={styles.buttonGroup}>
-        <button
-          onClick={handleSubmit}
-          className={styles.saveBtn}
-          disabled={isSaving}
-        >
-          {isSaving ? "Saving..." : "Save"}
-        </button>
-        <button onClick={handleCancel} className={styles.cancelBtn}>
-          Cancel
-        </button>
+        <div className={styles.buttonGroup}>
+          <button
+            onClick={handleSubmit}
+            className={styles.saveBtn}
+            disabled={isSaving}
+          >
+            {isSaving ? "Saving..." : "Save"}
+          </button>
+          <button onClick={handleCancel} className={styles.cancelBtn}>
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   );

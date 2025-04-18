@@ -107,7 +107,7 @@ const SupplierDetail = () => {
                   <tr key={product._id}>
                     <td>{capitalize(product.name)}</td>
                     <td>{capitalize(product.category)}</td>
-                    <td>₹{product.pricePerItem}</td>
+                    <td>&#8377;{product.pricePerItem}</td>
                   </tr>
                 ))}
               </tbody>

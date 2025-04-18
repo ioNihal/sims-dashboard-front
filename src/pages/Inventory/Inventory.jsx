@@ -78,7 +78,7 @@ const Inventory = () => {
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>ID</th>
+               {/* <th>ID</th>*/}
                 <th>Item Name</th>
                 <th>Category</th>
                 <th>Quantity</th>
@@ -90,7 +90,7 @@ const Inventory = () => {
             <tbody>
               {filteredItems.map((item) => (
                 <tr key={item._id}>
-                  <td>ITEM{item._id.substring(5,10).toUpperCase()}</td>
+                  {/* <td>ITEM{item._id.substring(5,10).toUpperCase()}</td> */}
                   <td>{capitalize(item.productName)}</td>
                   <td>{capitalize(item.category)}</td>
                   <td>{item.quantity}</td>

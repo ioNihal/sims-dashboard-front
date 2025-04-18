@@ -153,7 +153,7 @@ const AddItemPage = () => {
 
 
         <div className={styles.inputWrapper}>
-          <label>Price per Unit</label>
+          <label>Unit Price</label>
           <input
             type="number"
             value={selectedProduct.pricePerItem || ""}

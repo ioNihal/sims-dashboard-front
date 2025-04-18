@@ -82,7 +82,7 @@ const Customers = () => {
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>ID</th>
+                {/*<th>ID</th>*/}
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
@@ -93,7 +93,7 @@ const Customers = () => {
             <tbody>
               {filteredCustomers.map((customer) => (
                 <tr key={customer.id}>
-                  <td>{`CU${customer.id.substring(5,10).toUpperCase()}`}</td>
+                  {/*<td>{`CU${customer.id.substring(5,10).toUpperCase()}`}</td>*/}
                   <td>{capitalize(customer.name)}</td>
                   <td>{customer.email}</td>
                   <td>{customer.phone}</td>

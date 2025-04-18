@@ -3,12 +3,19 @@
   background-color: var(--bg);
   padding: 20px;
   border-radius: 12px;
-  max-width: 1200px;
-  min-width: 180px;
-  margin: auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
   font-family: "Inter", sans-serif;
+
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  min-width: 200px;
   box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .page h4 {
@@ -18,13 +25,16 @@
 
 .formContainer {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 10px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
+  gap: 1rem;
+  background-color: var(--bg-dim);
+  min-height: 300px;
+  height: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  overflow-y: auto;
 }
 
 .inputWrapper {
@@ -34,7 +44,7 @@
   gap: 1rem;
 }
 
-/* Label style */
+
 .inputWrapper label {
   text-align: left;
   color: var(--text);
@@ -106,7 +116,7 @@
   color: var(--text);
 }
 
-/* Buttons Container */
+
 .buttonGroup {
   display: flex;
   justify-content: space-between;
@@ -117,10 +127,21 @@
   margin-top: 10px;
 }
 
-/* Save & Cancel Buttons */
-.saveBtn,
-.cancelBtn,
+
 .backButton {
+  width: max-content;
+  padding: 10px;
+  font-size: 1.2rem;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 500;
+}
+
+.saveBtn,
+.cancelBtn {
   flex: 1;
   padding: 12px;
   font-size: 1.2rem;
@@ -132,7 +153,7 @@
   font-weight: 500;
 }
 
-/* Material blue for Back Button */
+
 .backButton {
   background-color: var(--btn);
   color: #fff;
@@ -143,7 +164,7 @@
   background-color: var(--btn-hover);
 }
 
-/* Material green for Save */
+
 .saveBtn {
   background-color: var(--btn-edit);
   color: #fff;
@@ -153,7 +174,7 @@
   background-color: var(--btn-edit-hover);
 }
 
-/* Material red for Cancel */
+
 .cancelBtn {
   background-color: var(--btn-delete);
   color: #fff;
@@ -163,7 +184,7 @@
   background-color: var(--btn-delete-hover);
 }
 
-/* Additional styles for product rows */
+
 .productRow {
   display: flex;
   gap: 10px;
@@ -173,7 +194,7 @@
   box-sizing: border-box;
 }
 
-/* Updated product row inputs to use flex: 1 1 300px for auto-wrapping */
+
 .productRow input {
   color: var(--text);
   flex: 1 1 300px;
@@ -226,6 +247,7 @@
 
 .loading {
   color: var(--text);
+  text-align: center;
 }
 
 .error {
@@ -234,7 +256,7 @@
   text-align: center;
 }
 
-/* Responsive Styles */
+
 
 /* Tablets (768px and below) */
 @media screen and (max-width: 768px) {

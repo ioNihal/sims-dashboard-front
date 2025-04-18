@@ -42,6 +42,13 @@ export const validateAddress = (address) => {
   return address.trim() ? "" : "Address is required.";
 };
 
+export const validateThreshold = (t) => {
+  if (t === "") return "Please enter a threshold.";
+  if (!/^\d+$/.test(t) || parseInt(t, 10) < 0)
+    return "Threshold must be a non‑negative integer.";
+  return "";
+};
+
 export const capitalize = (str) => {
   if (!str) return "";
   return str

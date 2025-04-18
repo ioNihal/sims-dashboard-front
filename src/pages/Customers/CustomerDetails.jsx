@@ -49,12 +49,12 @@ const CustomerDetails = () => {
       <div className={styles.card}>
         <div className={styles.title}>Customer Details</div>
         <div className={styles.details}>
-          <div className={styles.detailItem}>
+          {/*<div className={styles.detailItem}>
             <span className={styles.detailLabel}>ID:</span>
             <span className={styles.detailValue}>
               {`CU${customer._id.substring(5, 10).toUpperCase()}`}
             </span>
-          </div>
+          </div>*/}
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Name:</span>
             <span className={styles.detailValue}>{capitalize(customer.name)}</span>

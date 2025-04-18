@@ -2,13 +2,18 @@
     background-color: var(--bg);
     padding: 20px;
     border-radius: 8px;
-    max-width: 1200px;
-    min-width: 180px;
-    margin: auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    min-width: 200px;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .page h1 {
@@ -49,12 +54,15 @@
 
 .tableContainer {
     min-height: 300px;
+    height: 100%;
     background: var(--bg-dim);
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow-x: auto;
-    color: var(--text);
+    overflow: auto;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .table {
@@ -72,6 +80,7 @@
     border-bottom: 1px solid var(--border);
     text-align: left;
     white-space: nowrap;
+    color: var(--text);
 }
 
 .table td {
@@ -89,6 +98,7 @@
 .table tr {
     background: var(--bg);
 }
+
 .table tbody tr:hover {
     background: var(--bg-dim);
 }

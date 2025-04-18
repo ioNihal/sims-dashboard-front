@@ -2,21 +2,28 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "../../styles/PageStyles/Inventory/editItemPage.module.css";
-import { validateQuantity } from "../../utils/validators";
+import { validateQuantity, validateThreshold } from "../../utils/validators";
+
 
 const EditItemPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // Local state for item data and form handling
   const [updatedItem, setUpdatedItem] = useState({
     productName: "",
     category: "",
     supplierName: "",
+    unitPrice: "",
     quantity: "",
+    threshold: "",
   });
   const [loading, setLoading] = useState(true);
-  const [errors, setErrors] = useState({ quantity: "" });
+
+  
+  const [errors, setErrors] = useState({
+    quantity: "",
+    threshold: "",
+  });
   const [submitError, setSubmitError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
@@ -28,13 +35,15 @@ const EditItemPage = () => {
           `https://suims.vercel.app/api/inventory/${id}`
         );
         if (!res.ok) throw new Error("Failed to fetch inventory item");
-        const json = await res.json();
-        const item = json.inventory;
+        const { inventory: item } = await res.json();
+
         setUpdatedItem({
           productName: item.productName || "",
           category: item.category || "",
           supplierName: item.supplierName || "",
+          unitPrice: item.pricePerItem || "",
           quantity: item.quantity?.toString() || "",
+          threshold: item.threshold?.toString() || "",
         });
       } catch (err) {
         console.error("Error fetching item:", err);
@@ -46,55 +55,66 @@ const EditItemPage = () => {
     fetchItem();
   }, [id]);
 
-  // Live validation on quantity change
+  // Live validation on quantity or threshold change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUpdatedItem((prev) => ({ ...prev, [name]: value }));
+
     if (name === "quantity") {
-      const errorMsg = validateQuantity(value);
-      setErrors({ quantity: errorMsg });
+      setErrors((e) => ({ ...e, quantity: validateQuantity(value) }));
+    }
+    if (name === "threshold") {
+      setErrors((e) => ({ ...e, threshold: validateThreshold(value) }));
     }
   };
 
   // Validate before submitting
   const validateFields = () => {
     const quantityError = validateQuantity(updatedItem.quantity);
-    setErrors({ quantity: quantityError });
-    return !quantityError;
+    const thresholdError = validateThreshold(updatedItem.threshold);
+    setErrors({ quantity: quantityError, threshold: thresholdError });
+    return !quantityError && !thresholdError;
   };
 
-  // Submit update via PATCH
+  
   const handleSubmit = async () => {
     setSubmitError("");
     if (!validateFields()) return;
-    setIsSaving(true);
 
+    setIsSaving(true);
     try {
       const res = await fetch(
         `https://suims.vercel.app/api/inventory/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ quantity: updatedItem.quantity }),
+          body: JSON.stringify({
+            quantity: parseInt(updatedItem.quantity, 10),
+            threshold: parseInt(updatedItem.threshold, 10),
+          }),
         }
       );
       const json = await res.json();
       if (!res.ok) {
-        setSubmitError(json.message || "Failed to update inventory");
-        setIsSaving(false);
-        return;
+        throw new Error(json.message || "Failed to update inventory");
       }
       navigate("/inventory");
     } catch (err) {
       console.error("Error updating inventory:", err);
-      setSubmitError("Error updating inventory. Please try again.");
+      setSubmitError(err.message || "Error updating inventory. Please try again.");
       setIsSaving(false);
     }
   };
 
   const handleCancel = () => navigate("/inventory");
 
-  if (loading) return <div className={styles.page}><p className={styles.loading}>Loading Product Details...</p></div>;
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <p className={styles.loading}>Loading Product Details...</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
@@ -116,6 +136,11 @@ const EditItemPage = () => {
       </div>
 
       <div className={styles.inputWrapper}>
+        <label>Unit Price</label>
+        <input type="text" value={updatedItem.unitPrice} disabled />
+      </div>
+
+      <div className={styles.inputWrapper}>
         <label>Supplier</label>
         <input type="text" value={updatedItem.supplierName} disabled />
       </div>
@@ -130,6 +155,19 @@ const EditItemPage = () => {
         />
         {errors.quantity && (
           <p className={styles.error}>{errors.quantity}</p>
+        )}
+      </div>
+
+      <div className={styles.inputWrapper}>
+        <label>Low Stock Threshold</label>
+        <input
+          type="number"
+          name="threshold"
+          value={updatedItem.threshold}
+          onChange={handleChange}
+        />
+        {errors.threshold && (
+          <p className={styles.error}>{errors.threshold}</p>
         )}
       </div>
 

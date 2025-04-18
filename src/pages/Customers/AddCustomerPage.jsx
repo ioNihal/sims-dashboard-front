@@ -111,6 +111,9 @@ const AddCustomerPage = () => {
 
   return (
     <div className={styles.container}>
+      <button className={styles.backButton} onClick={() => navigate("/customers")}>
+        Back
+      </button>
       <h1>Add New Customer</h1>
       {submitError && <p className={styles.error}>{submitError}</p>}
       <div className={styles.form}>
@@ -124,7 +127,6 @@ const AddCustomerPage = () => {
             value={customer.name}
             onChange={handleChange}
           />
-          {/* Display live error message */}
           {errors.name && <p className={styles.error}>{errors.name}</p>}
         </div>
 
@@ -154,7 +156,7 @@ const AddCustomerPage = () => {
           {errors.phone && <p className={styles.error}>{errors.phone}</p>}
         </div>
 
-        <div className={styles.inputGroup}>
+        <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
           <label htmlFor="address">Address</label>
           <textarea
             id="address"

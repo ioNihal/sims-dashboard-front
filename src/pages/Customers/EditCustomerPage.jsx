@@ -111,7 +111,7 @@ const EditCustomerPage = () => {
     }
 
     setIsSaving(true);
-    
+
     try {
       // PATCH request using updateCustomerColumn API 
       const res = await fetch(`https://suims.vercel.app/api/customer/${id}`, {
@@ -144,6 +144,9 @@ const EditCustomerPage = () => {
 
   return (
     <div className={styles.container}>
+      <button className={styles.backButton} onClick={() => navigate("/customers")}>
+        Back
+      </button>
       <h1>Edit Customer</h1>
       {submitError && <p className={styles.error}>{submitError}</p>}
       <div className={styles.form}>
@@ -186,7 +189,7 @@ const EditCustomerPage = () => {
           {errors.phone && <p className={styles.error}>{errors.phone}</p>}
         </div>
 
-        <div className={styles.inputGroup}>
+        <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
           <label htmlFor="address">Address</label>
           <textarea
             id="address"

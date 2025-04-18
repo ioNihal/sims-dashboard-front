@@ -96,14 +96,14 @@ const Inventory = () => {
                   <td>{item.quantity}</td>
                   <td
                     className={
-                      item.quantity > 50
+                      item.quantity > item.threshold
                         ? styles.inStock
                         : item.quantity > 0
                           ? styles.lowStock
                           : styles.outOfStock
                     }
                   >
-                    {item.quantity > 50
+                    {item.quantity > item.threshold
                       ? "In Stock"
                       : item.quantity > 0
                         ? "Low Stock"

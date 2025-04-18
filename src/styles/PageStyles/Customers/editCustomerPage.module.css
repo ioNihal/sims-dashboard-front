@@ -1,15 +1,20 @@
 .container {
-  max-width: 1200px;
-  min-width: 200px;
-  margin: 2rem auto;
   background: var(--bg);
-  padding: 2rem;
+  padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Inter", sans-serif;
+
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  min-width: 200px;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  font-family: "Inter", sans-serif;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -23,13 +28,25 @@
 
 .form {
   display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background-color: var(--bg-dim);
+  min-height: 300px;
+  height: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  overflow-y: auto;
 }
 
 .inputGroup {
+  flex: 1 1 300px;
   display: flex;
   flex-direction: column;
+  gap: 5px;
+  align-items: stretch;
+  min-width: 0;
 }
 
 .inputGroup label {
@@ -70,14 +87,36 @@
   outline: none;
 }
 
+.fullWidth {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .buttonGroup {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 10px;
+  flex: 1;
+  margin-top: 10px;
+}
+
+.backButton {
+  width: max-content;
+  padding: 10px;
+  font-size: 1rem;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 500;
 }
 
 .saveBtn,
 .cancelBtn {
+  max-height: 40px;
   flex: 1;
   padding: 10px;
   font-size: 1rem;
@@ -104,6 +143,15 @@
 
 .cancelBtn:hover {
   background-color: var(--btn-delete-hover);
+}
+
+.backButton {
+  background-color: var(--btn);
+  color: #fff;
+}
+
+.backButton:hover {
+  background-color: var(--btn-hover);
 }
 
 
@@ -135,12 +183,6 @@
   .inputGroup textarea {
     font-size: 1rem;
   }
-
-  .saveBtn,
-  .cancelBtn {
-    font-size: 14px;
-    padding: 8px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -159,8 +201,9 @@
   }
 
   .saveBtn,
-  .cancelBtn {
-    font-size: 1rem;
-    padding: 8px;
+  .cancelBtn,
+  .backButton {
+    font-size: 0.9rem;
+    padding: 12px;
   }
 }

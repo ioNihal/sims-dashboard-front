@@ -2,78 +2,84 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Inventory/addItemPage.module.css";
-import { validateQuantity } from "../../utils/validators";
+import { validateQuantity, validateThreshold } from "../../utils/validators";
 
 const AddItemPage = () => {
   const navigate = useNavigate();
 
-  
   const [suppliers, setSuppliers] = useState([]);
-  const [products, setProducts]   = useState([]);
+  const [products, setProducts] = useState([]);
 
-  
-  const [supplierId, setSupplierId]     = useState("");
-  const [productId, setProductId]       = useState("");
-  const [quantity, setQuantity]         = useState("");
+  const [supplierId, setSupplierId] = useState("");
+  const [productId, setProductId] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [threshold, setThreshold] = useState("");
 
-  
-  const selectedProduct = products.find(p => p._id === productId) || {};
+  const selectedProduct = products.find((p) => p._id === productId) || {};
 
-  
   const [errors, setErrors] = useState({
     supplier: "",
     product: "",
     quantity: "",
+    threshold: "",
     submit: ""
   });
-
   const [isSaving, setIsSaving] = useState(false);
 
-  // Fetch all suppliers (and their products)
+  // load suppliers
   useEffect(() => {
     (async () => {
       try {
         const res = await fetch("https://suims.vercel.app/api/supplier/");
         if (!res.ok) throw new Error("Could not load suppliers");
-        const json = await res.json();
-        const list = json.supplier || [];
-        setSuppliers(list.map(s => ({ ...s, id: s._id })));
+        const { supplier = [] } = await res.json();
+        setSuppliers(supplier.map((s) => ({ ...s, id: s._id })));
       } catch (err) {
         console.error(err);
-        setErrors(e => ({ ...e, submit: "Failed to load suppliers" }));
+        setErrors((e) => ({ ...e, submit: "Failed to load suppliers" }));
       }
     })();
   }, []);
 
-  
+  // when supplier changes, reset products & productId
   useEffect(() => {
-    const sup = suppliers.find(s => s.id === supplierId);
+    const sup = suppliers.find((s) => s.id === supplierId);
     setProducts(sup?.products || []);
     setProductId("");
-    setErrors(e => ({ ...e, supplier: "", product: "" }));
+    setErrors((e) => ({ ...e, supplier: "", product: "" }));
   }, [supplierId, suppliers]);
 
-  
   const onQuantityChange = (e) => {
     const q = e.target.value;
     setQuantity(q);
-    setErrors(e => ({ ...e, quantity: validateQuantity(q) }));
+    setErrors((e) => ({ ...e, quantity: validateQuantity(q) }));
+  };
+  const onThresholdChange = (e) => {
+    const t = e.target.value;
+    setThreshold(t);
+    setErrors((e) => ({ ...e, threshold: validateThreshold(t) }));
   };
 
   const handleSubmit = async () => {
-    
-    setErrors(e => ({ ...e, submit: "" }));
+    // clear submit error
+    setErrors((e) => ({ ...e, submit: "" }));
 
-    
-    const errs = {
+    // validate all
+    const fieldErrors = {
       supplier: supplierId ? "" : "Please select a supplier.",
       product: productId ? "" : "Please select a product.",
       quantity: validateQuantity(quantity),
+      threshold: validateThreshold(threshold),
     };
-    setErrors(e => ({ ...e, ...errs }));
-    if (errs.supplier || errs.product || errs.quantity) return;
+    setErrors((e) => ({ ...e, ...fieldErrors }));
+    if (Object.values(fieldErrors).some((msg) => msg)) return;
 
-    const payload = { supplierId, productId, quantity: parseInt(quantity, 10) };
+    const payload = {
+      supplierId,
+      productId,
+      quantity: parseInt(quantity, 10),
+      threshold: parseInt(threshold, 10),
+    };
 
     setIsSaving(true);
     try {
@@ -83,13 +89,11 @@ const AddItemPage = () => {
         body: JSON.stringify(payload),
       });
       const json = await res.json();
-      if (!res.ok) {
-        throw new Error(json.message || "Failed to add inventory");
-      }
+      if (!res.ok) throw new Error(json.message || "Failed to add inventory");
       navigate("/inventory");
     } catch (err) {
       console.error(err);
-      setErrors(e => ({ ...e, submit: err.message }));
+      setErrors((e) => ({ ...e, submit: err.message }));
       setIsSaving(false);
     }
   };
@@ -101,73 +105,88 @@ const AddItemPage = () => {
       </button>
       <h3>Add New Inventory Item</h3>
 
-      {/* Supplier Selector */}
       <div className={styles.formGroup}>
-        <label>Supplier</label>
-        <select
-          value={supplierId}
-          onChange={e => setSupplierId(e.target.value)}
-        >
-          <option value="">-- Select Supplier --</option>
-          {suppliers.map(s => (
-            <option key={s.id} value={s.id}>
-              {s.name}
-            </option>
-          ))}
-        </select>
-        {errors.supplier && <p className={styles.error}>{errors.supplier}</p>}
-      </div>
 
-      {/* Product Selector */}
-      {supplierId && (
-        <div className={styles.formGroup}>
+        <div className={styles.inputWrapper}>
+          <label>Supplier</label>
+          <select
+            value={supplierId}
+            onChange={(e) => setSupplierId(e.target.value)}
+          >
+            <option value="">-- Select Supplier --</option>
+            {suppliers.map((s) => (
+              <option key={s.id} value={s.id}>{s.name}</option>
+            ))}
+          </select>
+          {errors.supplier && <p className={styles.error}>{errors.supplier}</p>}
+        </div>
+
+
+        <div className={styles.inputWrapper}>
           <label>Product</label>
           <select
             value={productId}
-            onChange={e => {
+            onChange={(e) => {
               setProductId(e.target.value);
-              setErrors(e => ({ ...e, product: "" }));
+              setErrors((e) => ({ ...e, product: "" }));
             }}
+            disabled={!supplierId}
           >
             <option value="">-- Select Product --</option>
-            {products.map(p => (
-              <option key={p._id} value={p._id}>
-                {p.name}
-              </option>
+            {products.map((p) => (
+              <option key={p._id} value={p._id}>{p.name}</option>
             ))}
           </select>
           {errors.product && <p className={styles.error}>{errors.product}</p>}
         </div>
-      )}
 
-      
-      {productId && (
-        <>
-          <div className={styles.formGroup}>
-            <label>Category</label>
-            <input type="text" value={selectedProduct.category || ""} readOnly />
-          </div>
-          <div className={styles.formGroup}>
-            <label>Price per Unit</label>
-            <input type="number" value={selectedProduct.pricePerItem || ""} readOnly />
-          </div>
-          <div className={styles.formGroup}>
-            <label>Quantity</label>
-            <input
-              type="number"
-              value={quantity}
-              onChange={onQuantityChange}
-            />
-            {errors.quantity && <p className={styles.error}>{errors.quantity}</p>}
-          </div>
-        </>
-      )}
 
-      {/* Submission error */}
-      {errors.submit && <p className={styles.error}>{errors.submit}</p>}
+        <div className={styles.inputWrapper}>
+          <label>Category</label>
+          <input
+            type="text"
+            value={selectedProduct.category || ""}
+            disabled
+            readOnly
+          />
+        </div>
 
-      {/* Buttons */}
-      <div className={styles.buttonGroup}>
+
+        <div className={styles.inputWrapper}>
+          <label>Price per Unit</label>
+          <input
+            type="number"
+            value={selectedProduct.pricePerItem || ""}
+            disabled
+            readOnly
+          />
+        </div>
+
+
+        <div className={styles.inputWrapper}>
+          <label>Quantity</label>
+          <input
+            type="number"
+            value={quantity}
+            onChange={onQuantityChange}
+            disabled={!productId}
+          />
+          {errors.quantity && <p className={styles.error}>{errors.quantity}</p>}
+        </div>
+
+
+        <div className={styles.inputWrapper}>
+          <label>Low Stock Threshold</label>
+          <input
+            type="number"
+            value={threshold}
+            onChange={onThresholdChange}
+            disabled={!productId}
+          />
+          {errors.threshold && <p className={styles.error}>{errors.threshold}</p>}
+        </div>
+        {errors.submit && <p className={styles.error}>{errors.submit}</p>}
+        <div className={styles.buttonGroup}>
         <button
           onClick={handleSubmit}
           className={styles.saveBtn}
@@ -175,9 +194,13 @@ const AddItemPage = () => {
         >
           {isSaving ? "Saving..." : "Save"}
         </button>
-        <button onClick={() => navigate("/inventory")} className={styles.cancelBtn}>
+        <button
+          onClick={() => navigate("/inventory")}
+          className={styles.cancelBtn}
+        >
           Cancel
         </button>
+      </div>
       </div>
     </div>
   );

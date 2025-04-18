@@ -58,10 +58,10 @@ const SupplierDetail = () => {
       <div className={styles.card}>
         <h4 className={styles.title}>Supplier Details</h4>
         <div className={styles.details}>
-          <div className={styles.detailItem}>
+          {/*<div className={styles.detailItem}>
             <span className={styles.detailLabel}>ID:</span>
             <span>SU{supplier.id.substring(8, 12).toUpperCase()}</span>
-          </div>
+          </div>*/}
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Supplier Name:</span>
             <span>{capitalize(supplier.name)}</span>

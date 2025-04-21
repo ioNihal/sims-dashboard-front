@@ -42,6 +42,19 @@
   gap: 1rem;
 }
 
+.loading {
+  color: var(--text);
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.error {
+  color: red;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
 /* Responsive adjustments */
 
 @media (max-width: 768px) {

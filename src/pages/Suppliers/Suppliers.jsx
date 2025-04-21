@@ -14,6 +14,7 @@ const Suppliers = () => {
 
   const fetchSuppliers = async () => {
     try {
+      setLoading(true);
       const res = await fetch("https://suims.vercel.app/api/supplier/");
       const data = await res.json();
       const supplierArray = data.supplier || data;

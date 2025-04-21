@@ -57,15 +57,25 @@ export const capitalize = (str) => {
     .join(" ");
 };
 
-export const formatDate = (date) => {
-  const formatedDate = new Date(date).toLocaleString("en-IN", {
+export const formatDate = (date, includeTime = true) => {
+  const baseOptions = {
     day: "2-digit",
-    month: "short",
+    month: `${includeTime ? "short" : "long"}`,
     year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  })
-  return formatedDate;
+  };
+
+  const timeOptions = includeTime
+    ? {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    }
+    : {};
+
+  return new Date(date).toLocaleString("en-IN", {
+    ...baseOptions,
+    ...timeOptions,
+  });
 };
+
 

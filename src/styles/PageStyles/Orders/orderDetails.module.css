@@ -1,214 +1,288 @@
-/* orderDetails.module.css */
 .page {
-    max-width: 1200px;
-    min-width: 200px;
-    margin: 2rem auto;
-    background:var(--bg);
-    padding: 2rem 3rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: "Roboto", sans-serif;
-  }
-  
-  .backButton {
-    background-color: var(--btn);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-bottom: 1.5rem;
-    transition: background 0.3s;
-  }
-  
-  .backButton:hover {
-    background-color:var(--btn-hover);
-  }
-  
+  background-color: var(--bg);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  font-family: "Inter", sans-serif;
+
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  min-width: 200px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.btnGroup {
+  align-self: flex-start;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 1rem;
+}
+
+.backButton {
+  background-color: var(--btn);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, box-shadow 0.3s;
+  font-size: 0.9rem;
+}
+
+.backButton:hover {
+  background-color: var(--btn-hover);
+}
+
+
+.saveBtn {
+  background-color: var(--btn-edit);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s;
+  font-size: 0.9rem;
+}
+
+.saveBtn:hover {
+  background-color: var(--btn-edit-hover);
+}
+
+.card {
+  min-height: 300px;
+  height: 100%;
+  background: var(--bg-dim);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.deleteWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.title {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.deleteBtn {
+  background-color: var(--btn-delete);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.deleteBtn:hover {
+  background-color: var(--btn-delete-hover);
+}
+
+.detailGroup {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.label {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.value {
+  color: var(--text);
+}
+
+.statusDropdown {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.statusDropdown:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 5px rgba(3, 169, 244, 0.5);
+}
+
+.itemsSection {
+  margin-top: 2rem;
+}
+
+.itemsSection h3 {
+  font-size: 1.3rem;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.itemRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 0.75rem;
+}
+
+.itemInfo {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+}
+
+.itemName {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.itemCategory {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.itemMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.8rem;
+  flex: 1;
+}
+
+.itemQuantity,
+.itemPrice {
+  color: var(--text);
+}
+
+
+
+
+.loading {
+  text-align: center;
+  font-size: 20px;
+  padding: 2rem;
+  color: var(--text);
+}
+
+/* RESPONSIVENESS */
+
+/* For tablets and below */
+@media (max-width: 768px) {
   .card {
-    background-color: var(--bg-dim);
-    border-radius: 8px;
-    padding: 2rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: padding 0.3s;
+    padding: 20px;
   }
-  
+
+  .detailItem {
+    font-size: 1rem;
+  }
+
   .title {
-    margin-bottom: 1.5rem;
-    font-size: 28px;
-    font-weight: 500;
-    color: var(--text);
+    font-size: 1.3rem;
   }
-  
-  .detailGroup {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-  
+
+  .value,
   .label {
-    font-weight: 600;
-    color:var(--text);
-    min-width: 150px;
+    font-size: 0.9rem;
   }
-  
-  .value {
-    color: var(--text);
-    flex: 1;
-    min-width: 150px;
-  }
-  
+
   .statusDropdown {
-    padding: 8px 12px;
-    font-size: 16px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    color: var(--text);
-    border-radius: 6px;
-    outline: none;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    font-size: 0.9rem;
+    padding: 6px 10px;
   }
-  
-  .statusDropdown:focus {
-    border-color: var(--blue);
-    box-shadow: 0 0 5px rgba(3, 169, 244, 0.5);
-  }
-  
-  .itemsSection {
-    margin-top: 2rem;
-  }
-  
-  .itemsSection h3 {
-    font-size: 22px;
-    color: var(--text);
-    margin-bottom: 1rem;
-  }
-  
-  .itemRow {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    background-color: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 12px;
-    margin-bottom: 0.75rem;
-  }
-  
-  .itemName {
-    font-weight: bold;
-    color: var(--text);
+
+  .btnGroup {
     flex: 1;
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
   }
-  
-  .itemQuantity,
-  .itemPrice {
-    color: var(--text);
-    font-size: 14px;
-  }
-  
+
+  .backButton,
   .saveBtn {
-    margin-top: 2rem;
-    background-color: var(--btn-edit);
-    color: #fff;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s;
-    font-size: 16px;
+    padding: 10px 15px;
+    font-size: 0.8rem;
+  }
+
+  .deleteBtn {
+    padding: 8px 15px;
+    font-size: 0.7rem;
+  }
+
+  .itemName {
+    font-size: 0.9rem;
   }
   
-  .saveBtn:hover {
-    background-color: var(--btn-edit-hover);
+  .itemCategory {
+    font-size: 0.8rem;
   }
   
-  .loading {
-    text-align: center;
-    font-size: 20px;
-    padding: 2rem;
-    color: var(--text);
+  .itemMeta {
+    font-size: 0.8rem;
   }
-  
-  /* RESPONSIVENESS */
-  
-  /* For tablets and below */
-  @media (max-width: 768px) {
-    .page {
-      padding: 1.5rem 2rem;
-    }
-    
-    .card {
-      padding: 1.5rem;
-    }
-    
-    .title {
-      font-size: 24px;
-    }
-    
-    .label {
-      min-width: 120px;
-    }
-    
-    .value {
-      font-size: 15px;
-    }
-    
-    .statusDropdown {
-      font-size: 15px;
-      padding: 6px 10px;
-    }
-    
-    .saveBtn {
-      font-size: 15px;
-      padding: 10px 16px;
-    }
+
+  .itemRow {
+    padding: 10px;
   }
-  
-  /* For mobile screens */
-  @media (max-width: 480px) {
-    .page {
-      padding: 1rem 1.5rem;
-    }
-    
-    .card {
-      padding: 1rem;
-    }
-    
-    .title {
-      font-size: 20px;
-    }
-    
-    .label,
-    .value {
-      font-size: 14px;
-      min-width: auto;
-    }
-    
-    .detailGroup {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    
-    .statusDropdown {
-      font-size: 14px;
-      padding: 5px 8px;
-    }
-    
-    .itemsSection h3 {
-      font-size: 18px;
-    }
-    
-    .itemQuantity,
-    .itemPrice {
-      font-size: 12px;
-    }
-    
-    .saveBtn {
-      font-size: 14px;
-      padding: 8px 12px;
-    }
+
+}
+
+/* For mobile screens */
+@media (max-width: 480px) {
+  .page {
+    min-width: 200px;
+    padding: 15px;
   }
-  
+
+  .card {
+    padding: 10px;
+  }
+
+  .title {
+    font-size: 1.1rem;
+  }
+
+  .detailGroup {
+    gap: 0.5rem;
+  }
+
+  .statusDropdown {
+    font-size: 0.8rem;
+    padding: 5px 8px;
+  }
+
+  .itemsSection h3 {
+    font-size: 0.9rem;
+  }
+
+}

@@ -68,10 +68,7 @@ const InvoiceDetails = () => {
 
   return (
     <div className={styles.page}>
-      <button
-        className={styles.backButton}
-        onClick={() => navigate("/invoices")}
-      >
+      <button className={styles.backButton} onClick={() => navigate("/invoices")}>
         Back
       </button>
       <div className={styles.invoiceCard}>
@@ -102,39 +99,33 @@ const InvoiceDetails = () => {
             invoice.orders.map((order) => (
               <div key={order.id} className={styles.orderBlock}>
                 <div className={styles.orderHeader}>
-                  <p>
-                    <strong>Order No:</strong> {order.orderNumber}
-                  </p>
-                  <p>
-                    <strong>Date:</strong> {order.orderDate}
-                  </p>
-                  <p>
-                    <strong>Status:</strong> {order.orderStatus}
-                  </p>
-                  <p>
-                    <strong>Total:</strong> ${order.totalAmount}
-                  </p>
+                  <p><strong>Order No:</strong> {order.orderNumber}</p>
+                  <p><strong>Date:</strong> {order.orderDate}</p>
+                  <p><strong>Status:</strong> {order.orderStatus}</p>
+                  <p><strong>Total:</strong> ${order.totalAmount}</p>
                 </div>
-                <table className={styles.itemsTable}>
-                  <thead>
-                    <tr>
-                      <th>Item</th>
-                      <th>Qty</th>
-                      <th>Price</th>
-                      <th>Subtotal</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {order.orderedItems.map((item) => (
-                      <tr key={item.id}>
-                        <td>{item.name}</td>
-                        <td>{item.quantity}</td>
-                        <td>${item.price}</td>
-                        <td>${item.quantity * item.price}</td>
+                <div className={styles.responsiveTable}>
+                  <table className={styles.itemsTable}>
+                    <thead>
+                      <tr>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {order.orderedItems.map((item) => (
+                        <tr key={item.id}>
+                          <td data-label="Item">{item.name}</td>
+                          <td data-label="Qty">{item.quantity}</td>
+                          <td data-label="Price">${item.price}</td>
+                          <td data-label="Subtotal">${item.quantity * item.price}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             ))}
           {invoice.orders && invoice.orders.length > 1 && (

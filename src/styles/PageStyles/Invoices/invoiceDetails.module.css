@@ -1,210 +1,255 @@
 /* pages/Invoices/invoiceDetails.module.css */
 .page {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 2rem 3rem;
-    background: var(--bg);
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: "Roboto", sans-serif;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem 3rem;
+  background: var(--bg);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Roboto", sans-serif;
+}
+
+.backButton {
+  background-color: var(--btn);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  transition: background 0.3s;
+}
+
+.backButton:hover {
+  background-color: var(--btn-hover);
+}
+
+.invoiceCard {
+  box-sizing: border-box;
+  background-color: var(--bg-dim);
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.header h1 {
+  font-size: 28px;
+  color: var(--text);
+}
+
+.printBtn {
+  background-color: var(--btn-edit);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 3px 6px rgba(3, 169, 244, 0.2);
+}
+
+.printBtn:hover {
+  background-color: var(--btn-edit-hover);
+  transform: translateY(-2px);
+}
+
+.customerSection,
+.ordersSection {
+  margin-bottom: 1.5rem;
+}
+
+.customerSection h2,
+.ordersSection h2 {
+  font-size: 20px;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.customerSection p,
+.orderHeader p {
+  margin: 0.25rem 0;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.orderBlock {
+  background: var(--bg-dim);
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.orderHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.orderHeader p {
+  flex: 1 1 150px;
+  margin: 0;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.responsiveTable {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.itemsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+.itemsTable th,
+.itemsTable td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text);
+}
+
+.itemsTable th {
+  background: var(--bg);
+  font-weight: 600;
+}
+
+.itemsTable tr {
+  background: var(--bg-dim);
+}
+
+.itemsTable tr:hover {
+  background: var(--bg);
+}
+
+.combinedTotal {
+  text-align: right;
+  margin-top: 1rem;
+}
+
+.combinedTotal h3 {
+  font-size: 16px;
+  color: var(--text);
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.deleteBtn {
+  background-color: var(--btn-delete);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 3px 6px rgba(213, 0, 0, 0.2);
+}
+
+.deleteBtn:hover {
+  background-color: var(--btn-delete-hover);
+  transform: translateY(-2px);
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+  color: var(--text);
+}
+
+/* Responsive for tablets */
+@media (max-width: 768px) {
+  .page {
+    padding: 1.5rem 2rem;
   }
-  
-  .backButton {
-    background-color: var(--btn);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-bottom: 1.5rem;
-    transition: background 0.3s;
-  }
-  
-  .backButton:hover {
-    background-color: var(--btn-hover);
-  }
-  
   .invoiceCard {
-    background-color:var(--bg-dim);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
   }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+  .header h1 {
+    font-size: 24px;
+  }
+  .printBtn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  .orderHeader p {
+    flex: 1 1 100px;
+  }
+}
+
+/* Responsive for mobile (below 480px) */
+@media (max-width: 480px) {
+  /* Remove horizontal scroll on the main page container */
+  .page {
+    padding: 1rem;
   }
   
   .header h1 {
-    font-size: 28px;
-    color:var(--text);
+    font-size: 20px;
   }
   
   .printBtn {
-    background-color: var(--btn-edit);
-    color: #fff;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
-    box-shadow: 0 3px 6px rgba(3, 169, 244, 0.2);
+    font-size: 10px;
+    padding: 5px 8px;
   }
   
-  .printBtn:hover {
-    background-color: var(--btn-edit-hover);
-    transform: translateY(-2px);
-  }
-  
-  .customerSection,
-  .ordersSection {
-    margin-bottom: 1.5rem;
-  }
-  
-  .customerSection h2,
-  .ordersSection h2 {
-    font-size: 20px;
-    margin-bottom: 0.5rem;
-    color:var(--text);
-  }
-  
-  .customerSection p,
-  .orderHeader p {
-    margin: 0.25rem 0;
-    font-size: 15px;
-    color: var(--text);
-  }
-  
-  .orderBlock {
-    background: var(--bg-dim);
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  }
-  
-  .orderHeader {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .orderHeader p {
-    flex: 1 1 150px;
-    margin: 0;
-    font-size: 14px;
-    color: var(--text);
-  }
-  
-  .itemsTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 0.5rem;
-  }
-  
+  /* Transform the table into a block layout */
+  .itemsTable,
+  .itemsTable thead,
+  .itemsTable tbody,
   .itemsTable th,
-  .itemsTable td {
-    text-align: left;
-    padding: 8px;
-    border-bottom: 1px solid var(--border);
-    font-size: 14px;
-    color: var(--text);
-  }
-  
-  .itemsTable th {
-    background: var(--bg);
-    font-weight: 600;
-  }
-
+  .itemsTable td,
   .itemsTable tr {
-    background: var(--bg-dim);;
-  }
-
-  .itemsTable tr:hover {
-    background: var(--bg);
+    display: block;
   }
   
-  .combinedTotal {
+  .itemsTable tr {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .itemsTable td {
     text-align: right;
-    margin-top: 1rem;
+    padding: 4px;
+    position: relative;
   }
   
-  .combinedTotal h3 {
-    font-size: 16px;
-    color: var(--text);
+  /* Hide the table headers in block view */
+  .itemsTable thead {
+    display: none;
   }
   
-  .actions {
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
+  /* Create a label for each cell using the data-label attribute */
+  .itemsTable td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 4px;
+    width: 45%;
+    padding-right: 10px;
+    text-align: left;
+    font-weight: bold;
   }
   
-  .deleteBtn {
-    background-color: var(--btn-delete);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
-    box-shadow: 0 3px 6px rgba(213, 0, 0, 0.2);
+  .itemsTable td:last-child {
+    border-bottom: 0;
   }
-  
-  .deleteBtn:hover {
-    background-color: var(--btn-delete-hover);
-    transform: translateY(-2px);
-  }
-  
-  .loading {
-    text-align: center;
-    font-size: 18px;
-    color: var(--text);
-  }
-  
-  /* Responsive for tablets */
-  @media (max-width: 768px) {
-    .page {
-      padding: 1.5rem 2rem;
-    }
-    .invoiceCard {
-      padding: 1.5rem;
-    }
-    .header h1 {
-      font-size: 24px;
-    }
-    .printBtn {
-      font-size: 12px;
-      padding: 6px 10px;
-    }
-    .orderHeader p {
-      flex: 1 1 100px;
-    }
-  }
-  
-  /* Responsive for mobile (below 480px) */
-  @media (max-width: 480px) {
-    .header h1 {
-      font-size: 20px;
-    }
-    .printBtn {
-      font-size: 10px;
-      padding: 5px 8px;
-    }
-    .orderHeader {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    .itemsTable th,
-    .itemsTable td {
-      font-size: 12px;
-      padding: 6px;
-    }
-  }
-  
+}

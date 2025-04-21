@@ -1,4 +1,3 @@
-// pages/Invoices/InvoicesPage.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
@@ -6,8 +5,8 @@ import styles from "../../styles/PageStyles/Invoices/invoicesPage.module.css";
 
 const InvoicesPage = () => {
   const navigate = useNavigate();
-  const [customerList, setCustomerList] = useState([]);
-  const [ordersList, setOrdersList] = useState([]);
+  const [customers, setCustomers] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState("");
   const [selectedOrder, setSelectedOrder] = useState("");
   const [invoiceOrders, setInvoiceOrders] = useState([]);
@@ -17,73 +16,74 @@ const InvoicesPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    const savedCustomers = localStorage.getItem("customers");
-    const savedOrders = localStorage.getItem("orders");
-    const savedInvoices = localStorage.getItem("invoices");
+    const fetchData = async () => {
+      try {
+        // Fetch customers
+        const resCustomers = await fetch("https://suims.vercel.app/api/customer");
+        if (!resCustomers.ok) throw new Error("Failed to fetch customers");
+        const customersData = await resCustomers.json();
+        const formattedCustomers = (customersData.data || customersData).map((c) => ({
+          ...c,
+          id: c._id,
+        }));
+        formattedCustomers.sort((a, b) => a.name.localeCompare(b.name));
+        setCustomers(formattedCustomers);
 
-    if (savedCustomers) {
-      const custArr = JSON.parse(savedCustomers);
-      custArr.sort((a, b) => a.name.localeCompare(b.name));
-      setCustomerList(custArr);
-    }
-    if (savedOrders) {
-      setOrdersList(JSON.parse(savedOrders));
-    }
-    if (savedInvoices) {
-      setInvoices(JSON.parse(savedInvoices));
-    }
+        // Fetch orders
+        const resOrders = await fetch("https://suims.vercel.app/api/orders");
+        if (!resOrders.ok) throw new Error("Failed to fetch orders");
+        const ordersData = await resOrders.json();
+        setOrders(ordersData);
+
+        // Fetch invoices
+        const resInvoices = await fetch("https://suims.vercel.app/api/invoices");
+        if (!resInvoices.ok) throw new Error("Failed to fetch invoices");
+        const invoicesData = await resInvoices.json();
+        setInvoices(invoicesData);
+      } catch (error) {
+        console.error("Error loading data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  const filteredOrdersForCustomer = ordersList.filter(
+  const filteredOrders = orders.filter(
     (o) =>
       o.customer &&
       o.customer.toLowerCase() === selectedCustomer.toLowerCase()
   );
 
-  const handleGenerateInvoice = () => {
-    if (!selectedCustomer) {
-      alert("Please select a customer.");
-      return;
-    }
-    // Retrieve customer info including the id
+  const handleGenerateInvoice = async () => {
+    if (!selectedCustomer) return alert("Please select a customer.");
+
     const foundCustomer =
-      customerList.find(
+      customers.find(
         (c) => c.name.toLowerCase() === selectedCustomer.toLowerCase()
-      ) || { id: null, name: selectedCustomer, email: "", phone: "", address: "" };
+      ) || {
+        id: null,
+        name: selectedCustomer,
+        email: "",
+        phone: "",
+        address: "",
+      };
 
     let chosenOrders = [];
+
     if (selectedOrder === "" || selectedOrder === "all") {
-      chosenOrders = filteredOrdersForCustomer;
+      chosenOrders = filteredOrders;
     } else {
-      const singleOrder = filteredOrdersForCustomer.find(
-        (o) => String(o.id) === selectedOrder
-      );
-      if (!singleOrder) {
-        alert("Order not found for the selected customer.");
-        return;
-      }
-      chosenOrders = [singleOrder];
+      const order = filteredOrders.find((o) => String(o.id) === selectedOrder);
+      if (!order) return alert("Order not found for this customer.");
+      chosenOrders = [order];
     }
 
-    if (chosenOrders.length === 0) {
-      alert("No orders found for this selection.");
-      return;
-    }
+    if (chosenOrders.length === 0) return alert("No orders found.");
 
-    setInvoiceOrders(chosenOrders);
-    setCustomerInfo(foundCustomer);
+    const total = chosenOrders.reduce((sum, o) => sum + Number(o.totalAmount), 0);
 
-    // Calculate combined total
-    const total = chosenOrders.reduce(
-      (acc, order) => acc + Number(order.totalAmount),
-      0
-    );
-    setCombinedTotal(total);
-
-    // Build an invoice object including the customer ID
-    const newInvoice = {
-      _id: Date.now(), // pseudo-ID
-      customerId: foundCustomer.id, // store customer id
+    const invoice = {
+      customerId: foundCustomer.id,
       customer: foundCustomer.name,
       totalAmount: total,
       createdAt: new Date().toISOString(),
@@ -93,28 +93,37 @@ const InvoicesPage = () => {
       address: foundCustomer.address,
     };
 
-    const savedInvoices = JSON.parse(localStorage.getItem("invoices") || "[]");
-    const updatedInvoices = [...savedInvoices, newInvoice];
-    localStorage.setItem("invoices", JSON.stringify(updatedInvoices));
-    setInvoices(updatedInvoices);
+    try {
+      const res = await fetch("https://suims.vercel.app/api/invoices", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(invoice),
+      });
+      if (!res.ok) throw new Error("Failed to create invoice");
 
-    alert("Invoice generated successfully!");
+      const newInvoice = await res.json();
+      setInvoices((prev) => [...prev, newInvoice]);
+      alert("Invoice generated successfully!");
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Error generating invoice.");
+    }
   };
 
-  // Filter invoices based on search query
   const filteredInvoices = invoices.filter((inv) => {
-    const query = searchQuery.toLowerCase();
+    const q = searchQuery.toLowerCase();
     return (
-      String(inv._id).toLowerCase().includes(query) ||
-      (inv.customer && inv.customer.toLowerCase().includes(query)) ||
+      String(inv._id).toLowerCase().includes(q) ||
+      (inv.customer && inv.customer.toLowerCase().includes(q)) ||
       (inv.createdAt &&
-        new Date(inv.createdAt).toLocaleDateString().toLowerCase().includes(query))
+        new Date(inv.createdAt).toLocaleDateString().toLowerCase().includes(q))
     );
   });
 
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>Invoices</h1>
+
       <div className={styles.actions}>
         <div className={styles.selectionForm}>
           <div className={styles.formRow}>
@@ -127,13 +136,14 @@ const InvoicesPage = () => {
               }}
             >
               <option value="">-- Select Customer --</option>
-              {customerList.map((cust) => (
+              {customers.map((cust) => (
                 <option key={cust.id} value={cust.name}>
                   {cust.name}
                 </option>
               ))}
             </select>
           </div>
+
           {selectedCustomer && (
             <div className={styles.formRow}>
               <label>Order:</label>
@@ -142,18 +152,20 @@ const InvoicesPage = () => {
                 onChange={(e) => setSelectedOrder(e.target.value)}
               >
                 <option value="all">All Orders</option>
-                {filteredOrdersForCustomer.map((o) => (
-                  <option key={o.id} value={String(o.id)}>
-                    {o.orderNumber}
+                {filteredOrders.map((order) => (
+                  <option key={order.id} value={String(order.id)}>
+                    {order.orderNumber}
                   </option>
                 ))}
               </select>
             </div>
           )}
+
           <button className={styles.generateBtn} onClick={handleGenerateInvoice}>
             Generate Invoice
           </button>
         </div>
+
         <div className={styles.searchBarWrapper}>
           <SearchBar
             placeholder="Search invoices..."
@@ -162,6 +174,7 @@ const InvoicesPage = () => {
           />
         </div>
       </div>
+
       {filteredInvoices.length === 0 ? (
         <p className={styles.noInvoices}>No invoices generated yet.</p>
       ) : (

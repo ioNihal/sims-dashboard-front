@@ -32,6 +32,12 @@
     flex-wrap: wrap;
 }
 
+.rightSide {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 .addBtn {
     background-color: var(--btn);
     color: white;
@@ -63,8 +69,8 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: auto;
     box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .table {

@@ -1,0 +1,40 @@
+/* src/components/RefreshButton.module.css */
+.refreshBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background-color: var(--bg);
+    color: var(--text);
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-size: 14px;
+  }
+  
+  .refreshBtn:hover {
+    background-color: var(--hover-bg);
+  }
+  
+  .refreshBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .spin {
+    animation: spin 1s linear infinite;
+    display: inline-block;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @media (max-width :767px) {
+    .refreshBtn {
+        display: none;
+    }
+  }
+  

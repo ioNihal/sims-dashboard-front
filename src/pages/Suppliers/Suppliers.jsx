@@ -5,30 +5,31 @@ import styles from "../../styles/PageStyles/Suppliers/suppliers.module.css";
 import SearchBar from "../../components/SearchBar";
 import { Link } from "react-router-dom";
 import { capitalize } from "../../utils/validators";
+import RefreshButton from "../../components/RefreshButton";
 
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
+  const fetchSuppliers = async () => {
+    try {
+      const res = await fetch("https://suims.vercel.app/api/supplier/");
+      const data = await res.json();
+      const supplierArray = data.supplier || data;
+      const formattedSuppliers = supplierArray.map((s) => ({
+        ...s,
+        id: s._id,
+      }));
+      setSuppliers(formattedSuppliers);
+    } catch (err) {
+      console.error("Error fetching suppliers:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchSuppliers = async () => {
-      try {
-        const res = await fetch("https://suims.vercel.app/api/supplier/");
-        const data = await res.json();
-        const supplierArray = data.supplier || data;
-        // Map _id to id for consistency
-        const formattedSuppliers = supplierArray.map((s) => ({
-          ...s,
-          id: s._id,
-        }));
-        setSuppliers(formattedSuppliers);
-      } catch (err) {
-        console.error("Error fetching suppliers:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchSuppliers();
   }, []);
 
@@ -63,11 +64,15 @@ const Suppliers = () => {
         <Link to="/suppliers/add">
           <button className={styles.addBtn}>Add Supplier</button>
         </Link>
-        <SearchBar
-          placeholder="Search suppliers..."
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-        />
+
+        <div className={styles.rightSide}>
+          <RefreshButton onClick={fetchSuppliers} loading={loading} />
+          <SearchBar
+            placeholder="Search suppliers..."
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
+        </div>
       </div>
 
       {loading ? (

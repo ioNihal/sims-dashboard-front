@@ -208,6 +208,10 @@
         padding: 5px;
     }
 
+    .addBtn {
+        font-size: 0.9rem;
+    }
+
     .table {
         font-size: 0.7rem;
     }

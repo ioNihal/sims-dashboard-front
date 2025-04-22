@@ -160,8 +160,6 @@
         align-items: flex-start;
     }
 
-
-
     .tableContainer {
         padding: 10px;
     }
@@ -185,12 +183,12 @@
 
     .actions {
         flex-direction: column;
-        align-items: center;
+        align-items: left;
     }
+
 
     .addBtn {
         width: 100%;
-        text-align: center;
     }
 
     .viewBtn,
@@ -217,6 +215,10 @@
 
     .table {
         font-size: 0.7rem;
+    }
+
+    .actions {
+        align-items: stretch;
     }
 
     .viewBtn,

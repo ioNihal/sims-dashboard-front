@@ -8,6 +8,7 @@ import {
   validatePhone,
   validateAddress,
 } from "../../utils/validators";
+import { getCustomerById, updateCustomer } from "../../api/customers";
 
 const EditCustomerPage = () => {
   const { id } = useParams();
@@ -36,12 +37,7 @@ const EditCustomerPage = () => {
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
-        const res = await fetch(`https://suims.vercel.app/api/customer/${id}`);
-        if (!res.ok) {
-          throw new Error("Failed to fetch customer data");
-        }
-        const data = await res.json();
-        const customerData = data.data || data;
+        const customerData = await getCustomerById(id);
         setUpdatedCustomer({
           name: customerData.name || "",
           email: customerData.email || "",
@@ -111,20 +107,8 @@ const EditCustomerPage = () => {
     }
 
     setIsSaving(true);
-
     try {
-      // PATCH request using updateCustomerColumn API 
-      const res = await fetch(`https://suims.vercel.app/api/customer/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedCustomer),
-      });
-      const result = await res.json();
-      if (!res.ok) {
-        setSubmitError(result.message || "Failed to update customer");
-        setIsSaving(false);
-        return;
-      }
+      await updateCustomer(id, updatedCustomer)
       setIsSaving(false);
       navigate("/customers");
     } catch (err) {

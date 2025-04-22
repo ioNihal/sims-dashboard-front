@@ -9,34 +9,30 @@ import {
   validateAddress,
 } from "../../utils/validators";
 import { generatePassword } from "../../utils/passwordUtils";
+import { addCustomer } from "../../api/customers";
 
 const AddCustomerPage = () => {
-  // State to hold customer data
   const [customer, setCustomer] = useState({
     name: "",
     email: "",
     phone: "",
     address: "",
   });
-  // State to hold error messages for each field
   const [errors, setErrors] = useState({
     name: "",
     email: "",
     phone: "",
     address: "",
   });
-  // Global submission error (if needed)
   const [submitError, setSubmitError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
 
-  // Live validate individual field on change
+ 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // Update state for customer values
     setCustomer((prevCustomer) => ({ ...prevCustomer, [name]: value }));
 
-    // Determine error message based on field
     let errorMessage = "";
     switch (name) {
       case "name":
@@ -57,7 +53,7 @@ const AddCustomerPage = () => {
     setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMessage }));
   };
 
-  // Validate all fields before submission
+  
   const validateFields = () => {
     const nameError = validateName(customer.name);
     const emailError = validateEmail(customer.email);
@@ -76,7 +72,7 @@ const AddCustomerPage = () => {
 
   // Submission handler
   const handleSubmit = async () => {
-    setSubmitError(""); // Clear any previous submission errors
+    setSubmitError(""); 
     if (!validateFields()) {
       return;
     }
@@ -85,18 +81,7 @@ const AddCustomerPage = () => {
     setIsSaving(true);
 
     try {
-      const response = await fetch("https://suims.vercel.app/api/customer/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newCustomer),
-      });
-      const result = await response.json();
-
-      if (!response.ok) {
-        setSubmitError(result.message || "Failed to add customer");
-        setIsSaving(false);
-        return;
-      }
+      await addCustomer(newCustomer);
       navigate("/customers");
     } catch (err) {
       console.error("Error adding customer:", err);

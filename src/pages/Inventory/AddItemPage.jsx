@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Inventory/addItemPage.module.css";
 import { validateQuantity, validateThreshold } from "../../utils/validators";
+import { getSuppliers } from "../../api/suppliers";
+import { addInventoryItem } from "../../api/inventory";
 
 const AddItemPage = () => {
   const navigate = useNavigate();
@@ -30,13 +32,11 @@ const AddItemPage = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch("https://suims.vercel.app/api/supplier/");
-        if (!res.ok) throw new Error("Could not load suppliers");
-        const { supplier = [] } = await res.json();
-        setSuppliers(supplier.map((s) => ({ ...s, id: s._id })));
+        const list = await getSuppliers();
+        setSuppliers(list.map(s => ({ ...s, id: s._id })));
       } catch (err) {
         console.error(err);
-        setErrors((e) => ({ ...e, submit: "Failed to load suppliers" }));
+        setErrors(e => ({ ...e, submit: "Failed to load suppliers" }));
       }
     })();
   }, []);
@@ -83,13 +83,7 @@ const AddItemPage = () => {
 
     setIsSaving(true);
     try {
-      const res = await fetch("https://suims.vercel.app/api/inventory", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.message || "Failed to add inventory");
+      await addInventoryItem(payload);
       navigate("/inventory");
     } catch (err) {
       console.error(err);
@@ -187,20 +181,20 @@ const AddItemPage = () => {
         </div>
         {errors.submit && <p className={styles.error}>{errors.submit}</p>}
         <div className={styles.buttonGroup}>
-        <button
-          onClick={handleSubmit}
-          className={styles.saveBtn}
-          disabled={isSaving}
-        >
-          {isSaving ? "Saving..." : "Save"}
-        </button>
-        <button
-          onClick={() => navigate("/inventory")}
-          className={styles.cancelBtn}
-        >
-          Cancel
-        </button>
-      </div>
+          <button
+            onClick={handleSubmit}
+            className={styles.saveBtn}
+            disabled={isSaving}
+          >
+            {isSaving ? "Saving..." : "Save"}
+          </button>
+          <button
+            onClick={() => navigate("/inventory")}
+            className={styles.cancelBtn}
+          >
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   );

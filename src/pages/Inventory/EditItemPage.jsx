@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "../../styles/PageStyles/Inventory/editItemPage.module.css";
 import { validateQuantity, validateThreshold } from "../../utils/validators";
+import { getInventoryItemById, updateInventoryItem } from "../../api/inventory";
 
 
 const EditItemPage = () => {
@@ -31,12 +32,7 @@ const EditItemPage = () => {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const res = await fetch(
-          `https://suims.vercel.app/api/inventory/${id}`
-        );
-        if (!res.ok) throw new Error("Failed to fetch inventory item");
-        const { inventory: item } = await res.json();
-
+        const item = await getInventoryItemById(id);
         setUpdatedItem({
           productName: item.productName || "",
           category: item.category || "",
@@ -83,21 +79,10 @@ const EditItemPage = () => {
 
     setIsSaving(true);
     try {
-      const res = await fetch(
-        `https://suims.vercel.app/api/inventory/${id}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            quantity: parseInt(updatedItem.quantity, 10),
-            threshold: parseInt(updatedItem.threshold, 10),
-          }),
-        }
-      );
-      const json = await res.json();
-      if (!res.ok) {
-        throw new Error(json.message || "Failed to update inventory");
-      }
+      await updateInventoryItem(id, {
+        quantity: parseInt(updatedItem.quantity, 10),
+        threshold: parseInt(updatedItem.threshold, 10),
+      });
       navigate("/inventory");
     } catch (err) {
       console.error("Error updating inventory:", err);

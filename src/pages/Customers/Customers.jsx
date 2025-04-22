@@ -6,6 +6,7 @@ import styles from "../../styles/PageStyles/Customers/customers.module.css";
 import SearchBar from "../../components/SearchBar";
 import { capitalize } from "../../utils/validators";
 import RefreshButton from "../../components/RefreshButton";
+import { deleteCustomer, getAllCustomers } from "../../api/customers";
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
@@ -16,14 +17,8 @@ const Customers = () => {
   const fetchCustomers = async () => {
     try {
       setLoading(true);
-      const res = await fetch("https://suims.vercel.app/api/customer/");
-      const data = await res.json();
-      const customerArray = data.data || data;
-      const formattedCustomers = customerArray.map((cust) => ({
-        ...cust,
-        id: cust._id,
-      }));
-      setCustomers(formattedCustomers);
+      const all = await getAllCustomers();
+      setCustomers(all);
     } catch (err) {
       console.error("Error fetching customers:", err);
     } finally {
@@ -40,12 +35,7 @@ const Customers = () => {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`https://suims.vercel.app/api/customer/${id}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) {
-        throw new Error("Failed to delete customer");
-      }
+      await deleteCustomer(id);
       setCustomers((prev) => prev.filter((customer) => customer.id !== id));
     } catch (err) {
       console.error("Error deleting customer:", err);

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "../../styles/PageStyles/Inventory/itemDetails.module.css";
 import { capitalize, formatDate } from "../../utils/validators";
+import { getInventoryItemById } from "../../api/inventory";
 
 const ItemDetails = () => {
   const { id } = useParams();
@@ -15,10 +16,7 @@ const ItemDetails = () => {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const res = await fetch(`https://suims.vercel.app/api/inventory/${id}`);
-        if (!res.ok) throw new Error("Item not found");
-        const data = await res.json();
-        const fetchedItem = data.inventory || data;
+        const fetchedItem = await getInventoryItemById(id);
         setItem(fetchedItem);
       } catch (err) {
         console.error("Error fetching item:", err);

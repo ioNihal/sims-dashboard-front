@@ -5,6 +5,7 @@ import styles from "../../styles/PageStyles/Inventory/inventory.module.css";
 import SearchBar from "../../components/SearchBar";
 import { capitalize } from "../../utils/validators";
 import RefreshButton from "../../components/RefreshButton";
+import { getAllInventoryItems, deleteInventoryItem } from "../../api/inventory";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -15,18 +16,15 @@ const Inventory = () => {
   const fetchItems = async () => {
     try {
       setLoading(true);
-      const res = await fetch("https://suims.vercel.app/api/inventory/");
-      const data = await res.json();
-      if (data) {
-        setItems(data.inventory || []);
-      }
+      const all = await getAllInventoryItems();
+      setItems(all);
     } catch (err) {
       console.error("Error fetching inventory items:", err);
     } finally {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     fetchItems();
   }, []);
@@ -36,13 +34,8 @@ const Inventory = () => {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`https://suims.vercel.app/api/inventory/${id}`, {
-        method: "DELETE"
-      });
-      if (!res.ok) {
-        throw new Error("Failed to delete item");
-      }
-      setItems((prev) => prev.filter((item) => item._id !== id));
+      await deleteInventoryItem(id);
+      setItems(prev => prev.filter(item => item._id !== id));
     } catch (err) {
       console.error("Error deleting item:", err);
       alert("Error deleting item");
@@ -63,12 +56,12 @@ const Inventory = () => {
           Add Item
         </Link>
         <div className={styles.rightSide}>
+          <RefreshButton onClick={fetchItems} loading={loading} />
           <SearchBar
             placeholder="Search inventory..."
             searchQuery={searchTerm}
             setSearchQuery={setSearchTerm}
           />
-          <RefreshButton onClick={fetchItems} loading={loading} />
         </div>
       </div>
 

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Customers/customerDetails.module.css";
 import { capitalize, formatDate } from "../../utils/validators";
+import { getCustomerById } from "../../api/customers";
 
 const CustomerDetails = () => {
   const { id } = useParams();
@@ -14,13 +15,7 @@ const CustomerDetails = () => {
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
-        const res = await fetch(`https://suims.vercel.app/api/customer/${id}`);
-        if (!res.ok) {
-          throw new Error("Failed to fetch customer details");
-        }
-        const json = await res.json();
-        // Expecting the API to return the customer data in the `data` field
-        const customerData = json.data;
+        const customerData = await getCustomerById(id);
         setCustomer(customerData);
       } catch (err) {
         console.error("Error fetching customer details:", err);

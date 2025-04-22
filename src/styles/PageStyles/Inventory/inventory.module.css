@@ -32,6 +32,12 @@
   flex-wrap: wrap;
 }
 
+.rightSide {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .addBtn {
   text-decoration: none;
   background-color: var(--btn);

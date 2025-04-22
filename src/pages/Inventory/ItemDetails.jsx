@@ -20,11 +20,6 @@ const ItemDetails = () => {
         const data = await res.json();
         const fetchedItem = data.inventory || data;
         setItem(fetchedItem);
-
-        // Set orders if present
-        if (fetchedItem.orders) {
-          setItemOrders(fetchedItem.orders);
-        }
       } catch (err) {
         console.error("Error fetching item:", err);
         setError("Item not found. Try again later!");
@@ -34,6 +29,12 @@ const ItemDetails = () => {
     };
     fetchItem();
   }, [id]);
+
+
+  // Set orders if present
+  // if (orders) {
+  //   setItemOrders(orders);
+  // }
 
   if (loading) {
     return (

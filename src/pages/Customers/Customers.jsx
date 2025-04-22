@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Customers/customers.module.css";
 import SearchBar from "../../components/SearchBar";
 import { capitalize } from "../../utils/validators";
+import RefreshButton from "../../components/RefreshButton";
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
@@ -12,27 +13,25 @@ const Customers = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        const res = await fetch("https://suims.vercel.app/api/customer/");
-        const data = await res.json();
-        // Support both response formats: either data.customer or data as an array.
-        const customerArray = data.data || data;
-        
-        // Map _id to id for consistency.
-        const formattedCustomers = customerArray.map((cust) => ({
-          ...cust,
-          id: cust._id,
-        }));
-        setCustomers(formattedCustomers);
-      } catch (err) {
-        console.error("Error fetching customers:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchCustomers = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("https://suims.vercel.app/api/customer/");
+      const data = await res.json();
+      const customerArray = data.data || data;
+      const formattedCustomers = customerArray.map((cust) => ({
+        ...cust,
+        id: cust._id,
+      }));
+      setCustomers(formattedCustomers);
+    } catch (err) {
+      console.error("Error fetching customers:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchCustomers();
   }, []);
 
@@ -66,11 +65,17 @@ const Customers = () => {
     <div className={styles.page}>
       <h1>Customers</h1>
       <div className={styles.actions}>
-        {/* Navigate to the dynamic add customer page */}
         <button className={styles.addBtn} onClick={() => navigate("/customers/add")}>
           Add Customer
         </button>
-        <SearchBar placeholder="Search customers..." searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <div className={styles.rightSide}>
+          <RefreshButton onClick={fetchCustomers} loading={loading} />
+          <SearchBar
+            placeholder="Search customers..."
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
+        </div>
       </div>
 
       {loading ? (

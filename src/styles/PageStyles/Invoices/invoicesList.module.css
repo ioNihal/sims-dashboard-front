@@ -1,4 +1,4 @@
-/* pages/Invoices/invoicesPage.module.css */
+/* pages/Invoices/invoicesList.module.css */
 .page {
   max-width: 1200px;
   min-width: 200px;
@@ -29,80 +29,30 @@
   justify-content: space-between;
 }
 
-.actions .selectionForm {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  width: 100%;
-  box-sizing: border-box;
-  align-items: center;
-}
 
-/* For each row inside the form */
-.formRow {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  box-sizing: border-box;
-}
-
-.formRow label {
-  min-width: 70px;
-  font-size: 14px;
-  color: var(--text);
-  font-weight: 600;
-}
-
-/* Make the select element flexible */
-.formRow select {
-  flex: 1;
-  padding: 8px;
-  font-size: 12px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text);
-  border-radius: 6px;
-  transition: border-color 0.3s;
-}
-
-.formRow select:focus {
-  border-color: var(--blue);
-}
-
-/* Generate Invoice Button */
 .generateBtn {
-  align-self: flex-start;
-  background-color: var(--btn-edit);
+  background-color: var(--btn);
   color: #fff;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-  box-shadow: 0 3px 6px rgba(98, 0, 234, 0.2);
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s ease;
 }
-
 .generateBtn:hover {
-  background-color: var(--btn-edit-hover);
-  transform: translateY(-2px);
+  background-color: var(--btn-hover);
 }
 
-/* SearchBar Wrapper */
-.searchBarWrapper {
-  display: flex;
-  align-items: center;
-  height: auto;
-}
-
-/* Table styles */
-.tableContainer {
+/* the card around the table */
+.listCard {
   background: var(--bg-dim);
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   overflow-x: auto;
 }
+
+
 
 .table {
   width: 100%;
@@ -141,6 +91,11 @@
 
 .noInvoices {
   color: var(--text);
+}
+
+.error, .loading {
+  color: var(--text);
+  text-align: center;
 }
 
 /* Responsive adjustments for tablets */

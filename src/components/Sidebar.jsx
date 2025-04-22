@@ -14,6 +14,7 @@ import {
 } from "react-icons/fa";
 import { FaTruckFront } from "react-icons/fa6";
 import styles from "../styles/SideBar/sidebar.module.css";
+import { RiBillLine } from "react-icons/ri";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,15 +67,15 @@ const Sidebar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/reports" className={({ isActive }) => isActive ? styles.active : undefined}>
-              <FaChartBar className={styles.icon} />
-              {isOpen && <span>Reports</span>}
+            <NavLink to="/invoices" className={({ isActive }) => isActive ? styles.active : undefined}>
+              <RiBillLine className={styles.icon} />
+              {isOpen && <span>Invoices</span>}
             </NavLink>
           </li>
           <li>
-            <NavLink to="/invoices" className={({ isActive }) => isActive ? styles.active : undefined}>
-              <FaFileInvoice className={styles.icon} />
-              {isOpen && <span>Invoices</span>}
+            <NavLink to="/reports" className={({ isActive }) => isActive ? styles.active : undefined}>
+              <FaChartBar className={styles.icon} />
+              {isOpen && <span>Reports</span>}
             </NavLink>
           </li>
         </ul>

@@ -58,6 +58,10 @@
   background-color: var(--btn-edit-hover);
 }
 
+.saveBtn:disabled {
+  cursor: not-allowed;
+}
+
 .card {
   min-height: 300px;
   height: 100%;
@@ -74,8 +78,10 @@
 .deleteWrapper {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 1rem;
   margin-bottom: 1rem;
+
 }
 
 .title {
@@ -97,6 +103,20 @@
 
 .deleteBtn:hover {
   background-color: var(--btn-delete-hover);
+}
+
+.confirmBtn {
+  background-color: var(--btn);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.deleteBtn:hover {
+  background-color: var(--btn-hover);
 }
 
 .detailGroup {
@@ -134,15 +154,19 @@
 
 .itemsSection {
   margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .itemsSection h3 {
+  flex: 1 1 100%;
   font-size: 1.3rem;
   color: var(--text);
-  margin-bottom: 1rem;
 }
 
 .itemRow {
+  flex: 1 1 250px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -150,12 +174,12 @@
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 12px;
-  margin-bottom: 0.75rem;
 }
 
 .itemInfo {
   display: flex;
   flex-direction: column;
+  gap: 5px;
   flex: 2;
 }
 
@@ -176,6 +200,7 @@
   align-items: flex-end;
   font-size: 0.8rem;
   flex: 1;
+  gap: 3px;
 }
 
 .itemQuantity,
@@ -191,6 +216,14 @@
   font-size: 20px;
   padding: 2rem;
   color: var(--text);
+}
+
+.cancelled {
+  color: var(--btn-delete);
+}
+
+.delivered {
+  color: var(--btn-edit);
 }
 
 /* RESPONSIVENESS */

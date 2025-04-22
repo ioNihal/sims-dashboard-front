@@ -1,0 +1,99 @@
+.page {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--bg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    font-family: "Roboto", sans-serif;
+  }
+  
+  .title {
+    font-size: 26px;
+    text-align: center;
+    color: var(--text);
+    margin-bottom: 2rem;
+  }
+  
+  .error,
+  .errorSmall {
+    color: var(--red);
+    font-size: 14px;
+    margin-top: 1rem;
+  }
+  
+  .errorSmall {
+    margin-top: 0.5rem;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .field label {
+    font-weight: 600;
+    color: var(--text);
+  }
+  
+  .field select {
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-light);
+    color: var(--text);
+    font-size: 14px;
+  }
+  
+  .ordersList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+    background: var(--bg-dim);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .checkboxItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .checkboxItem label {
+    color: var(--text);
+    font-size: 14px;
+  }
+  
+  .generateBtn {
+    padding: 12px 20px;
+    background: var(--btn-edit);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .generateBtn:hover {
+    background: var(--btn-edit-hover);
+    transform: translateY(-2px);
+  }
+  
+  .info {
+    color: var(--text-light);
+    font-size: 14px;
+    font-style: italic;
+  }
+  

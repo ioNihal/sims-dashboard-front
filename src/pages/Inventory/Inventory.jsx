@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Inventory/inventory.module.css";
 import SearchBar from "../../components/SearchBar";
 import { capitalize } from "../../utils/validators";
+import RefreshButton from "../../components/RefreshButton";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -11,22 +12,22 @@ const Inventory = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Fetch inventory items from backend API
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const res = await fetch("https://suims.vercel.app/api/inventory/");
-        const data = await res.json();
-        if (data) {
-          setItems(data.inventory || []);
-        }
-      } catch (err) {
-        console.error("Error fetching inventory items:", err);
-      } finally {
-        setLoading(false);
+  const fetchItems = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("https://suims.vercel.app/api/inventory/");
+      const data = await res.json();
+      if (data) {
+        setItems(data.inventory || []);
       }
-    };
-
+    } catch (err) {
+      console.error("Error fetching inventory items:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
     fetchItems();
   }, []);
 
@@ -35,8 +36,8 @@ const Inventory = () => {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`https://suims.vercel.app/api/inventory/${id}`, { 
-        method: "DELETE" 
+      const res = await fetch(`https://suims.vercel.app/api/inventory/${id}`, {
+        method: "DELETE"
       });
       if (!res.ok) {
         throw new Error("Failed to delete item");
@@ -61,12 +62,14 @@ const Inventory = () => {
         <Link to="/inventory/add" className={styles.addBtn}>
           Add Item
         </Link>
-        <SearchBar
-          className={styles.searchBar}
-          placeholder="Search inventory..."
-          searchQuery={searchTerm}
-          setSearchQuery={setSearchTerm}
-        />
+        <div className={styles.rightSide}>
+          <SearchBar
+            placeholder="Search inventory..."
+            searchQuery={searchTerm}
+            setSearchQuery={setSearchTerm}
+          />
+          <RefreshButton onClick={fetchItems} loading={loading} />
+        </div>
       </div>
 
       {loading ? (
@@ -78,7 +81,7 @@ const Inventory = () => {
           <table className={styles.table}>
             <thead>
               <tr>
-               {/* <th>ID</th>*/}
+                {/* <th>ID</th>*/}
                 <th>Item Name</th>
                 <th>Category</th>
                 <th>Quantity</th>

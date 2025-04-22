@@ -32,6 +32,12 @@
     flex-wrap: wrap;
 }
 
+.rightSide {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 .addBtn {
     background-color: var(--btn);
     color: white;
@@ -65,7 +71,15 @@
     background-color: #ff9800;
 }
 
-.completed {
+.confirmed {
+    background-color: teal;
+}
+
+.shipped {
+    background-color: rgb(90, 11, 155);
+}
+
+.delivered {
     background-color: #4caf50;
 }
 

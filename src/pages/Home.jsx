@@ -33,11 +33,11 @@ const Home = () => {
           ordersRes.json()
         ]);
 
-        
+
         setSuppliers(suppliersData.supplier);
         setCustomers(customersData.data);
         setInventory(inventoryData.inventory);
-        setOrders(ordersData.orders);
+        setOrders(ordersData.orders.filter(order => order.status === "pending"));
       } catch (err) {
         setError(err.message);
       } finally {
@@ -55,10 +55,18 @@ const Home = () => {
     { title: "Orders", value: `${orders?.length || 0} New`, description: "Pending orders", link: "/orders" },
     { title: "Reports", value: "5 New", description: "System reports", link: "/reports" },
   ];
-  
 
-  if (loading) return <div>Loading dashboard...</div>;
-  if (error) return <div>Error: {error}</div>;
+
+  if (loading) return (
+    <div className={styles.page}>
+      <p className={styles.loading}>Loading dashboard...</p>
+    </div>
+  );
+  if (error) return (
+    <div className={styles.page}>
+      <p className={styles.error}>Error: {error}</p>
+    </div>
+  );
 
   return (
     <div className={styles.page}>

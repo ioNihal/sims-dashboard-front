@@ -1,14 +1,16 @@
 .widget {
-    flex: 1 1 150px;
+    flex: 1;
     display: flex;
     align-items: center;
     background: var(--bg-dim);
     padding: 0.5rem;
+    gap: 1rem;
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    max-width: 300px;
+    max-width: 250px;
     border: 1px solid var(--border);
     font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s;
 
     user-select: none;
     -webkit-user-select: none;
@@ -20,6 +22,12 @@
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
+
+    cursor: pointer;
+  }
+
+  .widget:hover {
+    background-color: var(--bg-hover);
   }
   
   
@@ -27,8 +35,8 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-right: 0.75rem;
     object-fit: cover;
+    color: var(--text);
   }
   
   .info {
@@ -40,25 +48,37 @@
   .username {
     font-size: 1rem;
     color: var(--text);
-  }
-  
-  .viewProfile {
-    font-size: 0.8rem;
-    color: var(--btn);
     text-decoration: none;
   }
-  
-  .viewProfile:hover {
-    text-decoration: underline;
+
+  @media (max-width: 1024px) {
+   
   }
+  
+  @media (max-width: 767px) {
+    .widget {
+      flex: 0;
+      max-width: auto;
+      justify-content: center;
+      border: none;
+      box-shadow:none;
+      background-color: transparent;
+      transition: transform 0.2s ease-in;
+    }
 
+    .widget:hover {
+      background-color: transparent;
+      transform: translateY(-2px);
+    }
+
+
+    .info {
+    display: none;
+   }
+
+  }
+  
   @media (max-width: 480px) {
-    .username {
-      font-size: 0.9rem;
-    }
-
-    .viewProfile {
-      font-size: 0.7rem;
-    }
+   
   }
   

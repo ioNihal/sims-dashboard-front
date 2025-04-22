@@ -1,5 +1,5 @@
 // App.jsx
-import React from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
@@ -34,7 +34,10 @@ import RegisterPage from './pages/Login/RegisterPage';
 import ProfileWidget from "./components/widgets/ProfileWidget";
 import AddInvoicePage from './pages/Invoices/AddInvoicePage';
 
+
 function App() {
+
+  
 
   const storedUser = localStorage.getItem("user");
   const user = storedUser 

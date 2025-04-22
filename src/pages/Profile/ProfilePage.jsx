@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserCircle, FaEdit, FaKey, FaSave, FaTimes } from "react-icons/fa";
 import styles from "../../styles/PageStyles/Profile/profilePage.module.css";
 import { capitalize } from "../../utils/validators";
+import { ThemeContext } from "../../contexts/ThemeContext";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState({});
+
+  const { theme, toggle } = useContext(ThemeContext);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -61,7 +64,21 @@ const ProfilePage = () => {
     <div className={styles.page}>
       <div className={styles.profileHeader}>
         <FaUserCircle className={styles.avatar} />
-        <h1 className={styles.title}>{profile.id}</h1>
+        <div className={`${styles.themeToggle} ${theme === 'dark' ? styles.dark : ''}`}>
+          <label className={styles.switch}>
+            <input
+              type="checkbox"
+              checked={theme === 'dark'}
+              onChange={toggle}
+            />
+            <div className={styles.slider}>
+              <div className={styles.icons}>
+                <span className={styles.sun}>&#9728;</span>
+                <span className={styles.moon}>&#9790;</span>
+              </div>
+            </div>
+          </label>
+        </div>
         <p className={styles.role}>{profile.role}</p>
       </div>
 

@@ -52,9 +52,9 @@ const Inventory = () => {
     <div className={styles.page}>
       <h1>Inventory</h1>
       <div className={styles.actions}>
-        <Link to="/inventory/add" className={styles.addBtn}>
+        <button onClick={() => navigate("/inventory/add")} className={styles.addBtn}>
           Add Item
-        </Link>
+        </button>
         <div className={styles.rightSide}>
           <RefreshButton onClick={fetchItems} loading={loading} />
           <SearchBar

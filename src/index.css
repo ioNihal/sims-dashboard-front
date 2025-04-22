@@ -7,11 +7,20 @@ body {
   font-family: sans-serif;
 }
 
+:root * ul, :root * button {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  touch-action: manipulation;
+}
+
 /* Light mode variables*/
 :root {
-  --bg: #ffffff;
-  --bg-dim: #f5f5f5;
-  --bg-hover: #dfdfdf;
+  --bg: #e7e1e1;
+  --bg-dim: #dddddd;
+  --bg-hover: #d1d1d1;
   --btn: #4e66ec;
   --btn-hover: #4057da;
   --btn-edit: #4CAF50;
@@ -20,22 +29,20 @@ body {
   --btn-delete-hover: #E53935;
   --text: #333333;
   --blue: #3498db;
-  --border: #9c9c9c;
+  --border: #b6b6b6;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #161616;
-    --bg-dim: #1f1f1f;
-    --bg-hover: #252525;
-    --btn: #4e66ec;
-    --btn-hover: #4057da;
-    --btn-edit:  #66BB6A;
-    --btn-edit-hover: #81C784;
-    --btn-delete: #E57373;
-    --btn-delete-hover:  #EF9A9A;
-    --text: #ebebeb;
-    --blue: #3498db;
-    --border: #3a3a3a;
-  }
+[data-theme="dark"] {
+  --bg: #161616;
+  --bg-dim: #1f1f1f;
+  --bg-hover: #252525;
+  --btn: #4e66ec;
+  --btn-hover: #4057da;
+  --btn-edit: #66BB6A;
+  --btn-edit-hover: #81C784;
+  --btn-delete: #E57373;
+  --btn-delete-hover: #EF9A9A;
+  --text: #ebebeb;
+  --blue: #3498db;
+  --border: #3a3a3a;
 }

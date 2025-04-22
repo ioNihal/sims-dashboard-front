@@ -1,6 +1,4 @@
-// src/pages/Suppliers/AddSupplierModal.jsx
 import React, { useEffect, useState } from "react";
-import styles from "../../styles/PageStyles/Suppliers/addSupplierModal.module.css";
 import { useNavigate } from "react-router-dom";
 import { GiCancel } from "react-icons/gi";
 import { MdAdd } from "react-icons/md";
@@ -11,161 +9,108 @@ import {
   validateName,
   capitalize,
 } from "../../utils/validators";
+import { getSuppliers, createSupplier } from "../../api/suppliers";
+import styles from "../../styles/PageStyles/Suppliers/addSupplierModal.module.css";
 
 const AddSupplierModal = () => {
-  const [supplier, setSupplier] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-  });
-
+  const navigate = useNavigate();
+  const [supplier, setSupplier] = useState({ name: "", email: "", phone: "", address: "" });
   const [products, setProducts] = useState([{ name: "", category: "", price: "" }]);
-  const [suppliers, setSuppliers] = useState([]);
+  const [existingSuppliers, setExistingSuppliers] = useState([]);
   const [errors, setErrors] = useState({});
   const [submitError, setSubmitError] = useState("");
   const [isSaving, setSaving] = useState(false);
-  const navigate = useNavigate();
 
-  
-  
-
+  // load existing suppliers for duplicate‑email check
   useEffect(() => {
-    const fetchSuppliers = async () => {
+    (async () => {
       try {
-        const res = await fetch("https://suims.vercel.app/api/supplier");
-        const data = await res.json();
-        const supplierArray = data.supplier || data;
-        const formatted = supplierArray.map((s) => ({ ...s, id: s._id }));
-        setSuppliers(formatted);
+        const list = await getSuppliers();
+        setExistingSuppliers(list.map(s => ({ ...s, id: s._id })));
       } catch (err) {
-        console.error("Error fetching suppliers:", err);
+        console.error("Error loading suppliers:", err);
       }
-    };
-    fetchSuppliers();
+    })();
   }, []);
 
   const validateField = (field, value) => {
     switch (field) {
-      case "name":
-        return validateName(value);
-      case "email":
-        return validateEmail(value);
-      case "phone":
-        return validatePhone(value);
-      case "address":
-        return validateAddress(value);
-      default:
-        return "";
+      case "name": return validateName(value);
+      case "email": return validateEmail(value);
+      case "phone": return validatePhone(value);
+      case "address": return validateAddress(value);
+      default: return "";
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setSupplier({ ...supplier, [name]: value });
-    const errorMsg = validateField(name, value);
-    setErrors((prev) => ({ ...prev, [name]: errorMsg }));
+    setSupplier(prev => ({ ...prev, [name]: value }));
+    setErrors(prev => ({ ...prev, [name]: validateField(name, value) }));
   };
 
-  const handleProductChange = (index, e) => {
-    const updatedProducts = [...products];
-    updatedProducts[index][e.target.name] = e.target.value;
-    setProducts(updatedProducts);
+  const handleProductChange = (i, e) => {
+    const upd = [...products];
+    upd[i][e.target.name] = e.target.value;
+    setProducts(upd);
   };
 
-  const addProductField = () => {
-    setProducts([...products, { name: "", category: "", price: "" }]);
-  };
+  const addProductField = () => setProducts(prev => [...prev, { name: "", category: "", price: "" }]);
+  const removeProductField = i => setProducts(prev => prev.filter((_, idx) => idx !== i));
 
-  const removeProductField = (index) => {
-    const updatedProducts = [...products];
-    updatedProducts.splice(index, 1);
-    setProducts(updatedProducts);
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setSubmitError("");
     setSaving(true);
 
-    // Validate supplier fields
-    const fieldErrors = {};
-    let hasError = false;
-    Object.entries(supplier).forEach(([field, value]) => {
-      const err = validateField(field, value);
-      if (err) {
-        fieldErrors[field] = err;
-        hasError = true;
-      }
-    });
-    setErrors(fieldErrors);
-    if (hasError) {
-      setSaving(false);
-      return;
+    // validate supplier
+    const fieldErrs = {};
+    let hasErr = false;
+    for (let [f, v] of Object.entries(supplier)) {
+      const err = validateField(f, v);
+      if (err) { fieldErrs[f] = err; hasErr = true; }
     }
+    setErrors(fieldErrs);
+    if (hasErr) { setSaving(false); return; }
 
-    // Validate product fields (if any products are entered)
-    for (let product of products) {
-      if (
-        !product.name.trim() ||
-        !product.category.trim() ||
-        product.price === "" ||
-        Number(product.price) <= 0
-      ) {
-        setSubmitError(
-          "Please ensure all product fields are filled out correctly with positive prices."
-        );
+    // validate products
+    for (let p of products) {
+      if (!p.name || !p.category || !p.price || Number(p.price) <= 0) {
+        setSubmitError("Fill out all product fields with valid positive prices.");
         setSaving(false);
         return;
       }
     }
 
-    // Check duplicate email among suppliers
-    const emailExists = suppliers.some(
-      (sup) => sup.email.toLowerCase() === supplier.email.toLowerCase()
-    );
-    if (emailExists) {
-      setErrors((prev) => ({
+    // duplicate email?
+    if (existingSuppliers.some(s => s.email.toLowerCase() === supplier.email.toLowerCase())) {
+      setErrors(prev => ({
         ...prev,
-        email: "This email is already in use. Please use a different email.",
+        email: "This email is already in use. Choose another."
       }));
       setSaving(false);
       return;
     }
 
-    // Combine supplier details and the products array.
-    // Capitalize the first letter of supplier name, product name, and product category.
-    const newSupplierData = {
+    // prepare payload
+    const payload = {
       ...supplier,
       name: capitalize(supplier.name),
-      products: products.map((prod) => ({
-        name: capitalize(prod.name),
-        category: capitalize(prod.category),
-        pricePerItem: Number(prod.price),
+      products: products.map(p => ({
+        name: capitalize(p.name),
+        category: capitalize(p.category),
+        pricePerItem: Number(p.price),
       })),
     };
 
-    // Call the supplier API endpoint with the complete data
     try {
-      const supplierResponse = await fetch("https://suims.vercel.app/api/supplier", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newSupplierData),
-      });
-      if (!supplierResponse.ok) {
-        const errorData = await supplierResponse.json();
-        console.log(errorData);
-        throw new Error(
-          (errorData.error.message) || "Failed to add supplier"
-        );
-      }
-      await supplierResponse.json();
-      setSaving(false);
+      await createSupplier(payload);
       navigate("/suppliers");
-    } catch (error) {
-      console.error("Error adding supplier:", error);
+    } catch (err) {
+      console.error("Error adding supplier:", err);
+      setSubmitError(err.message);
+    } finally {
       setSaving(false);
-      setSubmitError(`${error}`);
     }
   };
 
@@ -175,98 +120,63 @@ const AddSupplierModal = () => {
         Back
       </button>
       <h4>Add New Supplier</h4>
-      <form className={styles.formContainer} onSubmit={handleSubmit}>
-        {/* Supplier Fields */}
-        <div className={styles.inputWrapper}>
-          <label>Supplier Name</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="Business name"
-            value={supplier.name}
-            onChange={handleChange}
-            required
-          />
-          {errors.name && <p className={styles.error}>{errors.name}</p>}
-        </div>
-        <div className={styles.inputWrapper}>
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="johndoe@example.com"
-            value={supplier.email}
-            onChange={handleChange}
-            required
-          />
-          {errors.email && <p className={styles.error}>{errors.email}</p>}
-        </div>
-        <div className={styles.inputWrapper}>
-          <label>Phone</label>
-          <input
-            type="tel"
-            name="phone"
-            placeholder="10 digit phone number"
-            value={supplier.phone}
-            onChange={handleChange}
-            required
-          />
-          {errors.phone && <p className={styles.error}>{errors.phone}</p>}
-        </div>
-        <div className={`${styles.inputWrapper} ${styles.fullWidth}`}>
-          <label>Address</label>
-          <textarea
-            name="address"
-            placeholder="Business Address"
-            value={supplier.address}
-            onChange={handleChange}
-            required
-          />
-          {errors.address && <p className={styles.error}>{errors.address}</p>}
-        </div>
 
-        {/* Product Section */}
+      {submitError && <p className={styles.error}>{submitError}</p>}
+
+      <form className={styles.formContainer} onSubmit={handleSubmit}>
+        {["name", "email", "phone", "address"].map(field => (
+          <div
+            key={field}
+            className={`${styles.inputWrapper}${field === "address" ? ` ${styles.fullWidth}` : ""}`}
+          >
+            <label>{`${field === "phone" ? "Phone (+91)" : field.charAt(0).toUpperCase() + field.slice(1)}`}</label>
+            {field === "address" ? (
+              <textarea
+                name="address"
+                placeholder={`Buisness Address...`}
+                value={supplier.address}
+                onChange={handleChange}
+                required
+              />
+            ) : (
+              <input
+                type={field === "email" ? "email" : field === "phone" ? "tel" : "text"}
+                name={field}
+                placeholder={field === "email" ? "buisness@email.com" : field === "phone" ? "10 digit Indian number" : "Buisness Name"}
+                value={supplier[field]}
+                onChange={handleChange}
+                required
+              />
+            )}
+            {errors[field] && <p className={styles.error}>{errors[field]}</p>}
+          </div>
+        ))}
+
+        
         <div className={styles.fullWidth}>
           <h4>Supplier Products</h4>
-          {products.map((product, index) => (
-            <div key={index} className={styles.productRow}>
-              <input
-                type="text"
-                name="name"
-                placeholder="Product Name"
-                value={product.name}
-                onChange={(e) => handleProductChange(index, e)}
-                required
-              />
-              <input
-                type="text"
-                name="category"
-                placeholder="Category"
-                value={product.category}
-                onChange={(e) => handleProductChange(index, e)}
-                required
-              />
-              <input
-                type="number"
-                name="price"
-                placeholder="Price per Item"
-                value={product.price}
-                onChange={(e) => handleProductChange(index, e)}
-                required
-              />
+          {products.map((prod, i) => (
+            <div key={i} className={styles.productRow}>
+              {["name", "category", "price"].map(attr => (
+                <input
+                  key={attr}
+                  name={attr}
+                  type={attr === "price" ? "number" : "text"}
+                  placeholder={attr.charAt(0).toUpperCase() + attr.slice(1)}
+                  value={prod[attr]}
+                  onChange={e => handleProductChange(i, e)}
+                  required
+                />
+              ))}
               <div className={styles.addRemoveBtnGroup}>
-                <button
-                  type="button"
-                  className={styles.addProductBtn}
-                  onClick={addProductField}
-                >
+                <button type="button" onClick={addProductField} className={styles.addProductBtn}>
                   <MdAdd />
                 </button>
                 {products.length > 1 && (
                   <button
                     type="button"
+                    onClick={() => removeProductField(i)}
                     className={styles.removeProductBtn}
-                    onClick={() => removeProductField(index)}
                   >
                     <GiCancel />
                   </button>
@@ -276,29 +186,24 @@ const AddSupplierModal = () => {
           ))}
         </div>
 
-        {/* Action Buttons */}
+       
         <div className={styles.buttonGroup}>
           <button
             type="submit"
             className={styles.saveBtn}
-            disabled={Object.values(errors).some((e) => e) || isSaving}
+            disabled={isSaving || Object.values(errors).some(Boolean)}
           >
             {isSaving ? "Saving..." : "Save"}
           </button>
           <button
             type="button"
-            onClick={() => navigate("/suppliers")}
             className={styles.cancelBtn}
+            onClick={() => navigate("/suppliers")}
           >
             Cancel
           </button>
         </div>
       </form>
-      {submitError && (
-        <p className={styles.error} style={{ textAlign: "center" }}>
-          {submitError}
-        </p>
-      )}
     </div>
   );
 };

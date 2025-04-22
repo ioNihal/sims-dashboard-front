@@ -1,46 +1,38 @@
-// src/pages/Suppliers/SupplierDetail.jsx
-
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Suppliers/supplierDetail.module.css";
 import { capitalize, formatDate } from "../../utils/validators";
+
+import { getSupplier } from "../../api/suppliers";
 
 const SupplierDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [supplier, setSupplier] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchSupplier = async () => {
+    const loadSupplier = async () => {
       try {
-        const res = await fetch(`https://suims.vercel.app/api/supplier/${id}`);
-        const data = await res.json();
-        const fetchedSupplier = data.supplier || data;
-        if (!fetchedSupplier) {
-          alert("Supplier not found!");
-          navigate("/suppliers");
-          return;
-        }
-        // Convert _id to id for consistency
-        fetchedSupplier.id = fetchedSupplier._id;
-        setSupplier(fetchedSupplier);
+        const data = await getSupplier(id);
+        data.id = data._id;
+        setSupplier(data);
       } catch (err) {
-        console.error("Error fetching supplier:", err);
-        alert("Error fetching supplier");
+        console.error(err);
+        alert(err.message);
         navigate("/suppliers");
       } finally {
         setLoading(false);
       }
     };
-
-    fetchSupplier();
+    loadSupplier();
   }, [id, navigate]);
 
   if (loading) {
     return (
       <div className={styles.page}>
-        <p className={styles.loading}>Loading supplier details...</p>
+        <p className={styles.loading}>Loading supplier details…</p>
       </div>
     );
   }
@@ -55,15 +47,13 @@ const SupplierDetail = () => {
       >
         Back
       </button>
+
       <div className={styles.card}>
         <h4 className={styles.title}>Supplier Details</h4>
+
         <div className={styles.details}>
-          {/*<div className={styles.detailItem}>
-            <span className={styles.detailLabel}>ID:</span>
-            <span>SU{supplier.id.substring(8, 12).toUpperCase()}</span>
-          </div>*/}
           <div className={styles.detailItem}>
-            <span className={styles.detailLabel}>Supplier Name:</span>
+            <span className={styles.detailLabel}>Name:</span>
             <span>{capitalize(supplier.name)}</span>
           </div>
           <div className={styles.detailItem}>
@@ -91,6 +81,7 @@ const SupplierDetail = () => {
             </span>
           </div>
         </div>
+
         <div className={styles.products}>
           <h3 className={styles.productsTitle}>Products</h3>
           {supplier.products && supplier.products.length > 0 ? (
@@ -103,11 +94,11 @@ const SupplierDetail = () => {
                 </tr>
               </thead>
               <tbody>
-                {supplier.products.map((product) => (
-                  <tr key={product._id}>
-                    <td>{capitalize(product.name)}</td>
-                    <td>{capitalize(product.category)}</td>
-                    <td>&#8377;{product.pricePerItem}</td>
+                {supplier.products.map((p) => (
+                  <tr key={p._id}>
+                    <td>{capitalize(p.name)}</td>
+                    <td>{capitalize(p.category)}</td>
+                    <td>₹{p.pricePerItem}</td>
                   </tr>
                 ))}
               </tbody>

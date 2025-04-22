@@ -1,7 +1,5 @@
-// src/pages/Suppliers/EditSupplierModal.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import styles from "../../styles/PageStyles/Suppliers/editSupplierModal.module.css";
 import { GiCancel } from "react-icons/gi";
 import { MdAdd } from "react-icons/md";
 import {
@@ -9,203 +7,148 @@ import {
   validatePhone,
   validateAddress,
   validateName,
+  capitalize,
 } from "../../utils/validators";
 
-const EditSupplierModal = ({ onSave }) => {
+import { getSupplier, updateSupplier } from "../../api/suppliers";
+import styles from "../../styles/PageStyles/Suppliers/editSupplierModal.module.css";
+
+const EditSupplierModal = () => {
   const { supplierId } = useParams();
   const navigate = useNavigate();
-  const [updatedSupplier, setUpdatedSupplier] = useState(null);
-  const [deletedProducts, setDeletedProducts] = useState([]); // Track IDs of products to delete
+  const [supplier, setSupplier] = useState(null);
+  const [deletedProducts, setDeletedProducts] = useState([]);
   const [errors, setErrors] = useState({});
   const [submitError, setSubmitError] = useState("");
-  const [isSaving, setIsSaving] = useState(false);
+  const [isSaving, setSaving] = useState(false);
 
+  // load existing supplier
   useEffect(() => {
-    const fetchSupplier = async () => {
+    (async () => {
       try {
-        const res = await fetch(`https://suims.vercel.app/api/supplier/${supplierId}`);
-        const data = await res.json();
-        const fetchedSupplier = data.supplier || data;
-        if (!fetchedSupplier) {
-          alert("Supplier not found!");
-          navigate("/suppliers");
-          return;
-        }
-        // Convert _id to id for consistency
-        fetchedSupplier.id = fetchedSupplier._id;
-        setUpdatedSupplier({
-          ...fetchedSupplier,
+        const data = await getSupplier(supplierId);
+        data.id = data._id;
+        setSupplier({
+          ...data,
           products:
-            fetchedSupplier.products && fetchedSupplier.products.length > 0
-              ? fetchedSupplier.products
+            data.products && data.products.length
+              ? data.products
               : [{ name: "", category: "", pricePerItem: "" }],
         });
       } catch (err) {
-        console.error("Error fetching supplier:", err);
-        alert("Error fetching supplier");
+        alert(err.message);
         navigate("/suppliers");
       }
-    };
-    fetchSupplier();
+    })();
   }, [supplierId, navigate]);
 
+  // simple field validation
   const validateField = (field, value) => {
     switch (field) {
-      case "name":
-        return validateName(value);
-      case "email":
-        return validateEmail(value);
-      case "phone":
-        return validatePhone(value);
-      case "address":
-        return validateAddress(value);
-      default:
-        return "";
+      case "name":    return validateName(value);
+      case "email":   return validateEmail(value);
+      case "phone":   return validatePhone(value);
+      case "address": return validateAddress(value);
+      default:        return "";
     }
   };
 
-  const handleChange = (e) => {
+  // handlers
+  const handleChange = e => {
     const { name, value } = e.target;
-    setUpdatedSupplier((prev) => ({ ...prev, [name]: value }));
-    const errorMsg = validateField(name, value);
-    setErrors((prev) => ({ ...prev, [name]: errorMsg }));
+    setSupplier(s => ({ ...s, [name]: value }));
+    setErrors(e => ({ ...e, [name]: validateField(name, value) }));
   };
 
-  const handleProductChange = (index, e) => {
-    const newProducts = [...updatedSupplier.products];
-    newProducts[index][e.target.name] = e.target.value;
-    setUpdatedSupplier((prev) => ({ ...prev, products: newProducts }));
+  const handleProductChange = (i, e) => {
+    setSupplier(s => {
+      const prods = [...s.products];
+      prods[i][e.target.name] = e.target.value;
+      return { ...s, products: prods };
+    });
   };
 
-  const addProductField = () => {
-    setUpdatedSupplier((prev) => ({
-      ...prev,
-      products: [
-        ...prev.products,
-        { name: "", category: "", pricePerItem: "" },
-      ],
+  const addProductField = () =>
+    setSupplier(s => ({
+      ...s,
+      products: [...s.products, { name: "", category: "", pricePerItem: "" }],
     }));
+
+  const handleDeleteProduct = i => {
+    const prod = supplier.products[i];
+    if (prod._id && !window.confirm("Delete this product?")) return;
+    if (prod._id) setDeletedProducts(d => [...d, prod._id]);
+
+    setSupplier(s => {
+      const prods = [...s.products];
+      prods.splice(i, 1);
+      return { ...s, products: prods };
+    });
   };
 
-  // Update deletion: instead of calling DELETE API here, we mark the product to delete.
-  const handleDeleteProduct = (index) => {
-    const product = updatedSupplier.products[index];
-    // If the product already exists in the database, save its id for deletion.
-    if (product._id) {
-      const confirmDelete = window.confirm("Are you sure you want to delete this product?");
-      if (!confirmDelete) return;
-      setDeletedProducts((prev) => [...prev, product._id]);
-    }
-    // Remove product from the local state.
-    const newProducts = [...updatedSupplier.products];
-    newProducts.splice(index, 1);
-    setUpdatedSupplier((prev) => ({ ...prev, products: newProducts }));
-  };
-
-  const handleSubmit = async (e) => {
+  // form submit
+  const handleSubmit = async e => {
     e.preventDefault();
     setSubmitError("");
-    setIsSaving(true);
+    setSaving(true);
 
-    // Check that all supplier fields are provided.
-    if (
-      !updatedSupplier.name ||
-      !updatedSupplier.email ||
-      !updatedSupplier.phone ||
-      !updatedSupplier.address
-    ) {
-      setSubmitError("Fields cannot be empty!");
-      setIsSaving(false);
-      return;
+    // basic required‐field check
+    if (!supplier.name || !supplier.email || !supplier.phone || !supplier.address) {
+      setSubmitError("All fields are required.");
+      return setSaving(false);
     }
 
-    // Validate supplier fields.
-    const emailError = validateEmail(updatedSupplier.email);
-    const phoneError = validatePhone(updatedSupplier.phone);
-    const nameError = validateName(updatedSupplier.name);
-    const addressError = validateAddress(updatedSupplier.address);
-
-    if (emailError || phoneError || nameError || addressError) {
-      setErrors({
-        email: emailError,
-        phone: phoneError,
-        name: nameError,
-        address: addressError,
-      });
-      setSubmitError("Please fix the validation errors.");
-      setIsSaving(false);
-      return;
+    // run validators
+    const fieldErrs = {
+      name:    validateName(supplier.name),
+      email:   validateEmail(supplier.email),
+      phone:   validatePhone(supplier.phone),
+      address: validateAddress(supplier.address),
+    };
+    if (Object.values(fieldErrs).some(Boolean)) {
+      setErrors(fieldErrs);
+      setSubmitError("Fix validation errors.");
+      return setSaving(false);
     }
 
-    // Validate each product's fields.
-    for (let product of updatedSupplier.products) {
-      if (
-        !product.name.trim() ||
-        !product.category.trim() ||
-        product.pricePerItem === "" ||
-        Number(product.pricePerItem) <= 0
-      ) {
-        setSubmitError("Ensure all product fields are filled with valid values.");
-        setIsSaving(false);
-        return;
+    // product rows validation
+    for (let p of supplier.products) {
+      if (!p.name || !p.category || Number(p.pricePerItem) <= 0) {
+        setSubmitError("Ensure all products have valid name, category, and price.");
+        return setSaving(false);
       }
     }
 
-
-    const supplierPayload = {
-      name: updatedSupplier.name,
-      email: updatedSupplier.email.toLowerCase(),
-      phone: updatedSupplier.phone,
-      address: updatedSupplier.address,
-      products: updatedSupplier.products.map((prod) => {
-        if (prod._id) {
-          return {
-            productId: prod._id,
-            name: prod.name,
-            category: prod.category,
-            pricePerItem: Number(prod.pricePerItem),
-          };
-        }
-        return {
-          name: prod.name,
-          category: prod.category,
-          pricePerItem: Number(prod.pricePerItem),
-        };
-      }),
+    // build payload
+    const payload = {
+      name:    capitalize(supplier.name),
+      email:   supplier.email.toLowerCase(),
+      phone:   supplier.phone,
+      address: supplier.address,
+      products: supplier.products.map(p =>
+        p._id
+          ? { productId: p._id, name: p.name, category: p.category, pricePerItem: Number(p.pricePerItem) }
+          : { name: p.name, category: p.category, pricePerItem: Number(p.pricePerItem) }
+      ),
     };
-
-    if (deletedProducts.length > 0) {
-      supplierPayload.deleteProducts = deletedProducts;
+    if (deletedProducts.length) {
+      payload.deleteProducts = deletedProducts;
     }
 
+    // call API
     try {
-      // Use PATCH for partial update.
-      const response = await fetch(`https://suims.vercel.app/api/supplier/${supplierId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(supplierPayload),
-      });
-
-      if (!response.ok) throw new Error("Failed to update supplier");
-
-      const savedSupplier = await response.json();
-      savedSupplier.id = savedSupplier._id;
-      if (onSave) onSave(savedSupplier);
-      setIsSaving(false);
+      await updateSupplier(supplierId, payload);
       navigate("/suppliers");
-    } catch (error) {
-      console.error("Error updating supplier:", error);
-      setSubmitError("Error updating supplier. Please try again.");
-      setIsSaving(false)
+    } catch (err) {
+      setSubmitError(err.message);
+      console.error(err);
+    } finally {
+      setSaving(false);
     }
   };
 
-  if (!updatedSupplier) {
-    return (
-      <div className={styles.page}>
-        <p className={styles.loading}>Loading supplier data...</p>
-      </div>
-    );
+  if (!supplier) {
+    return <p className={styles.loading}>Loading supplier data…</p>;
   }
 
   return (
@@ -215,91 +158,53 @@ const EditSupplierModal = ({ onSave }) => {
       </button>
       <h4>Edit Supplier</h4>
       {submitError && <p className={styles.error}>{submitError}</p>}
+
       <form className={styles.formContainer} onSubmit={handleSubmit}>
-        <div className={styles.inputWrapper}>
-          <label>Supplier Name</label>
-          <input
-            type="text"
-            name="name"
-            value={updatedSupplier.name}
-            onChange={handleChange}
-            required
-          />
-          {errors.name && <span className={styles.error}>{errors.name}</span>}
-        </div>
-        <div className={styles.inputWrapper}>
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={updatedSupplier.email}
-            onChange={handleChange}
-            required
-          />
-          {errors.email && <span className={styles.error}>{errors.email}</span>}
-        </div>
-        <div className={styles.inputWrapper}>
-          <label>Phone</label>
-          <input
-            type="tel"
-            name="phone"
-            value={updatedSupplier.phone}
-            onChange={handleChange}
-            required
-          />
-          {errors.phone && <span className={styles.error}>{errors.phone}</span>}
-        </div>
-        <div className={`${styles.inputWrapper} ${styles.fullWidth}`}>
-          <label>Address</label>
-          <textarea
-            name="address"
-            value={updatedSupplier.address}
-            onChange={handleChange}
-            required
-          />
-          {errors.address && <span className={styles.error}>{errors.address}</span>}
-        </div>
+        {/* Supplier fields */}
+        {["name","email","phone","address"].map(f => (
+          <div
+            key={f}
+            className={`${styles.inputWrapper}${f==="address"?` ${styles.fullWidth}`:""}`}
+          >
+            <label>{f.charAt(0).toUpperCase()+f.slice(1)}</label>
+            {f==="address" ? (
+              <textarea name="address" value={supplier.address} onChange={handleChange} />
+            ) : (
+              <input
+                type={f==="email"?"email": f==="phone"?"tel":"text"}
+                name={f}
+                value={supplier[f]}
+                onChange={handleChange}
+              />
+            )}
+            {errors[f] && <span className={styles.error}>{errors[f]}</span>}
+          </div>
+        ))}
+
+        {/* Products */}
         <div className={styles.fullWidth}>
           <h4>Supplier Products</h4>
-          {updatedSupplier.products.map((product, index) => (
-            <div key={index} className={styles.productRow}>
-              <input
-                type="text"
-                name="name"
-                placeholder="Product Name"
-                value={product.name}
-                onChange={(e) => handleProductChange(index, e)}
-                required
-              />
-              <input
-                type="text"
-                name="category"
-                placeholder="Category"
-                value={product.category}
-                onChange={(e) => handleProductChange(index, e)}
-                required
-              />
-              <input
-                type="number"
-                name="pricePerItem"
-                placeholder="Price per Item"
-                value={product.pricePerItem}
-                onChange={(e) => handleProductChange(index, e)}
-                required
-              />
+          {supplier.products.map((p, i) => (
+            <div key={i} className={styles.productRow}>
+              {["name","category","pricePerItem"].map(attr => (
+                <input
+                  key={attr}
+                  name={attr}
+                  type={attr==="pricePerItem"?"number":"text"}
+                  placeholder={attr.replace(/([A-Z])/g, " $1")}
+                  value={p[attr]}
+                  onChange={e => handleProductChange(i, e)}
+                />
+              ))}
               <div className={styles.addRemoveBtnGroup}>
-                <button
-                  type="button"
-                  className={styles.addProductBtn}
-                  onClick={addProductField}
-                >
+                <button type="button" onClick={addProductField} className={styles.addProductBtn}>
                   <MdAdd />
                 </button>
-                {updatedSupplier.products.length > 1 && (
+                {supplier.products.length > 1 && (
                   <button
                     type="button"
+                    onClick={() => handleDeleteProduct(i)}
                     className={styles.removeProductBtn}
-                    onClick={() => handleDeleteProduct(index)}
                   >
                     <GiCancel />
                   </button>
@@ -308,9 +213,11 @@ const EditSupplierModal = ({ onSave }) => {
             </div>
           ))}
         </div>
+
+        {/* Actions */}
         <div className={styles.buttonGroup}>
-          <button type="submit" className={styles.saveBtn} disabled={isSaving}>
-            {`${isSaving ? "Saving..." : "Save"}`}
+          <button type="submit" disabled={isSaving} className={styles.saveBtn}>
+            {isSaving ? "Saving..." : "Save"}
           </button>
           <button
             type="button"

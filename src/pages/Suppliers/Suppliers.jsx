@@ -1,11 +1,11 @@
-// src/pages/Suppliers/Suppliers.jsx
-
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/PageStyles/Suppliers/suppliers.module.css";
 import SearchBar from "../../components/SearchBar";
 import { Link } from "react-router-dom";
 import { capitalize } from "../../utils/validators";
 import RefreshButton from "../../components/RefreshButton";
+
+import { getSuppliers, deleteSupplier } from "../../api/suppliers";
 
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
@@ -15,16 +15,12 @@ const Suppliers = () => {
   const fetchSuppliers = async () => {
     try {
       setLoading(true);
-      const res = await fetch("https://suims.vercel.app/api/supplier/");
-      const data = await res.json();
-      const supplierArray = data.supplier || data;
-      const formattedSuppliers = supplierArray.map((s) => ({
-        ...s,
-        id: s._id,
-      }));
-      setSuppliers(formattedSuppliers);
+      const supplierArray = await getSuppliers();
+      const formatted = supplierArray.map(s => ({ ...s, id: s._id }));
+      setSuppliers(formatted);
     } catch (err) {
       console.error("Error fetching suppliers:", err);
+      alert(err.message);
     } finally {
       setLoading(false);
     }
@@ -35,32 +31,28 @@ const Suppliers = () => {
   }, []);
 
   const handleDeleteSupplier = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this supplier?");
-    if (!confirmDelete) return;
+    if (!window.confirm("Are you sure you want to delete this supplier?")) return;
 
     try {
-      const response = await fetch(`https://suims.vercel.app/api/supplier/${id}`, { method: "DELETE" });
-      if (!response.ok) {
-        throw new Error("Failed to delete supplier");
-      }
-      setSuppliers((prev) => prev.filter((supplier) => supplier.id !== id));
-    } catch (error) {
-      console.error("Error deleting supplier:", error);
-      alert("Error deleting supplier");
+      await deleteSupplier(id);
+      setSuppliers(prev => prev.filter(s => s.id !== id));
+    } catch (err) {
+      console.error("Error deleting supplier:", err);
+      alert(err.message);
     }
   };
 
-  const filteredSuppliers = suppliers.filter(
-    (supplier) =>
-      supplier.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      supplier.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      supplier.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      supplier.phone.includes(searchQuery)
+  const filteredSuppliers = suppliers.filter(s =>
+    s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    s.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    s.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    s.phone.includes(searchQuery)
   );
 
   return (
     <div className={styles.page}>
       <h1>Suppliers</h1>
+
       <div className={styles.actions}>
         <Link to="/suppliers/add">
           <button className={styles.addBtn}>Add Supplier</button>
@@ -85,7 +77,6 @@ const Suppliers = () => {
           <table className={styles.table}>
             <thead>
               <tr>
-                {/**<th>ID</th>**/}
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
@@ -94,23 +85,22 @@ const Suppliers = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredSuppliers.map((supplier) => (
-                <tr key={supplier.id}>
-                  {/**<td>{`SU${supplier.id.substring(8, 12).toUpperCase()}`}</td>**/}
-                  <td>{capitalize(supplier.name)}</td>
-                  <td>{supplier.email}</td>
-                  <td>{supplier.phone}</td>
-                  <td>{supplier.address}</td>
+              {filteredSuppliers.map(s => (
+                <tr key={s.id}>
+                  <td>{capitalize(s.name)}</td>
+                  <td>{s.email}</td>
+                  <td>{s.phone}</td>
+                  <td>{s.address}</td>
                   <td>
-                    <Link to={`/suppliers/view/${supplier.id}`}>
+                    <Link to={`/suppliers/view/${s.id}`}>
                       <button className={styles.viewBtn}>View</button>
                     </Link>
-                    <Link to={`/suppliers/edit/${supplier.id}`}>
+                    <Link to={`/suppliers/edit/${s.id}`}>
                       <button className={styles.editBtn}>Edit</button>
                     </Link>
                     <button
                       className={styles.deleteBtn}
-                      onClick={() => handleDeleteSupplier(supplier.id)}
+                      onClick={() => handleDeleteSupplier(s.id)}
                     >
                       Delete
                     </button>
@@ -119,7 +109,7 @@ const Suppliers = () => {
               ))}
               {filteredSuppliers.length === 0 && (
                 <tr>
-                  <td colSpan="6" className={styles.noResults}>
+                  <td colSpan="5" className={styles.noResults}>
                     No suppliers found.
                   </td>
                 </tr>

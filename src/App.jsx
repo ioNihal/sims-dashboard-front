@@ -33,6 +33,7 @@ import InvoiceDetails from './pages/Invoices/InvoiceDetails';
 import RegisterPage from './pages/Login/RegisterPage';
 import ProfileWidget from "./components/widgets/ProfileWidget";
 import AddInvoicePage from './pages/Invoices/AddInvoicePage';
+import Feedbacks from './pages/Feedbacks/Feedbacks';
 
 
 function App() {
@@ -87,6 +88,7 @@ function App() {
                     {/* <Route path="/invoice/add" element={<AddInvoicePage />} /> */}
                     <Route path="/invoice/view/:id" element={<InvoiceDetails />} />
                     <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/feedbacks" element={<Feedbacks />} />
                   </Routes>
                 </div>
                 </div>

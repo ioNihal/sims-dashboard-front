@@ -1,16 +1,24 @@
 /* reports.module.css */
 
-/* Page container */
+
 .page {
+    padding: 20px;
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--text);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+    font-family: "Inter", sans-serif;
+
+    width: 100%;
+    height: 100%;
     max-width: 1200px;
     min-width: 200px;
-    margin: 2rem auto;
-    background: var(--bg);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    font-family: "Roboto", sans-serif;
-    color: var(--text);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Title */
@@ -163,10 +171,9 @@
 }
 
 /* Responsive design for tablets */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .page {
-        margin: 1rem;
-        padding: 1.5rem;
+        padding: 15px;
     }
 
     .title {

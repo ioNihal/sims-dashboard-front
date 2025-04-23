@@ -3,56 +3,57 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Orders/orders.module.css";
 import SearchBar from "../../components/SearchBar";
-import { capitalize, formatDate } from '../../utils/validators'
+import { capitalize, formatDate } from "../../utils/validators";
 import RefreshButton from "../../components/RefreshButton";
 import { getAllOrders } from "../../api/orders";
 
 const Orders = () => {
-
   const [searchQuery, setSearchQuery] = useState("");
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const orders = await getAllOrders();
-      setOrders(orders);
+      setError(null);
+      const data = await getAllOrders();
+      setOrders(data);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Failed to load orders");
     } finally {
       setLoading(false);
     }
   };
 
-
   useEffect(() => {
     fetchOrders();
   }, []);
 
+  const filteredOrders = orders.filter((order) => {
+    const text = searchQuery.toLowerCase();
+    return (
+      order._id.includes(text) ||
+      (order.customerId?.name || "").toLowerCase().includes(text) ||
+      (order.status || "").toLowerCase().includes(text) ||
+      formatDate(order.createdAt, false).toLowerCase().includes(text)
+    );
+  });
 
-  const filteredOrders = orders.filter(
-    (order) =>
-      String(order._id).includes(searchQuery) ||
-      (order.customerId?.name || "")
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase()) ||
-      (order.status || "")
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase()) ||
-      (formatDate(order.createdAt, false) || "")
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase())
-  );
-
-  if (error) return <div className={styles.page}><p className={styles.erro}>Error: {error}</p></div>;
+  // single error display
+  if (error) {
+    return (
+      <div className={styles.page}>
+        <p className={styles.error}>Error: {error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
       <h1>Orders</h1>
+
       <div className={styles.actions}>
         <div className={styles.rightSide}>
           <SearchBar
@@ -64,57 +65,54 @@ const Orders = () => {
         </div>
       </div>
 
-      {
-        error ?
-          (
-            <div className={styles.page}><p className={styles.erro}>Error: {error}</p></div>
-          ) :
-          loading ? (
-            <div className={styles.tableContainer}>
-              <p className={styles.loading}>Loading orders...</p>
-            </div>
-          ) : (
-            <div className={styles.tableContainer}>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th>Order ID</th>
-                    <th>Customer</th>
-                    <th>Total Amount</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+      {loading ? (
+        <div className={styles.tableContainer}>
+          <p className={styles.loading}>Loading orders...</p>
+        </div>
+      ) : (
+        <div className={styles.tableContainer}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Total Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredOrders.map((order) => {
+                const statusKey = order.status?.toLowerCase() || "unknown";
+                return (
+                  <tr key={order._id}>
+                    <td>{order._id}</td>
+                    <td>{capitalize(order.customerId?.name) || "—"}</td>
+                    <td>₹{order.totalAmount}</td>
+                    <td>{formatDate(order.createdAt, false)}</td>
+                    <td>
+                      <span
+                        className={`${styles.status} ${styles[statusKey]}`}
+                      >
+                        {order.status}
+                      </span>
+                    </td>
+                    <td>
+                      <button
+                        className={styles.viewBtn}
+                        onClick={() => navigate(`/orders/${order._id}`)}
+                      >
+                        View
+                      </button>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {filteredOrders.map((order) => (
-                    <tr key={order.id}>
-                      <td>{order._id}</td>
-                      <td>{capitalize(order.customerId?.name) || '—'}</td>
-                      <td>&#8377;{order.totalAmount}</td>
-                      <td>{formatDate(order.createdAt, false)}</td>
-                      <td>
-                        <span
-                          className={`${styles.status} ${styles[order.status ? order.status.toLowerCase() : ""]
-                            }`}
-                        >
-                          {order.status}
-                        </span>
-                      </td>
-                      <td>
-                        <button
-                          className={styles.viewBtn}
-                          onClick={() => navigate(`/orders/${order._id}`)}
-                        >
-                          View
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

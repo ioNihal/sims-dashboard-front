@@ -1,0 +1,131 @@
+.container {
+    padding: 20px;
+    border-radius: 10px;
+    background: var(--bg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+    font-family: "Inter", sans-serif;
+
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    min-width: 200px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: var(--text);
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.rightSide {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.listContainer {
+    min-height: 300px;
+    height: 100%;
+    background: var(--bg-dim);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card {
+    background: var(--bg-dim);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: background 0.2s;
+}
+
+.card:hover {
+    background: var(--bg-hover);
+}
+
+.meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+}
+
+.messageBody {
+    margin: 0.5rem 0 1rem;
+    font-size: 1rem;
+}
+
+.actions {
+    text-align: right;
+}
+
+.deleteBtn {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    background: var(--btn-delete);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.deleteBtn:hover {
+    background: var(--btn-delete-hover);
+}
+
+.error {
+    color: red;
+    padding: 1rem;
+}
+
+.message {
+    padding: 1rem;
+    color: var(--text);
+}
+
+
+@media (max-width: 1024px) {}
+
+@media (max-width: 767px) {
+    .container {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.3rem;
+    }
+
+    .listContainer {
+        padding: 5px;
+    }
+}

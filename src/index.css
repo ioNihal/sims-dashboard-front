@@ -18,24 +18,24 @@ body {
 
 /* Light mode variables*/
 :root {
-  --bg: #fff5f0;          /* Warm pearl (subtle peach undertone) */
-  --bg-dim: #f7e9e3;      /* Soft terracotta wash */
-  --bg-hover: #efe0d9;    /* Warm clay interaction state */
+  --bg: #fff5f0;         
+  --bg-dim: #f7e9e3;      
+  --bg-hover: #efe0d9;  
     
-  --btn: #7a6f8c;         /* Muted lavender-grey */
-  --btn-hover: #685d70;   /* Deepened antique mauve */
+  --btn: #7a6f8c;       
+  --btn-hover: #685d70;  
     
-  --btn-edit: #6b9080;    /* Moss stone green */
+  --btn-edit: #6b9080;   
   --btn-edit-hover: #5a786a;
     
-  --btn-delete: #c47a6b;  /* Weathered terracotta */
+  --btn-delete: #c47a6b;  
   --btn-delete-hover: #ab685b;
     
-  --text: #3d3530;        /* Rich coffee ground */
-  --text-light: #655d58;  /* Aged parchment text */
+  --text: #3d3530;       
+  --text-light: #655d58;  
     
-  --blue: #6c8cff;        /* Soft periwinkle blue */
-  --border: #d3c6bf;      /* Worn linen border */
+  --blue: #6c8cff;       
+  --border: #d3c6bf;    
     
 }
 

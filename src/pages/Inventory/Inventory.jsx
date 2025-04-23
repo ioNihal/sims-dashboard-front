@@ -6,12 +6,17 @@ import SearchBar from "../../components/SearchBar";
 import { capitalize } from "../../utils/validators";
 import RefreshButton from "../../components/RefreshButton";
 import { getAllInventoryItems, deleteInventoryItem } from "../../api/inventory";
+import FilterSortPanel from "../../components/FilterSortPanel";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const [filters, setFilters] = useState({});
+  const [sortKey, setSortKey] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const fetchItems = async () => {
     try {
@@ -42,11 +47,37 @@ const Inventory = () => {
     }
   };
 
-  const filteredItems = items.filter((item) =>
-    item.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.supplierName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredItems = items
+    .filter((item) => {
+      const matchesSearch = item.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.supplierName.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesFilters = Object.entries(filters).every(([key, value]) => {
+        if (!value) return true;
+        if (key === "stockStatus") {
+          const status =
+            item.quantity > item.threshold
+              ? "In Stock"
+              : item.quantity > 0
+                ? "Low Stock"
+                : "Out of Stock";
+          return status === value;
+        }
+        return item[key] === value;
+      });
+
+      return matchesSearch && matchesFilters;
+    })
+    .sort((a, b) => {
+      if (!sortKey) return 0;
+      const aValue = a[sortKey];
+      const bValue = b[sortKey];
+      return sortOrder === "asc"
+        ? aValue > bValue ? 1 : -1
+        : aValue < bValue ? 1 : -1;
+    });
+
 
   return (
     <div className={styles.page}>
@@ -61,6 +92,22 @@ const Inventory = () => {
             placeholder="Search inventory..."
             searchQuery={searchTerm}
             setSearchQuery={setSearchTerm}
+          />
+          <FilterSortPanel
+            filters={filters}
+            setFilters={setFilters}
+            sortKey={sortKey}
+            setSortKey={setSortKey}
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+            filterOptions={{
+              category: [...new Set(items.map(i => i.category))],
+              stockStatus: ["In Stock", "Low Stock", "Out of Stock"]
+            }}
+            sortOptions={[
+              { key: "productName", label: "Name" },
+              { key: "quantity", label: "Quantity" },
+            ]}
           />
         </div>
       </div>

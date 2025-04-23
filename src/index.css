@@ -18,31 +18,38 @@ body {
 
 /* Light mode variables*/
 :root {
-  --bg: #e7e1e1;
-  --bg-dim: #dddddd;
-  --bg-hover: #d1d1d1;
-  --btn: #4e66ec;
-  --btn-hover: #4057da;
-  --btn-edit: #4CAF50;
-  --btn-edit-hover: #43A047;
-  --btn-delete: #F44336;
-  --btn-delete-hover: #E53935;
-  --text: #333333;
-  --blue: #3498db;
-  --border: #b6b6b6;
+  --bg: #fff5f0;          /* Warm pearl (subtle peach undertone) */
+  --bg-dim: #f7e9e3;      /* Soft terracotta wash */
+  --bg-hover: #efe0d9;    /* Warm clay interaction state */
+    
+  --btn: #7a6f8c;         /* Muted lavender-grey */
+  --btn-hover: #685d70;   /* Deepened antique mauve */
+    
+  --btn-edit: #6b9080;    /* Moss stone green */
+  --btn-edit-hover: #5a786a;
+    
+  --btn-delete: #c47a6b;  /* Weathered terracotta */
+  --btn-delete-hover: #ab685b;
+    
+  --text: #3d3530;        /* Rich coffee ground */
+  --text-light: #655d58;  /* Aged parchment text */
+    
+  --blue: #6c8cff;        /* Soft periwinkle blue */
+  --border: #d3c6bf;      /* Worn linen border */
+    
 }
 
 [data-theme="dark"] {
-  --bg: #161616;
-  --bg-dim: #1f1f1f;
-  --bg-hover: #252525;
-  --btn: #4e66ec;
-  --btn-hover: #4057da;
-  --btn-edit: #66BB6A;
-  --btn-edit-hover: #81C784;
-  --btn-delete: #E57373;
-  --btn-delete-hover: #EF9A9A;
-  --text: #ebebeb;
-  --blue: #3498db;
-  --border: #3a3a3a;
+  --bg: #0d1117;
+  --bg-dim: #161b22;
+  --bg-hover: #21262d;
+  --btn: #5a67d6;
+  --btn-hover: #4854c0;
+  --btn-edit: #5d9e62;
+  --btn-edit-hover: #6bae70;
+  --btn-delete: #d65a5a;
+  --btn-delete-hover: #e57373;
+  --text: #e6edf3;
+  --blue: #4d9fff;
+  --border: #2d3848;
 }

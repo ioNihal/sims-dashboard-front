@@ -1,0 +1,49 @@
+.filterSortPanel {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    position: relative;
+}
+
+.filterSortPanel select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none;
+    cursor: pointer;
+    padding: 8px 15px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background-color: var(--bg);
+    color: var(--text);
+    outline: none;
+    width: 0;
+
+}
+
+.filterSortPanel select:focus {
+    border: 1px solid var(--blue);
+}
+
+.filterIcon {
+    color: var(--text);
+    position: absolute;
+    top: 10px;
+    left: 8px;
+    cursor: pointer;
+    pointer-events: none;
+}
+
+.sortIcon {
+    color: var(--text);
+    position: absolute;
+    top: 10px;
+    right: 8px;
+    cursor: pointer;
+    pointer-events: none;
+}
+
+.selected {
+    background-color: var(--btn);
+    color: var(--text);
+}

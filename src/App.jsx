@@ -28,7 +28,7 @@ import ReportDetails from './pages/Reports/ReportDetails';
 import AddReportPage from './pages/Reports/AddReportPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
-import InvoicesList from './pages/Invoices/InvoicesList';
+import Invoices from './pages/Invoices/Invoices';
 import InvoiceDetails from './pages/Invoices/InvoiceDetails';
 import RegisterPage from './pages/Login/RegisterPage';
 import ProfileWidget from "./components/widgets/ProfileWidget";
@@ -83,8 +83,8 @@ function App() {
                     <Route path="/reports" element={<Reports />} />
                     <Route path="/reports/add" element={<AddReportPage />} />
                     <Route path="/reports/view/:id" element={<ReportDetails />} />
-                    <Route path="/invoices" element={<InvoicesList />} />
-                    <Route path="/invoice/add" element={<AddInvoicePage />} />
+                    <Route path="/invoices" element={<Invoices />} />
+                    {/* <Route path="/invoice/add" element={<AddInvoicePage />} /> */}
                     <Route path="/invoice/view/:id" element={<InvoiceDetails />} />
                     <Route path="/profile" element={<ProfilePage />} />
                   </Routes>

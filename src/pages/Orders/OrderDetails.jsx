@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from '../../styles/PageStyles/Orders/orderDetails.module.css';
 import { capitalize, formatDate } from '../../utils/validators';
+import { deleteOrder, getOrderById, updateOrderStatus } from '../../api/orders';
 
 export default function OrderDetails() {
   const { id } = useParams();
@@ -15,11 +16,7 @@ export default function OrderDetails() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(`https://suims.vercel.app/api/orders?orderId=${id}`);
-        const json = await res.json();
-        if (!res.ok) throw new Error(json.message || 'Failed to load order');
-        const [fetched] = json.orders;
-        if (!fetched) throw new Error('Order not found');
+        const fetched = await getOrderById(id);
         setOrder(fetched);
         setStatus(fetched.status);
         setOriginalStatus(fetched.status);
@@ -37,14 +34,7 @@ export default function OrderDetails() {
   const patchStatus = async newStatus => {
     setSaving(true);
     try {
-      const res = await fetch(`https://suims.vercel.app/api/orders/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus }),
-      });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.message || 'Update failed');
-      alert('Order status updated!');
+      await updateOrderStatus(order._id, newStatus);
       navigate('/orders');
     } catch (err) {
       console.error(err);
@@ -55,7 +45,7 @@ export default function OrderDetails() {
   };
 
   const handleBack = () => {
-    if(status !== originalStatus) {
+    if (status !== originalStatus) {
       if (!window.confirm('You have unsaved changes. Are you sure you want to leave?')) return;
     }
     navigate('/orders');
@@ -71,12 +61,7 @@ export default function OrderDetails() {
   const handleDelete = async orderId => {
     if (!window.confirm('Really delete this order?')) return;
     try {
-      const res = await fetch(
-        `https://suims.vercel.app/api/orders/${orderId}`,
-        { method: 'DELETE' }
-      );
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.message || 'Delete failed');
+      await deleteOrder(orderId)
       navigate('/orders');
       alert('Order deleted');
     } catch (err) {
@@ -139,7 +124,7 @@ export default function OrderDetails() {
               pending
             </span>
 
-          ) : order.status === 'confirmed' || order.status === 'shipped' ? (
+          ) : order.status === 'confirmed' ? (
             <select
               className={styles.statusDropdown}
               value={status}
@@ -153,9 +138,21 @@ export default function OrderDetails() {
             </select>
 
           ) :
-            <span className={`${styles.value} ${styles[order.status.toLowerCase()]}`}>
-              {order.status}
-            </span>
+            order.status === 'shipped' ? (
+              <select
+                className={styles.statusDropdown}
+                value={status}
+                onChange={e => setStatus(e.target.value)}
+                disabled={saving}
+              >
+                <option value="cancelled">cancelled</option>
+                <option value="shipped">shipped</option>
+                <option value="delivered">delivered</option>
+              </select>
+            ) :
+              <span className={`${styles.value} ${styles[order.status.toLowerCase()]}`}>
+                {order.status}
+              </span>
           }
         </div>
 

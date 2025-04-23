@@ -5,6 +5,7 @@ import styles from "../../styles/PageStyles/Orders/orders.module.css";
 import SearchBar from "../../components/SearchBar";
 import { capitalize, formatDate } from '../../utils/validators'
 import RefreshButton from "../../components/RefreshButton";
+import { getAllOrders } from "../../api/orders";
 
 const Orders = () => {
 
@@ -18,17 +19,15 @@ const Orders = () => {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const res = await fetch('https://suims.vercel.app/api/orders');
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.message || 'Failed to fetch orders');
-      setOrders(json.orders);
+      const orders = await getAllOrders();
+      setOrders(orders);
     } catch (err) {
-      console.error(err);
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  }
+  };
+
 
   useEffect(() => {
     fetchOrders();

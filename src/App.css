@@ -15,7 +15,9 @@
 
 .topbar {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
+  gap: 1rem;
   padding: 1rem 2rem;
   background: var(--bg);
 }
@@ -33,9 +35,10 @@
   -moz-box-sizing: border-box;
 }
 
-@media only screen and (orientation: landscape) and (max-height: 760px) {
+@media (max-width: 760px) {
   .topbar {
     padding: 0.5rem 1rem;
+    justify-content: space-between;
   }
 
   .content {

@@ -221,7 +221,10 @@
         font-size: 0.7rem;
     }
 
-
+    .actions {
+        align-items: stretch;
+    }
+    
     .editBtn,
     .deleteBtn,
     .viewBtn {

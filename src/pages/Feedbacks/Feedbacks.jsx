@@ -23,23 +23,20 @@ const Feedbacks = () => {
       const all = await getAllFeedbacks(); 
     
       const enriched = await Promise.all(
-        all.map(async fb => {
-          if (fb.senderType === 'customer') {
-            
-            const cust = await getCustomerById(fb.customerId);
-
-            return { 
-              ...fb, 
-              senderName: cust.name
-            };
-          } else {
-            return { 
-              ...fb, 
-              senderName: 'Staff' 
-            };
-          }
-        })
-      );
+  all.map(async fb => {
+    if (fb.senderType === 'customer') {
+      try {
+        const cust = await getCustomerById(fb.customerId);
+        return { ...fb, senderName: cust.name };
+      } catch (err) {
+        console.warn(`Failed to fetch customer ${fb.customerId}:`, err);
+        return { ...fb, senderName: 'Unknown Customer' };
+      }
+    } else {
+      return { ...fb, senderName: 'Staff' };
+    }
+  })
+);
 
       setFeedbacks(enriched);
     } catch (err) {

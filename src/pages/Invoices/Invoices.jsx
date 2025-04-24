@@ -44,7 +44,7 @@ const Invoices = () => {
     }
   };
 
- 
+
   const fetchCustomers = async () => {
     try {
       const fetched = await getAllCustomers();
@@ -82,7 +82,6 @@ const Invoices = () => {
       if (!res.ok) throw new Error(body.error?.message || "Generation failed");
 
       await fetchInvoices();
-      alert("Invoices generated successfully");
     } catch (err) {
       alert("Error: " + err.message);
     } finally {
@@ -90,7 +89,7 @@ const Invoices = () => {
     }
   };
 
-  
+
   const filtered = invoices
     .filter((inv) => {
       const q = searchQuery.toLowerCase();
@@ -114,7 +113,7 @@ const Invoices = () => {
           onClick={handleGenerate}
           disabled={genLoading}
         >
-          {genLoading ? "Generating…" : "Generate Invoices"}
+          {genLoading ? "Generating Invoices…" : "Generate Invoices"}
         </button>
 
         <div className={styles.selectionForm}>
@@ -142,9 +141,13 @@ const Invoices = () => {
       </div>
 
       {error ? (
-        <p className={styles.error}>Error: {error}</p>
+        <div className={styles.listCard}>
+          <p className={styles.error}>Error: {error}</p>
+        </div>
       ) : loading ? (
-        <p className={styles.loading}>Loading…</p>
+        <div className={styles.listCard}>
+          <p className={styles.loading}>Loading…</p>
+        </div>
       ) : (
         <div className={styles.listCard}>
           {filtered.length > 0 ? (

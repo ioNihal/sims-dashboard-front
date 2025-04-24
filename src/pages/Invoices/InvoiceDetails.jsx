@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "../../styles/PageStyles/Invoices/invoiceDetails.module.css";
 import { getCustomerById } from "../../api/customers";
 import { getOrderById } from "../../api/orders";
+import { formatDate } from "../../utils/validators";
 
 const InvoiceDetails = () => {
   const { id } = useParams();
@@ -19,18 +20,17 @@ const InvoiceDetails = () => {
     setLoading(true);
     setError("");
     try {
-      // 1) fetch invoice
+     
       const resInv = await fetch(`https://suims.vercel.app/api/invoice/${id}`);
       const bodyInv = await resInv.json();
       if (!resInv.ok) throw new Error(bodyInv.message || "Could not load invoice");
       const inv = bodyInv.invoice;
       setInvoice(inv);
 
-      // 2) fetch customer
+      
       const cust = await getCustomerById(inv.customerId);
       setCustomer(cust);
 
-      // 3) fetch each order by ID
       const fetchedOrders = await Promise.all(
         inv.orders.map((oid) =>
           getOrderById(oid)
@@ -86,78 +86,85 @@ const InvoiceDetails = () => {
     }
   };
 
-  if (loading) return <p className={styles.loading}>Loading…</p>;
-  if (error) return <p className={styles.error}>Error: {error}</p>;
-
-  const { _id, status, amount, dueDate, createdAt, draft } = invoice;
-
   return (
     <div className={styles.page}>
       <button className={styles.backButton} onClick={() => navigate("/invoices")}>Back</button>
 
       <div className={styles.invoiceCard}>
-        <header className={styles.header}>
-          <h1>Invoice</h1>
-          <div className={styles.btnGroup}>
-            {draft && (
-              <button onClick={doApprove} disabled={actionLoading} className={styles.approve}>
-                Approve
-              </button>
+        {error ? (
+          <p className={styles.error}>Error: {error}</p>
+        ) : loading ? (
+          <p className={styles.loading}>Loading…</p>
+        ) : invoice ? (
+          <>
+            <header className={styles.header}>
+              <h1>Invoice</h1>
+              <div className={styles.btnGroup}>
+                {invoice.draft && (
+                  <button onClick={doApprove} disabled={actionLoading} className={styles.approve}>
+                    Approve
+                  </button>
+                )}
+                {!invoice.draft && invoice.status === "pending" && (
+                  <button onClick={doPay} disabled={actionLoading} className={styles.pay}>
+                    Mark Paid
+                  </button>
+                )}
+                <button onClick={() => window.print()} className={styles.print}>
+                  Print
+                </button>
+              </div>
+            </header>
+
+            <section className={styles.section}>
+              <h2>Customer</h2>
+              <p><strong>Name:</strong> {customer.name}</p>
+              <p><strong>Email:</strong> {customer.email}</p>
+              <p><strong>Phone:</strong> {customer.phone}</p>
+            </section>
+
+            <section className={styles.section}>
+              <h2>Invoice Details</h2>
+              <p><strong>ID:</strong> {invoice._id}</p>
+              <p><strong>Created:</strong> {formatDate(invoice.createdAt)}</p>
+              <p><strong>Due Date:</strong> {formatDate(invoice.dueDate)}</p>
+              <p><strong>Status:</strong> {invoice.status}</p>
+              <p><strong>Amount:</strong> ₹{invoice.amount.toFixed(2)}</p>
+            </section>
+            {orders.length > 0 && (
+              <section className={styles.section}>
+                <h2>Orders</h2>
+                <table className={styles.orderTable}>
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Product Name</th>
+                      <th>Qty</th>
+                      <th>Price</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orders.map(order =>
+                      order.orderProducts.map((o) => (
+                        <tr key={o._id}>
+                          <td>{o._id}</td>
+                          <td>{o.inventoryId.productName}</td>
+                          <td>{o.quantity}</td>
+                          <td>₹{o.price.toFixed(2)}</td>
+                          <td>₹{(o.price * o.quantity).toFixed(2)}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </section>
             )}
-            {!draft && status === "pending" && (
-              <button onClick={doPay} disabled={actionLoading} className={styles.pay}>
-                Mark Paid
-              </button>
-            )}
-            <button onClick={() => window.print()} className={styles.print}>
-              Print
-            </button>
-          </div>
-        </header>
-
-        <section className={styles.section}>
-          <h2>Customer</h2>
-          <p><strong>Name:</strong> {customer.name}</p>
-          <p><strong>Email:</strong> {customer.email}</p>
-          <p><strong>Phone:</strong> {customer.phone}</p>
-        </section>
-
-        <section className={styles.section}>
-          <h2>Invoice Details</h2>
-          <p><strong>ID:</strong> {_id}</p>
-          <p><strong>Created:</strong> {new Date(createdAt).toLocaleDateString()}</p>
-          <p><strong>Due:</strong> {new Date(dueDate).toLocaleDateString()}</p>
-          <p><strong>Status:</strong> {status}</p>
-          <p><strong>Amount:</strong> ₹{amount.toFixed(2)}</p>
-        </section>
-
-        {orders.length > 0 && (
-          <section className={styles.section}>
-            <h2>Orders</h2>
-            <table className={styles.orderTable}>
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Qty</th>
-                  <th>Price</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders[0].orderProducts.map((o) => (
-                  <tr key={o._id}>
-                    <td>{o._id}</td>
-                    <td>{o.quantity}</td>
-                    <td>₹{o.price.toFixed(2)}</td>
-                    <td>₹{(o.price * o.quantity).toFixed(2)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </section>
+          </>) : (
+          <p className={styles.loading}>No Details found.</p>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 

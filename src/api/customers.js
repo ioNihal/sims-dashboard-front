@@ -52,15 +52,16 @@ export const getCustomerById = async (id) => {
  * @param {string} customerData.email    – Customer’s email address
  * @param {string} customerData.phone    – Customer’s phone number
  * @param {string} customerData.address  – Customer’s postal address
+ * @param {string} customerData.paymentPreference  – Customer’s Payment preferences (weely or , monthly)
  * @param {string} customerData.password – Auto‑generated password
  * @returns {Promise<Object>}            Resolves to the created customer object
  * @throws {Error}                       Throws if the network request fails or returns non‑OK
  */
-export async function addCustomer({ name, email, phone, address, password }) {
+export async function addCustomer({ name, email, phone, address, paymentPreference, password }) {
     const res = await fetch(`${BASE_URL}/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, address, password })
+        body: JSON.stringify({ name, email, phone, address, paymentPreference, password })
     });
     const json = await res.json();
     if (!res.ok) {
@@ -81,6 +82,7 @@ export async function addCustomer({ name, email, phone, address, password }) {
  * @param {string} customerData.email - Customer's email address.
  * @param {string} customerData.phone - Customer's phone number.
  * @param {string} customerData.address - Customer's address.
+ * @param {string} customerData.paymentPreference  – Customer’s Payment preferences (weely or , monthly)
  * @returns {Promise<Object>} The result of the update operation.
  * @throws Will throw an error if the update fails or response is not ok.
  */

@@ -1,144 +1,161 @@
-// pages/Invoices/InvoiceDetails.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "../../styles/PageStyles/Invoices/invoiceDetails.module.css";
+import { getCustomerById } from "../../api/customers";
+import { getOrderById } from "../../api/orders";
 
 const InvoiceDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [invoice, setInvoice] = useState(null);
-  const [customerData, setCustomerData] = useState(null);
+  const [customer, setCustomer] = useState(null);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      // 1) fetch invoice
+      const resInv = await fetch(`https://suims.vercel.app/api/invoice/${id}`);
+      const bodyInv = await resInv.json();
+      if (!resInv.ok) throw new Error(bodyInv.message || "Could not load invoice");
+      const inv = bodyInv.invoice;
+      setInvoice(inv);
+
+      // 2) fetch customer
+      const cust = await getCustomerById(inv.customerId);
+      setCustomer(cust);
+
+      // 3) fetch each order by ID
+      const fetchedOrders = await Promise.all(
+        inv.orders.map((oid) =>
+          getOrderById(oid)
+        )
+      );
+      setOrders(fetchedOrders);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
 
   useEffect(() => {
-    // Load saved invoices and customers from localStorage
-    const savedInvoices = localStorage.getItem("invoices");
-    const savedCustomers = localStorage.getItem("customers");
+    fetchData();
+  }, [fetchData]);
 
-    if (savedInvoices) {
-      const invArr = JSON.parse(savedInvoices);
-      const foundInv = invArr.find((inv) => String(inv._id) === id);
-      if (foundInv) {
-        setInvoice(foundInv);
-        // If customerId exists, try to fetch detailed customer info
-        if (savedCustomers && foundInv.customerId) {
-          const custArr = JSON.parse(savedCustomers);
-          const foundCust = custArr.find(
-            (c) => String(c.id) === String(foundInv.customerId)
-          );
-          if (foundCust) {
-            setCustomerData(foundCust);
-          }
-        }
-      } else {
-        alert("Invoice not found");
-        navigate("/invoices");
-      }
-    } else {
-      alert("No invoices found");
-      navigate("/invoices");
+  const doApprove = async () => {
+    setActionLoading(true);
+    try {
+      await fetch(`https://suims.vercel.app/api/invoice/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ draft: false }),
+      });
+      setInvoice((inv) => ({ ...inv, draft: false }));
+    } catch (err) {
+      alert("Approve failed: " + err.message);
+    } finally {
+      setActionLoading(false);
     }
-  }, [id, navigate]);
-
-  const handlePrint = () => {
-    window.print();
   };
 
-  const handleDelete = () => {
-    const savedInvoices = localStorage.getItem("invoices");
-    if (savedInvoices) {
-      const invArr = JSON.parse(savedInvoices);
-      const updatedInvoices = invArr.filter((inv) => String(inv._id) !== id);
-      localStorage.setItem("invoices", JSON.stringify(updatedInvoices));
-      alert("Invoice deleted successfully!");
+  const doPay = async () => {
+    const txn = prompt("Enter UPI transaction ID");
+    if (!txn) return;
+    setActionLoading(true);
+    try {
+      await fetch(`https://suims.vercel.app/api/invoice/${id}/pay`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          transactionId: txn,
+          method: "upi",
+          transactionDate: new Date().toISOString(),
+        }),
+      });
+      setInvoice((inv) => ({ ...inv, status: "paid", method: "upi", transactionId: txn, transactionDate: new Date().toISOString() }));
+    } catch (err) {
+      alert("Payment update failed: " + err.message);
+    } finally {
+      setActionLoading(false);
     }
-    navigate("/invoices");
   };
 
-  if (!invoice) {
-    return <div className={styles.loading}>Loading Invoice...</div>;
-  }
+  if (loading) return <p className={styles.loading}>Loading…</p>;
+  if (error) return <p className={styles.error}>Error: {error}</p>;
 
-  // Use detailed customer data if available, otherwise fallback to invoice fields
-  const customerInfo = customerData || {
-    name: invoice.customer,
-    email: invoice.email,
-    phone: invoice.phone,
-    address: invoice.address,
-  };
+  const { _id, status, amount, dueDate, createdAt, draft } = invoice;
 
   return (
     <div className={styles.page}>
-      <button className={styles.backButton} onClick={() => navigate("/invoices")}>
-        Back
-      </button>
+      <button className={styles.backButton} onClick={() => navigate("/invoices")}>Back</button>
+
       <div className={styles.invoiceCard}>
-        <div className={styles.header}>
-          <h1>INVOICE</h1>
-          <button className={styles.printBtn} onClick={handlePrint}>
-            Print
-          </button>
-        </div>
-        <div className={styles.customerSection}>
-          <h2>Customer Details</h2>
-          <p>
-            <strong>Name:</strong> {customerInfo.name}
-          </p>
-          <p>
-            <strong>Email:</strong> {customerInfo.email || "N/A"}
-          </p>
-          <p>
-            <strong>Phone:</strong> {customerInfo.phone || "N/A"}
-          </p>
-          <p>
-            <strong>Address:</strong> {customerInfo.address || "N/A"}
-          </p>
-        </div>
-        <div className={styles.ordersSection}>
-          <h2>Order Details</h2>
-          {invoice.orders &&
-            invoice.orders.map((order) => (
-              <div key={order.id} className={styles.orderBlock}>
-                <div className={styles.orderHeader}>
-                  <p><strong>Order No:</strong> {order.orderNumber}</p>
-                  <p><strong>Date:</strong> {order.orderDate}</p>
-                  <p><strong>Status:</strong> {order.orderStatus}</p>
-                  <p><strong>Total:</strong> ${order.totalAmount}</p>
-                </div>
-                <div className={styles.responsiveTable}>
-                  <table className={styles.itemsTable}>
-                    <thead>
-                      <tr>
-                        <th>Item</th>
-                        <th>Qty</th>
-                        <th>Price</th>
-                        <th>Subtotal</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {order.orderedItems.map((item) => (
-                        <tr key={item.id}>
-                          <td data-label="Item">{item.name}</td>
-                          <td data-label="Qty">{item.quantity}</td>
-                          <td data-label="Price">${item.price}</td>
-                          <td data-label="Subtotal">${item.quantity * item.price}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            ))}
-          {invoice.orders && invoice.orders.length > 1 && (
-            <div className={styles.combinedTotal}>
-              <h3>Combined Total: ${invoice.totalAmount}</h3>
-            </div>
-          )}
-        </div>
-        <div className={styles.actions}>
-          <button className={styles.deleteBtn} onClick={handleDelete}>
-            Delete Invoice
-          </button>
-        </div>
+        <header className={styles.header}>
+          <h1>Invoice</h1>
+          <div className={styles.btnGroup}>
+            {draft && (
+              <button onClick={doApprove} disabled={actionLoading} className={styles.approve}>
+                Approve
+              </button>
+            )}
+            {!draft && status === "pending" && (
+              <button onClick={doPay} disabled={actionLoading} className={styles.pay}>
+                Mark Paid
+              </button>
+            )}
+            <button onClick={() => window.print()} className={styles.print}>
+              Print
+            </button>
+          </div>
+        </header>
+
+        <section className={styles.section}>
+          <h2>Customer</h2>
+          <p><strong>Name:</strong> {customer.name}</p>
+          <p><strong>Email:</strong> {customer.email}</p>
+          <p><strong>Phone:</strong> {customer.phone}</p>
+        </section>
+
+        <section className={styles.section}>
+          <h2>Invoice Details</h2>
+          <p><strong>ID:</strong> {_id}</p>
+          <p><strong>Created:</strong> {new Date(createdAt).toLocaleDateString()}</p>
+          <p><strong>Due:</strong> {new Date(dueDate).toLocaleDateString()}</p>
+          <p><strong>Status:</strong> {status}</p>
+          <p><strong>Amount:</strong> ₹{amount.toFixed(2)}</p>
+        </section>
+
+        {orders.length > 0 && (
+          <section className={styles.section}>
+            <h2>Orders</h2>
+            <table className={styles.orderTable}>
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Qty</th>
+                  <th>Price</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders[0].orderProducts.map((o) => (
+                  <tr key={o._id}>
+                    <td>{o._id}</td>
+                    <td>{o.quantity}</td>
+                    <td>₹{o.price.toFixed(2)}</td>
+                    <td>₹{(o.price * o.quantity).toFixed(2)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </section>
+        )}
       </div>
     </div>
   );

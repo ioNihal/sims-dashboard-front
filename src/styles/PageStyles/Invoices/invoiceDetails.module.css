@@ -1,255 +1,163 @@
-/* pages/Invoices/invoiceDetails.module.css */
+/* invoiceDetails.module.css */
+
 .page {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 2rem 3rem;
-  background: var(--bg);
+  background-color: var(--bg);
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: "Roboto", sans-serif;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  font-family: "Inter", sans-serif;
+
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  min-width: 200px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .backButton {
+  align-self: flex-start;
   background-color: var(--btn);
   color: #fff;
   border: none;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
-  margin-bottom: 1.5rem;
-  transition: background 0.3s;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, box-shadow 0.3s;
+  margin-bottom: 20px;
+  font-size: 1rem;
 }
 
 .backButton:hover {
   background-color: var(--btn-hover);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
 }
 
 .invoiceCard {
+  min-height: 300px;
+  height: 100%;
+  background: var(--bg-dim);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  background-color: var(--bg-dim);
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  -moz-box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
 }
 
 .header {
   display: flex;
+  gap: 1rem;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-}
-
-.header h1 {
-  font-size: 28px;
-  color: var(--text);
-}
-
-.printBtn {
-  background-color: var(--btn-edit);
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-  box-shadow: 0 3px 6px rgba(3, 169, 244, 0.2);
-}
-
-.printBtn:hover {
-  background-color: var(--btn-edit-hover);
-  transform: translateY(-2px);
-}
-
-.customerSection,
-.ordersSection {
-  margin-bottom: 1.5rem;
-}
-
-.customerSection h2,
-.ordersSection h2 {
-  font-size: 20px;
-  margin-bottom: 0.5rem;
-  color: var(--text);
-}
-
-.customerSection p,
-.orderHeader p {
-  margin: 0.25rem 0;
-  font-size: 15px;
-  color: var(--text);
-}
-
-.orderBlock {
-  background: var(--bg-dim);
-  margin-bottom: 1rem;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-}
-
-.orderHeader {
-  display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1rem;
 }
-
-.orderHeader p {
-  flex: 1 1 150px;
+.header h1 {
   margin: 0;
-  font-size: 14px;
+  font-size: 1.5rem;
   color: var(--text);
 }
-
-.responsiveTable {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.itemsTable {
-  width: 100%;
-  border-collapse: collapse;
+.btnGroup {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
   margin-top: 0.5rem;
 }
 
-.itemsTable th,
-.itemsTable td {
-  text-align: left;
-  padding: 8px;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px;
-  color: var(--text);
-}
-
-.itemsTable th {
-  background: var(--bg);
-  font-weight: 600;
-}
-
-.itemsTable tr {
-  background: var(--bg-dim);
-}
-
-.itemsTable tr:hover {
-  background: var(--bg);
-}
-
-.combinedTotal {
-  text-align: right;
-  margin-top: 1rem;
-}
-
-.combinedTotal h3 {
-  font-size: 16px;
-  color: var(--text);
-}
-
-.actions {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-.deleteBtn {
-  background-color: var(--btn-delete);
-  color: #fff;
+.btnGroup button {
+  padding: 0.4rem 0.8rem;
   border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 0.375rem;
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-  box-shadow: 0 3px 6px rgba(213, 0, 0, 0.2);
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.approve {
+  background: #ffc107;
+  color: #000;
+}
+.approve:hover {
+  background: #e0a800;
+}
+.pay {
+  background: #28a745;
+  color: #fff;
+}
+.pay:hover {
+  background: #218838;
+}
+.print {
+  background: #6c757d;
+  color: #fff;
+}
+.print:hover {
+  background: #5a6268;
 }
 
-.deleteBtn:hover {
-  background-color: var(--btn-delete-hover);
-  transform: translateY(-2px);
+.section {
+  margin-top: 1.5rem;
+}
+.section h2 {
+  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+  color: var(--text);
+}
+.section p {
+  margin: 0.25rem 0;
+  color: var(--text-light);
 }
 
-.loading {
-  text-align: center;
-  font-size: 18px;
+.orderTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.75rem;
+}
+.orderTable th,
+.orderTable td {
+  border: 1px solid var(--border);
+  padding: 0.5rem;
+  text-align: left;
+  color: var(--text);
+}
+.orderTable th {
+  background: var(--bg-hover);
   color: var(--text);
 }
 
-/* Responsive for tablets */
-@media (max-width: 768px) {
-  .page {
-    padding: 1.5rem 2rem;
-  }
+.loading,
+.error {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--text-light);
+  margin: 2rem 0;
+}
+
+@media (max-width: 600px) {
   .invoiceCard {
     padding: 1rem;
   }
-  .header h1 {
-    font-size: 24px;
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  .printBtn {
-    font-size: 12px;
-    padding: 6px 10px;
+  .btnGroup {
+    width: 100%;
+    justify-content: flex-start;
   }
-  .orderHeader p {
-    flex: 1 1 100px;
-  }
-}
-
-/* Responsive for mobile (below 480px) */
-@media (max-width: 480px) {
-  /* Remove horizontal scroll on the main page container */
-  .page {
-    padding: 1rem;
-  }
-  
-  .header h1 {
-    font-size: 20px;
-  }
-  
-  .printBtn {
-    font-size: 10px;
-    padding: 5px 8px;
-  }
-  
-  /* Transform the table into a block layout */
-  .itemsTable,
-  .itemsTable thead,
-  .itemsTable tbody,
-  .itemsTable th,
-  .itemsTable td,
-  .itemsTable tr {
-    display: block;
-  }
-  
-  .itemsTable tr {
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .itemsTable td {
-    text-align: right;
-    padding: 4px;
-    position: relative;
-  }
-  
-  /* Hide the table headers in block view */
-  .itemsTable thead {
-    display: none;
-  }
-  
-  /* Create a label for each cell using the data-label attribute */
-  .itemsTable td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 4px;
-    width: 45%;
-    padding-right: 10px;
-    text-align: left;
-    font-weight: bold;
-  }
-  
-  .itemsTable td:last-child {
-    border-bottom: 0;
+  .orderTable th,
+  .orderTable td {
+    font-size: 0.85rem;
+    padding: 0.4rem;
   }
 }

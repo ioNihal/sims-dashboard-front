@@ -17,18 +17,20 @@ const AddCustomerPage = () => {
     email: "",
     phone: "",
     address: "",
+    paymentPreference: "weekly",
   });
   const [errors, setErrors] = useState({
     name: "",
     email: "",
     phone: "",
     address: "",
+    paymentPreference: "",
   });
   const [submitError, setSubmitError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
 
- 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCustomer((prevCustomer) => ({ ...prevCustomer, [name]: value }));
@@ -47,32 +49,37 @@ const AddCustomerPage = () => {
       case "address":
         errorMessage = validateAddress(value);
         break;
+      case "paymentPreference":
+        errorMessage = value ? "" : "Select preference";
+        break;
       default:
         break;
     }
     setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMessage }));
   };
 
-  
+
   const validateFields = () => {
     const nameError = validateName(customer.name);
     const emailError = validateEmail(customer.email);
     const phoneError = validatePhone(customer.phone);
     const addressError = validateAddress(customer.address);
+    const prefErr = customer.paymentPreference === "weekly" || customer.paymentPreference === "monthly" ? "" : "Select preference";
 
     setErrors({
       name: nameError,
       email: emailError,
       phone: phoneError,
       address: addressError,
+      paymentPreference: prefErr,
     });
 
-    return !(nameError || emailError || phoneError || addressError);
+    return !(nameError || emailError || phoneError || addressError || prefErr);
   };
 
-  // Submission handler
+
   const handleSubmit = async () => {
-    setSubmitError(""); 
+    setSubmitError("");
     if (!validateFields()) {
       return;
     }
@@ -151,6 +158,38 @@ const AddCustomerPage = () => {
             onChange={handleChange}
           ></textarea>
           {errors.address && <p className={styles.error}>{errors.address}</p>}
+        </div>
+
+        <div className={`${styles.inputGroup}`}>
+          <label>Payment Preference</label>
+          <div className={styles.radioGroup}>
+            <label htmlFor="pref-weekly">
+              <input
+                type="radio"
+                id="pref-weekly"
+                name="paymentPreference"
+                value="weekly"
+                checked={customer.paymentPreference === "weekly"}
+                onChange={handleChange}
+              />
+              Weekly
+            </label>
+
+            <label htmlFor="pref-monthly">
+              <input
+                type="radio"
+                id="pref-monthly"
+                name="paymentPreference"
+                value="monthly"
+                checked={customer.paymentPreference === "monthly"}
+                onChange={handleChange}
+              />
+              Monthly
+            </label>
+          </div>
+          {errors.paymentPreference && (
+            <p className={styles.error}>{errors.paymentPreference}</p>
+          )}
         </div>
 
         <div className={styles.buttonGroup}>

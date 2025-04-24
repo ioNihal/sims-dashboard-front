@@ -121,6 +121,24 @@
 }
 
 
+.generateBtn {
+  background-color: var(--btn);
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.generateBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+
+
 
 @media (max-width: 1024px) {
   .actions {

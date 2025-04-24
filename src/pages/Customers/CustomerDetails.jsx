@@ -67,6 +67,10 @@ const CustomerDetails = () => {
             <span className={styles.detailValue}>{capitalize(customer.address)}</span>
           </div>
           <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Payment Preferences:</span>
+            <span className={styles.detailValue}>{capitalize(customer.paymentPreference)}</span>
+          </div>
+          <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Created At:</span>
             <span className={`${styles.detailValue} ${styles.date}`}>
               {formatDate(customer.createdAt)}

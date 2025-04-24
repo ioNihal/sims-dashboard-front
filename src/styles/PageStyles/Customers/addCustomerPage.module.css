@@ -93,6 +93,17 @@
   outline: none;
 }
 
+.radioGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+.radioGroup label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 .fullWidth {
   flex: 1 1 100%;
   display: flex;

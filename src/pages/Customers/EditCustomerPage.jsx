@@ -20,6 +20,7 @@ const EditCustomerPage = () => {
     email: "",
     phone: "",
     address: "",
+    paymentPreference: ""
   });
   // Field-specific errors for live validation
   const [errors, setErrors] = useState({
@@ -27,6 +28,7 @@ const EditCustomerPage = () => {
     email: "",
     phone: "",
     address: "",
+    paymentPreference: "",
   });
   // Global error for fetch or submission failures
   const [submitError, setSubmitError] = useState("");
@@ -43,6 +45,7 @@ const EditCustomerPage = () => {
           email: customerData.email || "",
           phone: customerData.phone || "",
           address: customerData.address || "",
+          paymentPreference: customerData.paymentPreference || "",
         });
       } catch (err) {
         console.error("Error fetching customer data:", err);
@@ -76,6 +79,9 @@ const EditCustomerPage = () => {
       case "address":
         errorMessage = validateAddress(value);
         break;
+      case "paymentPreference":
+        errorMessage = value ? "" : "Select preference";
+        break;
       default:
         break;
     }
@@ -88,15 +94,17 @@ const EditCustomerPage = () => {
     const emailError = validateEmail(updatedCustomer.email);
     const phoneError = validatePhone(updatedCustomer.phone);
     const addressError = validateAddress(updatedCustomer.address);
+    const prefErr = updatedCustomer.paymentPreference === "weekly" || updatedCustomer.paymentPreference === "monthly" ? "" : "Select preference";
 
     setErrors({
       name: nameError,
       email: emailError,
       phone: phoneError,
       address: addressError,
+      paymentPreference: prefErr,
     });
 
-    return !(nameError || emailError || phoneError || addressError);
+    return !(nameError || emailError || phoneError || addressError || prefErr);
   };
 
   // Handle form submission
@@ -183,6 +191,38 @@ const EditCustomerPage = () => {
             onChange={handleChange}
           ></textarea>
           {errors.address && <p className={styles.error}>{errors.address}</p>}
+        </div>
+
+        <div className={`${styles.inputGroup}`}>
+          <label>Payment Preference</label>
+          <div className={styles.radioGroup}>
+            <label htmlFor="pref-weekly">
+              <input
+                type="radio"
+                id="pref-weekly"
+                name="paymentPreference"
+                value="weekly"
+                checked={updatedCustomer.paymentPreference === "weekly"}
+                onChange={handleChange}
+              />
+              Weekly
+            </label>
+
+            <label htmlFor="pref-monthly">
+              <input
+                type="radio"
+                id="pref-monthly"
+                name="paymentPreference"
+                value="monthly"
+                checked={updatedCustomer.paymentPreference === "monthly"}
+                onChange={handleChange}
+              />
+              Monthly
+            </label>
+          </div>
+          {errors.paymentPreference && (
+            <p className={styles.error}>{errors.paymentPreference}</p>
+          )}
         </div>
 
         <div className={styles.buttonGroup}>

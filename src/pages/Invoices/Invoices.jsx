@@ -6,6 +6,7 @@ import RefreshButton from "../../components/RefreshButton";
 import { getAllCustomers, getCustomerById } from "../../api/customers";
 import styles from "../../styles/PageStyles/Invoices/invoices.module.css";
 import { capitalize, formatDate } from "../../utils/validators";
+import { generateInvoices, getAllInvoices } from "../../api/invoice";
 
 const Invoices = () => {
   const navigate = useNavigate();
@@ -19,26 +20,21 @@ const Invoices = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
-  // ── 1) FETCH INVOICES ──────────────────────────────────────
+
   const fetchInvoices = async () => {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch("https://suims.vercel.app/api/invoice");
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error?.message || "Failed to load invoices");
-      }
-
+      const data = await getAllInvoices();
       const populated = await Promise.all(
-        data.invoice.map(async inv => {
+        data.map(async inv => {
           const cust = await getCustomerById(inv.customerId);
           return { ...inv, customer: cust.name };
-        }))
-      setInvoices(Array.isArray(populated) ? populated : []);
+        })
+      );
+      setInvoices(populated || []);
     } catch (err) {
-      setError(err.message);                           // ◀ set error state
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -62,25 +58,11 @@ const Invoices = () => {
 
   const handleGenerate = async () => {
     if (!customers.length) return;
-    if (
-      !window.confirm(`Generate invoices now for ${customers.length} customers?`)
-    )
-      return;
-
+    // if (!window.confirm(`Generate invoices now for ${customers.length} customers?`)) return;
     setGenLoading(true);
     try {
       const ids = customers.map((c) => c._id);
-      const res = await fetch(
-        "https://suims.vercel.app/api/invoice/",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ customers: ids }),
-        }
-      );
-      const body = await res.json();
-      if (!res.ok) throw new Error(body.error?.message || "Generation failed");
-
+      await generateInvoices(ids);
       await fetchInvoices();
     } catch (err) {
       alert("Error: " + err.message);
@@ -88,7 +70,6 @@ const Invoices = () => {
       setGenLoading(false);
     }
   };
-
 
   const filtered = invoices
     .filter((inv) => {

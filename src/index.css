@@ -37,6 +37,11 @@ body {
   --blue: #6c8cff;       
   --border: #d3c6bf;    
     
+
+  --card-bg: #ffffff;
+  --text-secondary: #666;
+  --radius: 8px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
 }
 
 [data-theme="dark"] {
@@ -52,4 +57,9 @@ body {
   --text: #e6edf3;
   --blue: #4d9fff;
   --border: #2d3848;
+
+  --card-bg: #161b22;       /* Slightly lighter than main bg */
+  --text-secondary: #8b949e; /* Softer gray for secondary text */
+  --radius: 8px;            /* Maintains consistent rounding */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.24); /* Darker shadow */
 }

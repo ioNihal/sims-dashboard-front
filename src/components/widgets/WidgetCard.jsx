@@ -6,9 +6,8 @@ import { Link } from "react-router-dom";
 const WidgetCard = ({ title, value, description, link }) => {
   return (
     <Link to={link} className={styles.card}>
-      <h3 className={styles.title}>{title}</h3>
+      <p className={styles.title}>{title}</p>
       <p className={styles.value}>{value}</p>
-      {description && <p className={styles.description}>{description}</p>}
     </Link>
   );
 };

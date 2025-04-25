@@ -4,6 +4,7 @@ import styles from "../../styles/PageStyles/Invoices/invoiceDetails.module.css";
 import { getCustomerById } from "../../api/customers";
 import { getOrderById } from "../../api/orders";
 import { formatDate } from "../../utils/validators";
+import { approveInvoice, getInvoiceById } from "../../api/invoice";
 
 const InvoiceDetails = () => {
   const { id } = useParams();
@@ -20,21 +21,14 @@ const InvoiceDetails = () => {
     setLoading(true);
     setError("");
     try {
-     
-      const resInv = await fetch(`https://suims.vercel.app/api/invoice/${id}`);
-      const bodyInv = await resInv.json();
-      if (!resInv.ok) throw new Error(bodyInv.message || "Could not load invoice");
-      const inv = bodyInv.invoice;
+      const inv = await getInvoiceById(id);
       setInvoice(inv);
-
-      
+  
       const cust = await getCustomerById(inv.customerId);
       setCustomer(cust);
-
+  
       const fetchedOrders = await Promise.all(
-        inv.orders.map((oid) =>
-          getOrderById(oid)
-        )
+        inv.orders.map((oid) => getOrderById(oid))
       );
       setOrders(fetchedOrders);
     } catch (err) {
@@ -51,11 +45,7 @@ const InvoiceDetails = () => {
   const doApprove = async () => {
     setActionLoading(true);
     try {
-      await fetch(`https://suims.vercel.app/api/invoice/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ draft: false }),
-      });
+      await approveInvoice(id);
       setInvoice((inv) => ({ ...inv, draft: false }));
     } catch (err) {
       alert("Approve failed: " + err.message);
@@ -69,16 +59,14 @@ const InvoiceDetails = () => {
     if (!txn) return;
     setActionLoading(true);
     try {
-      await fetch(`https://suims.vercel.app/api/invoice/${id}/pay`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          transactionId: txn,
-          method: "upi",
-          transactionDate: new Date().toISOString(),
-        }),
-      });
-      setInvoice((inv) => ({ ...inv, status: "paid", method: "upi", transactionId: txn, transactionDate: new Date().toISOString() }));
+      await payInvoice(id, txn);
+      setInvoice((inv) => ({
+        ...inv,
+        status: "paid",
+        method: "upi",
+        transactionId: txn,
+        transactionDate: new Date().toISOString(),
+      }));
     } catch (err) {
       alert("Payment update failed: " + err.message);
     } finally {

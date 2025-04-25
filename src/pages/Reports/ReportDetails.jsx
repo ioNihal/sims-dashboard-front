@@ -54,10 +54,10 @@ const ReportDetails = () => {
         <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} />
+            <XAxis dataKey="date" tick={{ fontSize: "0.7rem" }} />
+            <YAxis tick={{ fontSize: "0.7rem" }} />
             <Tooltip />
-            <Legend />
+            <Legend wrapperStyle={{fontSize: "0.7rem"}} />
             <Line type="monotone" dataKey="total" stroke={COLORS[0]} strokeWidth={2} />
           </LineChart>
         </ResponsiveContainer>
@@ -70,10 +70,10 @@ const ReportDetails = () => {
         <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} />
+            <XAxis dataKey="date" tick={{ fontSize: "0.7rem" }} />
+            <YAxis tick={{ fontSize: "0.8rem" }} />
             <Tooltip />
-            <Legend />
+            <Legend wrapperStyle={{fontSize: "0.7rem"}} />
             <Bar dataKey="count" fill={COLORS[1]} barSize={20} />
           </BarChart>
         </ResponsiveContainer>
@@ -98,7 +98,7 @@ const ReportDetails = () => {
               ))}
             </Pie>
             <Tooltip />
-            <Legend />
+            <Legend wrapperStyle={{fontSize: "0.7rem"}} />
           </PieChart>
         </ResponsiveContainer>
       );
@@ -110,10 +110,10 @@ const ReportDetails = () => {
         <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} />
+            <XAxis dataKey="date" tick={{ fontSize: "0.7rem" }} />
+            <YAxis tick={{ fontSize: "0.7rem" }} />
             <Tooltip />
-            <Legend />
+            <Legend wrapperStyle={{fontSize: "0.7rem"}} />
             <Line type="monotone" dataKey="count" stroke={COLORS[2]} strokeWidth={2} />
           </LineChart>
         </ResponsiveContainer>
@@ -126,15 +126,17 @@ const ReportDetails = () => {
 
   return (
     <div className={styles.page}>
-      <button className={styles.backButton} onClick={() => nav("/reports")}>← Back</button>
+      <button className={styles.backButton} onClick={() => nav("/reports")}>Back</button>
 
       <div className={styles.card}>
-        <h1 className={styles.title}>{name || `${type} Report`}</h1>
-        <p className={styles.meta}>
-          <strong>Type:</strong> {type} |
-          <strong>Period:</strong> {new Date(dateRange.start).toLocaleDateString()} – {new Date(dateRange.end).toLocaleDateString()}
-        </p>
-        {description && <p className={styles.description}>{description}</p>}
+        <div className={styles.topSection}>
+          <h1 className={styles.title}>{name || `${type} Report`}</h1>
+          <p className={styles.meta}>
+            <span><strong>Type:</strong> {type} <span className={styles.hiddenChar}> |</span></span>
+            <span><strong>Period:</strong> {new Date(dateRange.start).toLocaleDateString()} – {new Date(dateRange.end).toLocaleDateString()}</span>
+          </p>
+          {description && <p className={styles.description}>{description}</p>}
+        </div>
 
         <div className={styles.chartWrapper}>{renderChart()}</div>
 

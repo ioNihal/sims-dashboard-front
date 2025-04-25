@@ -64,6 +64,27 @@
     margin-top: 2rem;
 }
 
+.loading {
+    text-align: center;
+    font-size: 1rem;
+    padding: 20px;
+    color: var(--text);
+}
+
+.listContainer {
+    min-height: 300px;
+    height: 100%;
+    background: var(--bg-dim);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+
 .reportList {
     list-style: none;
     padding: 0;
@@ -79,7 +100,7 @@
 }
 
 .reportItem:hover {
-    background: var(--bg-dim);
+    background: var(--bg);
 }
 
 .reportInfo {
@@ -102,8 +123,8 @@
     background: var(--btn-edit);
     color: #fff;
     border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
+    padding: 8px 12px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 0.85rem;
     transition: background 0.3s;
@@ -113,16 +134,75 @@
     background: var(--btn-edit-hover);
 }
 
-/* Responsive */
-@media (max-width: 480px) {
+/* Tablets (below 1024px) */
+@media (max-width: 1024px) {
+    .actions {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .listContainer {
+        padding: 10px;
+    }
+}
+
+/* Mobile screens (below 768px) */
+@media (max-width: 768px) {
+    .page {
+        padding: 15px;
+    }
+
+
+    .actions {
+        flex-direction: column;
+        align-items: left;
+    }
+
+    .addBtn {
+        width: 100%;
+    }
+
     .reportItem {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
+        padding: 0.75rem 0.5rem;
+    }
+
+    .reportName {
+        font-size: 0.9rem;
+    }
+
+    .reportInfo {
+        gap: 5px;
+    }
+
+    .reportMeta {
+        font-size: 0.7rem;
     }
 
     .viewBtn {
-        align-self: stretch;
-        text-align: center;
+        padding: 5px 12px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Extra small screens (below 480px) */
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.3rem;
+    }
+
+    .listContainer {
+        padding: 5px;
+    }
+
+    .addBtn {
+        font-size: 0.9rem;
+    }
+
+    .actions {
+        align-items: stretch;
     }
 }

@@ -16,6 +16,7 @@ import { getAllCustomers } from "../../api/customers";
 import { getAllOrders } from "../../api/orders";
 import { getAllInvoices } from "../../api/invoice";
 
+
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#6200ea"];
 
 const AddReportPage = () => {
@@ -28,6 +29,7 @@ const AddReportPage = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [previewData, setPreviewData] = useState(null);
+  const [previewOn, setPreviewOn] = useState(false);
 
   // raw data
   const [inventory, setInventory] = useState([]);
@@ -169,28 +171,102 @@ const AddReportPage = () => {
 
   return (
     <div className={styles.page}>
+      <div className={styles.actions}>
+        <button className={styles.backButton} onClick={() => nav("/reports")}>
+          Back
+        </button>
+        {previewData && (<button className={styles.previewBtn} onClick={() => {
+          setPreviewOn(!previewOn);
+        }}>
+          {previewOn ? "close" : "Preview"}
+        </button>)}
+      </div>
       <h1 className={styles.title}>Create Report</h1>
-      <div className={styles.form}>
-        <div className={styles.inputGroup}>
-          <label>Report Name</label>
-          <input className={styles.input} value={reportName} onChange={e => setReportName(e.target.value)} />
-        </div>
-        <div className={styles.inputGroup}>
-          <label>Description</label>
-          <textarea className={styles.input} rows="2" value={reportDesc} onChange={e => setReportDesc(e.target.value)} />
-        </div>
-        <div className={styles.inputGroup}>
-          <label>Type</label>
-          <select className={styles.input} value={reportType} onChange={e => setReportType(e.target.value)}>
-            <option value="Inventory">Inventory Report</option>
-            <option value="Category">Category-wise Report</option>
-            <option value="Customers">Customer Report</option>
-            <option value="Orders">Order Report</option>
-            <option value="Invoices">Payment/Invoice Report</option>
-            <option value="Sales">Sales Report</option>
-          </select>
-        </div>
-        <div className={styles.dateRow}>
+      {
+        previewData && previewOn ? (
+          <div className={styles.preview}>
+            <h2 className={styles.previewTitle}>{reportType} Preview</h2>
+            <div className={styles.chartContainer}>
+              <ResponsiveContainer width="90%" height="85%" wrapperStyle={{ display: "grid", placeItems: "center" }}>
+                {["Inventory", "Category", "Invoices"].includes(reportType) && (
+                  <PieChart>
+                    <Pie
+                      data={previewData}
+                      dataKey="value"
+                      nameKey={reportType === "Invoices" ? "name" : "name"}
+                      cx="50%" cy="50%"
+                      outerRadius={80}
+                      label
+                    >
+                      {previewData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                )}
+                {reportType === "Customers" && (
+                  <LineChart data={previewData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                    <YAxis tick={{ fontSize: 12 }} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="count" stroke={COLORS[0]} strokeWidth={2} />
+                  </LineChart>
+                )}
+                {reportType === "Orders" && (
+                  <BarChart data={previewData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                    <YAxis tick={{ fontSize: 12 }} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="count" fill={COLORS[1]} barSize={20} />
+                  </BarChart>
+                )}
+                {reportType === "Sales" && (
+                  <LineChart data={previewData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                    <YAxis tick={{ fontSize: 12 }} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="total" stroke={COLORS[2]} strokeWidth={2} />
+                  </LineChart>
+                )}
+              </ResponsiveContainer>
+            </div>
+            <div className={styles.detailSection}>
+              <h3>Details</h3>
+              <ul className={styles.detailList}>
+                {Object.entries(dataDetails).map(([k, v]) => (
+                  <li key={k}><strong>{k}:</strong> {v}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ) : (<div className={styles.form}>
+          <div className={styles.inputGroup}>
+            <label>Report Name</label>
+            <input className={styles.input} value={reportName} onChange={e => setReportName(e.target.value)} />
+          </div>
+          <div className={styles.inputGroup}>
+            <label>Type</label>
+            <select className={styles.input} value={reportType} onChange={e => setReportType(e.target.value)}>
+              <option value="Inventory">Inventory Report</option>
+              <option value="Category">Category-wise Report</option>
+              <option value="Customers">Customer Report</option>
+              <option value="Orders">Order Report</option>
+              <option value="Invoices">Payment/Invoice Report</option>
+              <option value="Sales">Sales Report</option>
+            </select>
+          </div>
+          <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+            <label>Description</label>
+            <textarea className={styles.input} rows="2" value={reportDesc} onChange={e => setReportDesc(e.target.value)} />
+          </div>
+
+
           <div className={styles.inputGroup}>
             <label>Start Date</label>
             <input type="date" className={styles.input} value={startDate} onChange={e => setStartDate(e.target.value)} />
@@ -199,74 +275,17 @@ const AddReportPage = () => {
             <label>End Date</label>
             <input type="date" className={styles.input} value={endDate} onChange={e => setEndDate(e.target.value)} />
           </div>
-        </div>
-        <button className={styles.generateBtn} onClick={handleSave}>Save Report</button>
-      </div>
 
-      {previewData && (
-        <div className={styles.preview}>
-          <h2 className={styles.previewTitle}>{reportType} Preview</h2>
-          <div className={styles.chartContainer}>
-            <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
-              {["Inventory", "Category", "Invoices"].includes(reportType) && (
-                <PieChart>
-                  <Pie
-                    data={previewData}
-                    dataKey="value"
-                    nameKey={reportType === "Invoices" ? "name" : "name"}
-                    cx="50%" cy="50%"
-                    outerRadius={80}
-                    label
-                  >
-                    {previewData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
-                  </Pie>
-                  <Tooltip />
-                  <Legend />
-                </PieChart>
-              )}
-              {reportType === "Customers" && (
-                <LineChart data={previewData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                  <YAxis tick={{ fontSize: 12 }} />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="count" stroke={COLORS[0]} strokeWidth={2} />
-                </LineChart>
-              )}
-              {reportType === "Orders" && (
-                <BarChart data={previewData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                  <YAxis tick={{ fontSize: 12 }} />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="count" fill={COLORS[1]} barSize={20} />
-                </BarChart>
-              )}
-              {reportType === "Sales" && (
-                <LineChart data={previewData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                  <YAxis tick={{ fontSize: 12 }} />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="total" stroke={COLORS[2]} strokeWidth={2} />
-                </LineChart>
-              )}
-            </ResponsiveContainer>
+          <div className={styles.btnGroup}>
+            <button className={styles.saveBtn} onClick={handleSave}>Save</button>
+            <button className={styles.cancelBtn} onClick={() => nav("/reports")}>Cancel</button>
           </div>
-          <div className={styles.detailSection}>
-            <h3>Details</h3>
-            <ul className={styles.detailList}>
-              {Object.entries(dataDetails).map(([k, v]) => (
-                <li key={k}><strong>{k}:</strong> {v}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
-    </div>
+
+        </div>)
+      }
+
+
+    </div >
   );
 };
 

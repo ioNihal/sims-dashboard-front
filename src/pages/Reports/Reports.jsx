@@ -1,181 +1,71 @@
-// pages/Reports/Reports.jsx
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Reports/reports.module.css";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-} from "recharts";
+import RefreshButton from "../../components/RefreshButton";
 
 const Reports = () => {
   const [reports, setReports] = useState([]);
-  const [reportType, setReportType] = useState("Inventory");
-  const navigate = useNavigate();
+  const nav = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  // Example system-wide chart data (for the main page)
-  const [ordersData, setOrdersData] = useState([]);
-  const [inventoryData, setInventoryData] = useState([]);
-  const COLORS = ["#0088FE", "#FFBB28", "#FF8042", "#00C49F", "#6200ea"];
-
+  const fetchReports = () => {
+    setLoading(true);
+    const arr = JSON.parse(localStorage.getItem("reports") || "[]");
+    setReports(arr);
+    setLoading(false);
+  }
   useEffect(() => {
-    // Load existing "reports" from localStorage
-    const savedReports = localStorage.getItem("reports");
-    if (savedReports) {
-      setReports(JSON.parse(savedReports));
-    }
-
-    // Example data for overall system (these charts are optional)
-    setOrdersData([
-      { status: "Completed", count: 3 },
-      { status: "Pending", count: 2 },
-    ]);
-    setInventoryData([
-      { name: "Milk", value: 100 },
-      { name: "Soap", value: 50 },
-    ]);
+    fetchReports();
   }, []);
 
-  const saveReportsToLocalStorage = (updatedReports) => {
-    setReports(updatedReports);
-    localStorage.setItem("reports", JSON.stringify(updatedReports));
-  };
-
-  // (Optional) A button could be used to auto-generate a dummy report
-  // But with the new AddReportPage, you may remove this function.
-  const handleGenerateReport = () => {
-    const now = new Date();
-    let chartData = [];
-    if (reportType === "Inventory") {
-      chartData = [
-        { name: "Milk", value: 80 },
-        { name: "Soap", value: 40 },
-      ];
-    } else if (reportType === "Sales") {
-      chartData = [
-        { month: "Jan", sales: 5000 },
-        { month: "Feb", sales: 7000 },
-      ];
-    } else if (reportType === "Orders") {
-      chartData = [
-        { status: "Completed", count: 5 },
-        { status: "Cancelled", count: 2 },
-      ];
-    } else {
-      chartData = [{ label: "Sample", val: 100 }];
-    }
-
-    const newReport = {
-      _id: Date.now(),
-      type: reportType,
-      createdAt: now.toISOString(),
-      details: `Sample ${reportType} report generated on ${now.toLocaleString()}.`,
-      chartType: reportType,
-      chartData: chartData,
-    };
-
-    const updatedReports = [...reports, newReport];
-    saveReportsToLocalStorage(updatedReports);
-  };
-
-  // Print the entire page (optional)
-  const handlePrint = () => {
-    window.print();
-  };
+  if (reports.length === 0) {
+    return (
+      <div className={styles.page}>
+        <h1 className={styles.title}>Reports</h1>
+        <p className={styles.noReports}>No reports generated yet.</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>Reports</h1>
-
-      {/* Action Controls */}
       <div className={styles.actions}>
-        {/* "Add Report" navigates to a dedicated AddReportPage */}
-        <button
-          className={styles.addReportBtn}
-          onClick={() => navigate("/reports/add")}
-        >
-          Add Report
-        </button>
-        <button className={styles.printBtn} onClick={handlePrint}>
-          Print Page
-        </button>
-      </div>
+        <Link to="/reports/add">
+          <button className={styles.addBtn}>Generate Report</button>
+        </Link>
 
-      {/* Optional: Global Charts Section */}
-      <div className={styles.chartsSection}>
-        <div className={styles.chartCard}>
-          <h3 className={styles.chartTitle}>Orders by Status</h3>
-          <div className={styles.chartContainer}>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={ordersData}>
-                <XAxis dataKey="status" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="count" fill="#6200ea" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-        <div className={styles.chartCard}>
-          <h3 className={styles.chartTitle}>Inventory by Category</h3>
-          <div className={styles.chartContainer}>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={inventoryData}
-                  dataKey="value"
-                  nameKey="name"
-                  outerRadius={100}
-                  label
-                >
-                  {inventoryData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+        <div className={styles.rightSide}>
+          <RefreshButton onClick={fetchReports} loading={loading} />
+          {/* <SearchBar
+            placeholder="Search Reports..."
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          /> */}
         </div>
       </div>
-
-      {/* Generated Reports List */}
-      <div className={styles.reportList}>
-        {reports.length === 0 ? (
-          <p className={styles.noReports}>No reports generated yet.</p>
-        ) : (
-          reports
-            .slice()
-            .reverse()
-            .map((report) => (
-              <div key={report._id} className={styles.reportCard}>
-                <p className={styles.reportDate}>
-                  Created: {new Date(report.createdAt).toLocaleString()}
-                </p>
-                <h3 className={styles.reportType}>{report.type} Report</h3>
-                <p className={styles.reportDetails}>{report.details}</p>
-                <button
-                  className={styles.viewBtn}
-                  onClick={() => navigate(`/reports/view/${report._id}`)}
-                >
-                  View
-                </button>
+      <ul className={styles.reportList}>
+        {reports
+          .slice()
+          .reverse()
+          .map((r) => (
+            <li key={r._id} className={styles.reportItem}>
+              <div className={styles.reportInfo}>
+                <span className={styles.reportName}>{r.name || r.type + " Report"}</span>
+                <span className={styles.reportMeta}>
+                  {r.type} • {new Date(r.dateRange.start).toLocaleDateString()} –{" "}
+                  {new Date(r.dateRange.end).toLocaleDateString()}
+                </span>
               </div>
-            ))
-        )}
-      </div>
+              <button
+                className={styles.viewBtn}
+                onClick={() => nav(`/reports/view/${r._id}`)}
+              >
+                View
+              </button>
+            </li>
+          ))}
+      </ul>
     </div>
   );
 };

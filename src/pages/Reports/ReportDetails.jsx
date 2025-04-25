@@ -1,144 +1,140 @@
-// pages/Reports/ReportDetails.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "../../styles/PageStyles/Reports/reportDetails.module.css";
 import {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    Tooltip,
-    Legend,
-    PieChart,
-    Pie,
-    Cell,
-    ResponsiveContainer,
+  ResponsiveContainer,
+  LineChart, Line,
+  BarChart, Bar,
+  PieChart, Pie, Cell,
+  CartesianGrid, XAxis, YAxis, Tooltip, Legend
 } from "recharts";
 
-const COLORS = ["#0088FE", "#FFBB28", "#FF8042", "#00C49F", "#6200ea"];
+// simple CSV-download helper
+function downloadCSV(rows, filename = "report.csv") {
+  if (!rows || !rows.length) return;
+  const keys = Object.keys(rows[0]);
+  const csv = [
+    keys.join(","), 
+    ...rows.map(r => keys.map(k => JSON.stringify(r[k], replacer)).join(","))
+  ].join("\n");
+  function replacer(key, value) {
+    // remove potential commas in values
+    return typeof value === "string" ? value.replace(/,/g, "") : value;
+  }
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  a.href     = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#6200ea"];
 
 const ReportDetails = () => {
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const [report, setReport] = useState(null);
+  const { id } = useParams();
+  const nav = useNavigate();
+  const [report, setReport] = useState(null);
 
-    useEffect(() => {
-        const savedReports = localStorage.getItem("reports");
-        if (savedReports) {
-            const reportsArr = JSON.parse(savedReports);
-            const foundReport = reportsArr.find((r) => String(r._id) === id);
-            if (foundReport) {
-                setReport(foundReport);
-            } else {
-                alert("Report not found");
-                navigate("/reports");
-            }
-        } else {
-            alert("No reports available");
-            navigate("/reports");
-        }
-    }, [id, navigate]);
+  useEffect(() => {
+    const all = JSON.parse(localStorage.getItem("reports") || "[]");
+    const found = all.find(r => String(r._id) === id);
+    if (!found) return nav("/reports");
+    setReport(found);
+  }, [id, nav]);
 
-    const handlePrint = () => {
-        window.print();
-    };
+  if (!report) return <div className={styles.loading}>Loading…</div>;
 
-    const handleDelete = () => {
-        const savedReports = localStorage.getItem("reports");
-        if (savedReports) {
-            const reportsArr = JSON.parse(savedReports);
-            const updatedReports = reportsArr.filter((r) => String(r._id) !== id);
-            localStorage.setItem("reports", JSON.stringify(updatedReports));
-            alert("Report deleted successfully!");
-        }
-        navigate("/reports");
-    };
+  const { name, description, type, dateRange, chartData } = report;
 
-    if (!report) {
-        return <div className={styles.loading}>Loading Report...</div>;
+  const renderChart = () => {
+    if (!chartData?.length) return <p className={styles.noChart}>No data</p>;
+
+    if (type === "Sales") {
+      return (
+        <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
+          <LineChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+            <YAxis tick={{ fontSize: 12 }} />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="total" stroke={COLORS[0]} strokeWidth={2} />
+          </LineChart>
+        </ResponsiveContainer>
+      );
     }
 
-    // Render a chart based on report.chartType & report.chartData
-    const renderChart = () => {
-        if (!report.chartData || report.chartData.length === 0) return null;
-        if (report.chartType === "Inventory" || report.chartType === "Customers") {
-            // Use a Pie Chart for Inventory/Customer reports
-            return (
-                <ResponsiveContainer width="100%" height={300}>
-                    <PieChart>
-                        <Pie data={report.chartData} dataKey="value" nameKey="name" outerRadius={100} label>
-                            {report.chartData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                            ))}
-                        </Pie>
-                        <Tooltip />
-                        <Legend />
-                    </PieChart>
-                </ResponsiveContainer>
-            );
-        } else if (report.chartType === "Sales") {
-            // Use a Bar Chart for Sales report
-            return (
-                <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={report.chartData}>
-                        <XAxis dataKey="month" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="sales" fill="#6200ea" />
-                    </BarChart>
-                </ResponsiveContainer>
-            );
-        } else if (report.chartType === "Orders") {
-            // Use a Bar Chart for Orders report
-            return (
-                <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={report.chartData}>
-                        <XAxis dataKey="status" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="count" fill="#6200ea" />
-                    </BarChart>
-                </ResponsiveContainer>
-            );
-        } else {
-            return (
-                <p className={styles.noChart}>
-                    No specific chart for report type: {report.chartType}.
-                </p>
-            );
-        }
-    };
+    if (type === "Orders") {
+      return (
+        <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
+          <BarChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+            <YAxis tick={{ fontSize: 12 }} />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="count" fill={COLORS[1]} barSize={20} />
+          </BarChart>
+        </ResponsiveContainer>
+      );
+    }
 
     return (
-        <div className={styles.page}>
-            <button className={styles.backButton} onClick={() => navigate("/reports")}>
-                Back
-            </button>
-            <div className={styles.card}>
-                <p className={styles.reportDate}>
-                    Created: {new Date(report.createdAt).toLocaleString()}
-                </p>
-                <h2 className={styles.reportType}>{report.type} Report</h2>
-                {report.title && <h3 className={styles.reportTitle}>{report.title}</h3>}
-                {report.description && <p className={styles.reportDescription}>{report.description}</p>}
-                <p className={styles.reportDetails}>{report.details}</p>
-
-                {/* Render the chart if available */}
-                <div className={styles.chartSection}>{renderChart()}</div>
-
-                <div className={styles.actions}>
-                    <button className={styles.printBtn} onClick={handlePrint}>
-                        Print
-                    </button>
-                    <button className={styles.deleteBtn} onClick={handleDelete}>
-                        Delete
-                    </button>
-                </div>
-            </div>
-        </div>
+      <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
+        <PieChart>
+          <Pie
+            data={chartData}
+            dataKey="value"
+            nameKey="name"
+            cx="50%" cy="50%"
+            outerRadius={80}
+            label
+          >
+            {chartData.map((_, i) => (
+              <Cell key={i} fill={COLORS[i % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </ResponsiveContainer>
     );
+  };
+
+  return (
+    <div className={styles.page}>
+      <button className={styles.backButton} onClick={() => nav("/reports")}>
+        ← Back
+      </button>
+
+      <div className={styles.card}>
+        <h1 className={styles.title}>{name || `${type} Report`}</h1>
+        <p className={styles.meta}>
+          <strong>Type:</strong> {type} | 
+          <strong>Period:</strong>{" "}
+          {new Date(dateRange.start).toLocaleDateString()} –{" "}
+          {new Date(dateRange.end).toLocaleDateString()}
+        </p>
+        {description && <p className={styles.description}>{description}</p>}
+
+        <div className={styles.chartWrapper}>{renderChart()}</div>
+      </div>
+
+      <div className={styles.actions}>
+        <button className={styles.printBtn} onClick={() => window.print()}>
+          Print
+        </button>
+        <button
+          className={styles.csvBtn}
+          onClick={() => downloadCSV(chartData, `${name || type}-report.csv`)}
+        >
+          Download CSV
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default ReportDetails;

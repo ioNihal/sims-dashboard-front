@@ -1,178 +1,94 @@
-/* reportDetails.module.css */
 .page {
-    max-width: 1200px;
-    min-width: 200px;
+    max-width: 800px;
     margin: 2rem auto;
+    padding: 1rem;
     background: var(--bg);
-    padding: 2rem 3rem;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(87, 66, 66, 0.1);
-    font-family: "Roboto", sans-serif;
-    transition: padding 0.3s;
-}
-
-.backButton {
-    background-color: var(--btn);
-    color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    font-family: "Inter", sans-serif;
+    color: var(--text);
+  }
+  
+  .backButton {
+    background: none;
     border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
+    color: var(--blue);
+    font-size: 0.9rem;
     cursor: pointer;
-    margin-bottom: 1.5rem;
-    transition: background 0.3s;
-}
-
-.backButton:hover {
-    background-color: var(--btn-hover);
-}
-
-.card {
-    background-color: var(--bg-dim);
-    border-radius: 8px;
-    padding: 2rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.reportDate {
-    font-size: 14px;
-    color: var(--text);
-    margin-bottom: 0.5rem;
-}
-
-.reportType {
-    font-size: 24px;
-    color: var(--text);
-    margin-bottom: 0.5rem;
-}
-
-.reportTitle {
-    font-size: 20px;
-    color: var(--text);
-    margin-bottom: 0.5rem;
-}
-
-.reportDescription {
-    font-size: 16px;
-    color: var(--text);
     margin-bottom: 1rem;
-}
-
-.reportDetails {
-    font-size: 14px;
-    color: var(--text);
-    margin-bottom: 1.5rem;
-}
-
-.chartSection {
-    background:var(--bg);
+  }
+  
+  .card {
+    background: var(--bg-dim);
     padding: 1.5rem;
-    border-radius: 6px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 1.5rem;
-}
-
-.noChart {
-    color: var(--text);
-    font-size: 14px;
-    text-align: center;
-}
-
-.actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-}
-
-.printBtn,
-.deleteBtn {
-    color:var(--text);
-    border: none;
-    padding: 10px 20px;
     border-radius: 8px;
-    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  
+  .title {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+    color: var(--text);
+  }
+  
+  .meta {
+    margin: 0 0 1rem;
+    font-size: 0.85rem;
+    color: var(--text-light);
+  }
+  
+  .description {
+    margin-bottom: 1rem;
+  }
+  
+  .chartWrapper {
+    width: 100%;
+    height: 300px;
+    margin-bottom: 1rem;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .printBtn,
+  .csvBtn {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background 0.3s ease;
-    box-shadow: 0 3px 6px rgba(98, 0, 234, 0.2);
-}
-
-.printBtn {
+    font-size: 0.9rem;
+    transition: background 0.3s;
+  }
+  
+  .printBtn {
     background: var(--btn-edit);
-}
-
-.deleteBtn {
-    background: var(--btn-delete);
-}
-
-.printBtn:hover {
-    background:var(--btn-edit-hover);
-}
-
-.deleteBtn:hover {
-    background: var(--btn-delete-hover);
-}
-
-.loading {
+    color: #fff;
+  }
+  .printBtn:hover {
+    background: var(--btn-edit-hover);
+  }
+  
+  .csvBtn {
+    background: var(--btn);
+    color: #fff;
+  }
+  .csvBtn:hover {
+    background: var(--btn-hover);
+  }
+  
+  .loading {
     text-align: center;
-    font-size: 18px;
-    padding: 2rem;
-}
-
-/* Responsive for tablets */
-@media (max-width: 768px) {
-    .page {
-        padding: 1.5rem 2rem;
-    }
-
-    .reportType {
-        font-size: 20px;
-    }
-
-    .reportTitle {
-        font-size: 18px;
-    }
-
-    .reportDescription {
-        font-size: 15px;
-    }
-
-    .chartSection {
-        padding: 1rem;
-    }
-
-    .printBtn,
-    .deleteBtn {
-        font-size: 15px;
-        padding: 8px 16px;
-    }
-}
-
-/* Responsive for mobile screens (below 480px) */
-@media (max-width: 480px) {
-    .page {
-        padding: 1rem 1.5rem;
-    }
-
-    .reportType {
-        font-size: 18px;
-    }
-
-    .reportTitle {
-        font-size: 16px;
-    }
-
-    .reportDescription,
-    .reportDetails {
-        font-size: 14px;
-    }
-
-    .chartSection {
-        padding: 0.75rem;
-    }
-
-    .printBtn,
-    .deleteBtn {
-        width: 100%;
-        font-size: 16px;
-        padding: 8px 12px;
-    }
-}
+    font-size: 1rem;
+    color: var(--text-light);
+  }
+  
+  .noChart {
+    text-align: center;
+    color: var(--text-light);
+    padding: 1rem;
+  }
+  

@@ -91,4 +91,32 @@
     color: var(--text-light);
     padding: 1rem;
   }
+
+  .dataSection {
+    margin-top: 1.5rem;
+  }
+  
+  .dataTitle {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  
+  .dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+  }
+  
+  .dataTable th,
+  .dataTable td {
+    border: 1px solid var(--border);
+    padding: 0.5rem;
+    text-align: left;
+  }
+  
+  .dataTable th {
+    background: var(--bg-dim);
+    font-weight: 600;
+  }
   

@@ -20,6 +20,29 @@ export const validatePhone = (phone) => {
   return "";
 };
 
+
+/**
+ * Validate password strength.
+ * Requirements:
+ *  - at least 8 characters
+ *  - at least one uppercase letter
+ *  - at least one lowercase letter
+ *  - at least one digit
+ *  - at least one special character
+ * @param {string} pwd
+ * @returns {string} error message or empty string if valid
+ */
+export const validatePassword = (pwd) => {
+  if (!pwd || !pwd.trim()) return "Password is required.";
+  if (pwd.length < 8) return "Password must be at least 8 characters long.";
+  if (!/[A-Z]/.test(pwd)) return "Password must contain at least one uppercase letter.";
+  if (!/[a-z]/.test(pwd)) return "Password must contain at least one lowercase letter.";
+  if (!/[0-9]/.test(pwd)) return "Password must contain at least one digit.";
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(pwd)) return "Password must contain at least one special character.";
+  return "";
+};
+
+
 export const validateObjectId = (id) => {
   if (!id) {
     return "ID Required.";

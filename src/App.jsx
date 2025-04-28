@@ -30,7 +30,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import Invoices from './pages/Invoices/Invoices';
 import InvoiceDetails from './pages/Invoices/InvoiceDetails';
-import RegisterPage from './pages/Login/RegisterPage';
+// import RegisterPage from './pages/Login/RegisterPage';
 import ProfileWidget from "./components/widgets/ProfileWidget";
 import Feedbacks from './pages/Feedbacks/Feedbacks';
 import { ThemeToggleButton } from './components/ThemeToggleButton';
@@ -49,7 +49,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        {/* <Route path="/register" element={<RegisterPage />} /> */}
         <Route
           path="/*"
           element={

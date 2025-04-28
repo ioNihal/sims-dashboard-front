@@ -1,84 +1,82 @@
 /* pages/Profile/profilePage.module.css */
 .page {
-  max-width: 600px;
-  min-width: 200px;
-  margin: 2rem auto;
-  background: var(--bg);
-  padding: 2rem 3rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  font-family: "Inter", sans-serif;
-  transition: padding 0.3s;
+  background-color: var(--bg);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', sans-serif;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .profileHeader {
   margin-bottom: 2rem;
   display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 1rem;
 }
 
 .avatar {
-  font-size: 80px;
+  font-size: 4rem;
   color: #6200ea;
 }
 
-.title {
-  font-size: 28px;
-  color: var(--text);
-  font-weight: 500;
-  margin: 0;
-}
-
 .role {
-  font-size: 16px;
+  font-size: 1.5rem;
   color: var(--text);
 }
 
-.profileInfo {
+.profileBody {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
   margin-bottom: 2rem;
-  text-align: left;
+}
+
+/* Pane visibility toggling */
+.pane {
+  display: none;
+  background: var(--bg-light);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.pane.active {
+  display: block;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--text);
 }
 
 .infoRow {
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
-  font-size: 16px;
   color: var(--text);
 }
 
 .infoRow label {
+  min-width: 100px;
   font-weight: 600;
-  min-width: 80px;
-  /* Ensures label doesn't shrink too much */
-  margin-right: 1rem;
-}
-
-.valueOrInput {
-  flex: 1;
-  /* Take remaining space */
-  display: flex;
-  align-items: center;
-}
-
-.valueOrInput span {
-  font-size: 16px;
   color: var(--text);
+  margin-right: 1rem;
 }
 
 .editInput {
   flex: 1;
   padding: 8px 10px;
-  font-size: 16px;
   border: 1px solid var(--border);
-  background: var(--bg);
+  border-radius: 5px;
+  font-size: 1rem;
   color: var(--text);
-  border-radius: 6px;
-  outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  background: var(--bg);
 }
 
 .editInput:focus {
@@ -88,9 +86,12 @@
 
 .actions {
   display: flex;
-  flex-wrap: wrap;
   gap: 1rem;
-  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.actions button {
+  padding: 8px 14px;
 }
 
 .actionBtn {
@@ -100,12 +101,10 @@
   background-color: var(--btn);
   color: #fff;
   border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-size: 16px;
+  padding: 8px 10px;
+  border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
-  box-shadow: 0 3px 6px rgba(3, 169, 244, 0.2);
 }
 
 .actionBtn:hover {
@@ -125,12 +124,9 @@
   background-color: var(--btn-delete);
   color: #fff;
   border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 16px;
+  padding: 8px 10px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-  box-shadow: 0 3px 6px rgba(213, 0, 0, 0.2);
 }
 
 .logoutBtn:hover {
@@ -142,46 +138,18 @@
   font-size: 18px;
 }
 
-
-
-
-/* Responsive design for tablets */
-@media (max-width: 768px) {
-  .page {
-    padding: 1.5rem 2rem;
-  }
-
-  .title {
-    font-size: 24px;
-  }
-
-  .avatar {
-    font-size: 60px;
-  }
-
-  .actionBtn,
-  .logoutBtn {
-    font-size: 15px;
-    padding: 8px 14px;
-  }
-
-  .editInput {
-    width: 100%;
-  }
+.fieldError {
+  font-size: 0.75rem;
+  color: red;
+  margin-left: 100px;
+  margin-top: -0.75rem;
+  margin-bottom: 0.75rem;
+  display: block;
 }
 
-/* Responsive design for mobile screens (below 480px) */
-@media (max-width: 480px) {
-  .page {
-    padding: 1rem 1.5rem;
-  }
-
-  .title {
-    font-size: 22px;
-  }
-
-  .avatar {
-    font-size: 50px;
+@media (max-width: 768px) {
+  .profileBody {
+    grid-template-columns: 1fr;
   }
 
   .infoRow {
@@ -193,22 +161,11 @@
     margin-bottom: 0.5rem;
   }
 
-  .valueOrInput {
-    width: 100%;
-  }
-
   .actions {
     flex-direction: column;
   }
 
-  .actionBtn,
-  .logoutBtn {
-    flex: 1;
-    font-size: 14px;
-    padding: 6px 10px;
-  }
-
-  .editInput {
-    font-size: 14px;
+  .actions button {
+    width: 100%;
   }
 }

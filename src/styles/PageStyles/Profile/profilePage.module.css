@@ -152,6 +152,9 @@
     grid-template-columns: 1fr;
   }
 
+  .pane {
+    padding: 5px;
+  }
   .infoRow {
     flex-direction: column;
     align-items: flex-start;
@@ -161,11 +164,27 @@
     margin-bottom: 0.5rem;
   }
 
+  .editInput {
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+  }
+
   .actions {
     flex-direction: column;
   }
 
   .actions button {
-    width: 100%;
+    flex: 1;
+  }
+
+  .avatar {
+    font-size: 2rem;
+  }
+
+  .role {
+    font-size: 1rem;
+    ;
   }
 }

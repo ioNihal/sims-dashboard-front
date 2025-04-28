@@ -21,6 +21,8 @@ import { getSuppliers } from "../api/suppliers";
 import { getAllCustomers } from "../api/customers";
 import { getAllOrders } from "../api/orders";
 import { getAllInvoices } from "../api/invoice";
+import  RefreshButton  from "../components/RefreshButton";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [inventory, setInventory] = useState([]);
@@ -31,34 +33,37 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const navigate = useNavigate();
+
+  const load = async () => {
+    try {
+      setLoading(true);
+      const [
+        inv,
+        sup,
+        cust,
+        ord,
+        invc
+      ] = await Promise.all([
+        getAllInventoryItems(),
+        getSuppliers(),
+        getAllCustomers(),
+        getAllOrders(),
+        getAllInvoices()
+      ]);
+      setInventory(inv);
+      setSuppliers(sup);
+      setCustomers(cust);
+      setOrders(ord);
+      setInvoices(invc);
+    } catch (err) {
+      setError(err.message || "Failed to load data");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
-    const load = async () => {
-      try {
-        setLoading(true);
-        const [
-          inv,
-          sup,
-          cust,
-          ord,
-          invc
-        ] = await Promise.all([
-          getAllInventoryItems(),
-          getSuppliers(),
-          getAllCustomers(),
-          getAllOrders(),
-          getAllInvoices()
-        ]);
-        setInventory(inv);
-        setSuppliers(sup);
-        setCustomers(cust);
-        setOrders(ord);
-        setInvoices(invc);
-      } catch (err) {
-        setError(err.message || "Failed to load data");
-      } finally {
-        setLoading(false);
-      }
-    };
     load();
   }, []);
 
@@ -145,93 +150,105 @@ const Home = () => {
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>Dashboard Overview</h1>
+      <div className={styles.actions}>
+        <button className={styles.generateBtn} onClick={() => navigate("/reports")}>Go to Reports</button>
+        <RefreshButton onClick={load} loading={loading} />
+      </div>
       <div className={styles.insightContainer}>
-        <div className={styles.widgetsGrid}>
-          {widgets.map((w, idx) => (
-            <WidgetCard
-              key={idx}
-              title={w.title}
-              value={w.value}
-              description={w.description}
-              link={w.link}
-            />
-          ))}
-        </div>
+        {error ? (
+          <div className={styles.error}>{error}</div>
+        ) : loading ? (
+          <div className={styles.loading}>Loading...</div>
+        ) : (
+          <>
+            <div className={styles.widgetsGrid}>
+              {widgets.map((w, idx) => (
+                <WidgetCard
+                  key={idx}
+                  title={w.title}
+                  value={w.value}
+                  description={w.description}
+                  link={w.link}
+                />
+              ))}
+            </div>
 
-        <div className={styles.chartsGrid}>
-          <div className={styles.chartCard}>
-            <h3>Sales Trend</h3>
-            <ResponsiveContainer  width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
-              <LineChart data={getSalesData()}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" tick={{ fontSize: "0.7rem"}} />
-                <YAxis tick={{ fontSize: "0.7rem"}} />
-                <Tooltip wrapperStyle={{fontSize : "1rem", color: "purple"}} />
-                <Legend wrapperStyle={{ fontSize: '0.7rem' }} />
-                <Line
-                  type="monotone"
-                  dataKey="total"
-                  stroke="#8884d8"
-                  strokeWidth={1}
-                 />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+            <div className={styles.chartsGrid}>
+              <div className={styles.chartCard}>
+                <h3>Sales Trend</h3>
+                <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
+                  <LineChart data={getSalesData()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" tick={{ fontSize: "0.7rem" }} />
+                    <YAxis tick={{ fontSize: "0.7rem" }} />
+                    <Tooltip wrapperStyle={{ fontSize: "1rem", color: "purple" }} />
+                    <Legend wrapperStyle={{ fontSize: '0.7rem' }} />
+                    <Line
+                      type="monotone"
+                      dataKey="total"
+                      stroke="#8884d8"
+                      strokeWidth={1}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
 
-          {/* Inventory Status */}
-          <div className={styles.chartCard}>
-            <h3>Inventory Status</h3>
-            <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
-              <PieChart >
-                <Pie
-                  data={getInventoryStatusData()}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  label
-                >
-                  {getInventoryStatusData().map((entry, index) => (
-                    <Cell key={index} fill={["#0088FE", "#00C49F", "#FFBB28"][index % 3]} />
-                  ))}
-                </Pie>
-                <Tooltip wrapperStyle={{fontSize : "1rem", color: "purple"}} />
-                <Legend wrapperStyle={{ fontSize: '0.7rem' }} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+              {/* Inventory Status */}
+              <div className={styles.chartCard}>
+                <h3>Inventory Status</h3>
+                <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
+                  <PieChart >
+                    <Pie
+                      data={getInventoryStatusData()}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={80}
+                      label
+                    >
+                      {getInventoryStatusData().map((entry, index) => (
+                        <Cell key={index} fill={["#0088FE", "#00C49F", "#FFBB28"][index % 3]} />
+                      ))}
+                    </Pie>
+                    <Tooltip wrapperStyle={{ fontSize: "1rem", color: "purple" }} />
+                    <Legend wrapperStyle={{ fontSize: '0.7rem' }} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
 
-          {/* Top Products */}
-          <div className={styles.chartCard}>
-            <h3>Top Selling Products</h3>
-            <ResponsiveContainer  width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
-              <BarChart data={getTopProducts()}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" tick={{ fontSize: "0.7rem"}} />
-                <YAxis tick={{ fontSize: "0.7rem"}} />
-                <Tooltip wrapperStyle={{fontSize : "1rem", color: "purple"}} />
-                <Legend wrapperStyle={{ fontSize: '0.7rem' }}  />
-                <Bar dataKey="quantity" fill="#82ca9d" barSize={10}/>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+              {/* Top Products */}
+              <div className={styles.chartCard}>
+                <h3>Top Selling Products</h3>
+                <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
+                  <BarChart data={getTopProducts()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" tick={{ fontSize: "0.7rem" }} />
+                    <YAxis tick={{ fontSize: "0.7rem" }} />
+                    <Tooltip wrapperStyle={{ fontSize: "1rem", color: "purple" }} />
+                    <Legend wrapperStyle={{ fontSize: '0.7rem' }} />
+                    <Bar dataKey="quantity" fill="#82ca9d" barSize={10} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
 
-          {/* Order Status */}
-          <div className={styles.chartCard}>
-            <h3>Order Status Distribution</h3>
-            <ResponsiveContainer  width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
-              <BarChart data={getOrderStatusData()}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" tick={{ fontSize: "0.7rem"}} />
-                <YAxis tick={{ fontSize: "0.7rem"}} />
-                <Tooltip wrapperStyle={{fontSize : "1rem", color: "purple"}} />
-                <Legend wrapperStyle={{ fontSize: '0.7rem' }} />
-                <Bar dataKey="value" fill="#ff7300" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+              {/* Order Status */}
+              <div className={styles.chartCard}>
+                <h3>Order Status Distribution</h3>
+                <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
+                  <BarChart data={getOrderStatusData()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" tick={{ fontSize: "0.7rem" }} />
+                    <YAxis tick={{ fontSize: "0.7rem" }} />
+                    <Tooltip wrapperStyle={{ fontSize: "1rem", color: "purple" }} />
+                    <Legend wrapperStyle={{ fontSize: '0.7rem' }} />
+                    <Bar dataKey="value" fill="#ff7300" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

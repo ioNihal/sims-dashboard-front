@@ -170,6 +170,9 @@
   .listCard {
     padding: 10px;
   }
+  .selectionForm {
+    margin-left: 0;
+  }
 }
 
 @media (max-width: 767px) {

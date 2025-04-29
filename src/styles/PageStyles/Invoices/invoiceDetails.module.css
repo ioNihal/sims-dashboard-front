@@ -89,31 +89,41 @@
 }
 
 .pay {
-  background: var(--btn-delete);
+  background: var(--btn);
 
 }
 
 .pay:hover {
-  background: var(--btn-delete-hover);
+  background: var(--btn-hover);
 }
 
 .print {
-  background: var(--btn);
+  background: var(--btn-edit);
   ;
 
 }
 
 .print:hover {
-  background: var(--btn-hover);
+  background: var(--btn-edit-hover);
+}
+
+.deleteBtn {
+  background: var(--btn-delete);
+  ;
+
+}
+
+.deleteBtn:hover {
+  background: var(--btn-delete-hover);
 }
 
 .section {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   overflow-x: auto;
 }
 
 .section h2 {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   font-size: 1.2rem;
   color: var(--text);
 }

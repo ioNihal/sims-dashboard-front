@@ -21,7 +21,7 @@ export async function getAllInvoices() {
 export async function getInvoiceById(id) {
   const res = await fetch(`${BASE_URL}/${id}`);
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to load invoice");
+  if (!res.ok) throw new Error(data.error.message || "Failed to load invoice");
   return data.invoice;
 }
 
@@ -56,7 +56,7 @@ export async function approveInvoice(id) {
   });
   if (!res.ok) {
     const data = await res.json();
-    throw new Error(data.message || "Approval failed");
+    throw new Error(data.error.message || "Approval failed");
   }
 }
 
@@ -67,18 +67,29 @@ export async function approveInvoice(id) {
  * @returns {Promise<void>}
  * @throws {Error} If payment update fails.
  */
-export async function payInvoice(id, transactionId) {
-  const res = await fetch(`${BASE_URL}/${id}/pay`, {
+export async function payInvoice(id, status) {
+  const res = await fetch(`${BASE_URL}/payment/status/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      transactionId,
-      method: "upi",
-      transactionDate: new Date().toISOString(),
+      status: status
     }),
   });
   if (!res.ok) {
     const data = await res.json();
-    throw new Error(data.message || "Payment update failed");
+    throw new Error(data.error.message || "Payment update failed");
   }
+}
+
+
+/**
+ * Delete an invoice.
+ * @param {string} id - The invoice ID.
+ * @returns {Promise<void>}
+ * @throws {Error} If deletion fails.
+ */
+export async function deleteInvoice(id) {
+  const res = await fetch(`${BASE_URL}/${id}`)
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error.message || "Failed to delete invoice");
 }

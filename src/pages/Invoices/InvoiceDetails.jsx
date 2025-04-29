@@ -4,7 +4,8 @@ import styles from "../../styles/PageStyles/Invoices/invoiceDetails.module.css";
 import { getCustomerById } from "../../api/customers";
 import { getOrderById } from "../../api/orders";
 import { formatDate } from "../../utils/validators";
-import { approveInvoice, getInvoiceById } from "../../api/invoice";
+import { approveInvoice, deleteInvoice, getInvoiceById, payInvoice } from "../../api/invoice";
+import { Toaster, toast } from 'react-hot-toast';
 
 const InvoiceDetails = () => {
   const { id } = useParams();
@@ -32,7 +33,7 @@ const InvoiceDetails = () => {
       );
       setOrders(fetchedOrders);
     } catch (err) {
-      setError(err.message);
+      setError(err);
     } finally {
       setLoading(false);
     }
@@ -46,36 +47,45 @@ const InvoiceDetails = () => {
     setActionLoading(true);
     try {
       await approveInvoice(id);
-      setInvoice((inv) => ({ ...inv, draft: false }));
+      fetchData();
+      
     } catch (err) {
-      alert("Approve failed: " + err.message);
+      toast.error("Approve failed: " + err);
     } finally {
       setActionLoading(false);
     }
   };
 
   const doPay = async () => {
-    const txn = prompt("Enter UPI transaction ID");
-    if (!txn) return;
     setActionLoading(true);
     try {
-      await payInvoice(id, txn);
+      await payInvoice(id, "paid");
       setInvoice((inv) => ({
         ...inv,
-        status: "paid",
-        method: "upi",
-        transactionId: txn,
-        transactionDate: new Date().toISOString(),
+        status: "paid"
       }));
     } catch (err) {
-      alert("Payment update failed: " + err.message);
+      toast.error("Payment update failed: " + err);
     } finally {
       setActionLoading(false);
     }
   };
 
+  const handleDelete = async () => {
+    setActionLoading(true);
+    try {
+      await deleteInvoice(id);
+    } catch(err) {
+      toast.error("Error: ", err);
+    } finally {
+      setActionLoading(false);
+      navigate("/invoices");
+    }
+  }
+
   return (
     <div className={styles.page}>
+      <Toaster position="top-center" reverseOrder={false} />
       <button className={styles.backButton} onClick={() => navigate("/invoices")}>Back</button>
 
       <div className={styles.invoiceCard}>
@@ -90,16 +100,19 @@ const InvoiceDetails = () => {
               <div className={styles.btnGroup}>
                 {invoice.draft && (
                   <button onClick={doApprove} disabled={actionLoading} className={styles.approve}>
-                    Approve
+                    {`${actionLoading ? "Approving..." : "Approve"}`}
                   </button>
                 )}
                 {!invoice.draft && invoice.status === "pending" && (
                   <button onClick={doPay} disabled={actionLoading} className={styles.pay}>
-                    Mark Paid
+                    {`${actionLoading ? "Marking..." : "Mark Paid"}`}
                   </button>
                 )}
                 <button onClick={() => window.print()} className={styles.print}>
                   Print
+                </button>
+                <button  onClick={handleDelete} className={styles.deleteBtn} disabled={actionLoading}>
+                  {`${actionLoading ? "Deleting..." : "Delete"}`}
                 </button>
               </div>
             </header>

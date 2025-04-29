@@ -36,10 +36,10 @@
 .generateBtn {
   background-color: var(--btn);
   color: #fff;
-  padding: 8px;
-  border-radius: 6px;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-size: 1rem;
   border: none;
-  font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -170,6 +170,7 @@
   .listCard {
     padding: 10px;
   }
+
   .selectionForm {
     margin-left: 0;
   }

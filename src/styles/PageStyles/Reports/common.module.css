@@ -1,0 +1,20 @@
+.chartBox {
+    flex: 1 1 500px;
+    border: 1px solid var(--border);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.chartBox h4 {
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 768px) {
+
+    .chartBox {
+        flex: 0;
+    }
+}

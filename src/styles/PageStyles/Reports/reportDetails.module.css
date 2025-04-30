@@ -77,12 +77,17 @@
 }
 
 .chartWrapper {
-  border: 1px solid var(--border);
-  flex: 1;
-  height: 250px;
-  display: grid;
-  place-items: center;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 70%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
+
 
 .actions {
   display: flex;

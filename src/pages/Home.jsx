@@ -204,15 +204,16 @@ const Home = () => {
                       nameKey="name"
                       cx="50%"
                       cy="50%"
-                      outerRadius={80}
-                      label
+                      outerRadius="70%"
+                      fill="#8884d8"
+                      label={{fontSize : "0.55rem"}}
                     >
                       {getInventoryStatusData().map((entry, index) => (
-                        <Cell key={index} fill={["#0088FE", "#00C49F", "#FFBB28"][index % 3]} />
+                        <Cell key={index} fill={["#0088FE", "#00C49F", "#FFBB28"][index % 3]} style={{ outline: 'none' }} />
                       ))}
                     </Pie>
                     <Tooltip wrapperStyle={{ fontSize: "1rem", color: "purple" }} />
-                    <Legend wrapperStyle={{ fontSize: '0.7rem' }} />
+                    <Legend wrapperStyle={{ fontSize: '0.55rem' }} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
@@ -242,7 +243,7 @@ const Home = () => {
                     <YAxis tick={{ fontSize: "0.7rem" }} />
                     <Tooltip wrapperStyle={{ fontSize: "1rem", color: "purple" }} />
                     <Legend wrapperStyle={{ fontSize: '0.7rem' }} />
-                    <Bar dataKey="value" fill="#ff7300" />
+                    <Bar dataKey="value" fill="#ff7300" barSize={20} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

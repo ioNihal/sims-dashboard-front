@@ -21,7 +21,7 @@ import { getSuppliers } from "../api/suppliers";
 import { getAllCustomers } from "../api/customers";
 import { getAllOrders } from "../api/orders";
 import { getAllInvoices } from "../api/invoice";
-import  RefreshButton  from "../components/RefreshButton";
+import RefreshButton from "../components/RefreshButton";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -78,11 +78,16 @@ const Home = () => {
 
   const getSalesData = () => {
     const dailySales = orders.reduce((acc, order) => {
-      const date = new Date(order.createdAt).toLocaleDateString();
-      acc[date] = (acc[date] || 0) + order.totalAmount;
+      const iso = order.createdAt.slice(0, 10);    
+      acc[iso] = (acc[iso] || 0) + order.totalAmount;
       return acc;
     }, {});
-    return Object.entries(dailySales).map(([date, total]) => ({ date, total }));
+
+   
+    return Object
+      .entries(dailySales)
+      .map(([date, total]) => ({ date, total }))
+      .sort((a, b) => a.date.localeCompare(b.date));
   };
 
   const getOrderStatusData = () => {
@@ -206,7 +211,7 @@ const Home = () => {
                       cy="50%"
                       outerRadius="70%"
                       fill="#8884d8"
-                      label={{fontSize : "0.55rem"}}
+                      label={{ fontSize: "0.55rem" }}
                     >
                       {getInventoryStatusData().map((entry, index) => (
                         <Cell key={index} fill={["#0088FE", "#00C49F", "#FFBB28"][index % 3]} style={{ outline: 'none' }} />

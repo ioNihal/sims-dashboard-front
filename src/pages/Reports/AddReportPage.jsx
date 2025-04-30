@@ -13,6 +13,14 @@ import CustomerReport from "./ReportTypes/CustomerReport";
 import OrderReport from "./ReportTypes/OrderReport";
 import InvoiceReport from "./ReportTypes/InvoiceReport";
 import SalesReport from "./ReportTypes/SalesReport";
+import {
+  generateCategoryReport,
+  generateCustomerReport,
+  generateInventoryReport,
+  generateInvoiceReport,
+  generateOrderReport,
+  generateSalesReport
+} from "../../services/reportHelpers";
 
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#6200ea"];
@@ -69,253 +77,51 @@ const AddReportPage = () => {
 
     switch (reportType) {
       case "Inventory": {
-        // 1. status distribution
-        const statusMap = { in_stock: 0, out_of_stock: 0, low_stock: 0, overstocked: 0 };
-        const invInRange = filterByDate(inventory, "createdAt");
-        invInRange.forEach(i => {
-          // ensure low_stock bucket too
-          const status = i.status === "low_stock" ? "low_stock" : i.status;
-          statusMap[status] = (statusMap[status] || 0) + 1;
-        });
-        const statusData = Object.entries(statusMap).map(([name, value]) => ({ name, value }));
-
-        // 2. quantity by category
-        const qtyCat = {};
-        invInRange.forEach(i => {
-          qtyCat[i.category] = (qtyCat[i.category] || 0) + i.quantity;
-        });
-        const qtyByCatData = Object.entries(qtyCat).map(([category, qty]) => ({ category, qty }));
-
-        // 3. value by category
-        const valCat = {};
-        invInRange.forEach(i => {
-          const v = i.quantity * i.productPrice;
-          valCat[i.category] = (valCat[i.category] || 0) + v;
-        });
-        const valueByCatData = Object.entries(valCat).map(([category, total]) => ({ category, total }));
-
-        // 4. aging distribution (days in stock)
-        const now = new Date();
-        const ages = invInRange.map(i => {
-          const days = Math.floor((now - new Date(i.createdAt)) / (1000 * 60 * 60 * 24));
-          return days;
-        });
-        // bucket into 0–7,8–30,31–90,90+ days
-        const ageBuckets = { "0–7 days": 0, "8–30 days": 0, "31–90 days": 0, "90+ days": 0 };
-        ages.forEach(d => {
-          if (d <= 7) ageBuckets["0–7 days"]++;
-          else if (d <= 30) ageBuckets["8–30 days"]++;
-          else if (d <= 90) ageBuckets["31–90 days"]++;
-          else ageBuckets["90+ days"]++;
-        });
-        const agingData = Object.entries(ageBuckets).map(([range, count]) => ({ range, count }));
-
-        // store all in one previewData object
-        data = { statusData, qtyByCatData, valueByCatData, agingData };
-
-        // summary details
-        details = {
-          "Total Items": invInRange.length,
-          "Low Stock Items": statusMap.low_stock,
-          "Unique Categories": Object.keys(qtyCat).length,
-          "Total Stock Value": invInRange.reduce((sum, i) => sum + i.quantity * i.productPrice, 0)
-        };
+        const { data: previewDataSet, details: previewDetails } =
+          generateInventoryReport(inventory, startDate, endDate, filterByDate);
+        data = previewDataSet;
+        details = previewDetails;
         break;
       }
 
       case "Category": {
-        // first filter to the date-range
-        const invInRange = filterByDate(inventory, "createdAt");
-
-        // 1. Quantity by category (existing)
-        const qtyMap = {};
-        invInRange.forEach(i => {
-          qtyMap[i.category] = (qtyMap[i.category] || 0) + i.quantity;
-        });
-        const qtyData = Object.entries(qtyMap).map(([category, qty]) => ({ category, qty }));
-
-        // 2. Total stock value by category
-        const valueMap = {};
-        invInRange.forEach(i => {
-          const v = i.quantity * i.productPrice;
-          valueMap[i.category] = (valueMap[i.category] || 0) + v;
-        });
-        const valueData = Object.entries(valueMap).map(([category, totalValue]) => ({ category, totalValue }));
-
-        // 3. Distinct SKUs per category
-        const skuSet = {};
-        invInRange.forEach(i => {
-          skuSet[i.category] = skuSet[i.category] || new Set();
-          skuSet[i.category].add(i.productId);
-        });
-        const skuData = Object.entries(skuSet).map(([category, set]) => ({ category, skus: set.size }));
-
-        // 4. Average days in stock per category
-        const now = new Date();
-        const ageMap = {};
-        const countMap = {};
-        invInRange.forEach(i => {
-          const days = Math.floor((now - new Date(i.createdAt)) / (1000 * 60 * 60 * 24));
-          ageMap[i.category] = (ageMap[i.category] || 0) + days;
-          countMap[i.category] = (countMap[i.category] || 0) + 1;
-        });
-        const ageData = Object.entries(ageMap).map(([category, totalDays]) => ({
-          category,
-          avgDays: totalDays / countMap[category]
-        }));
-
-        // pack them all into previewData
-        data = { qtyData, valueData, skuData, ageData };
-
-        // summary details
-        details = {
-          "Total Categories": Object.keys(qtyMap).length,
-          "Total Quantity": invInRange.reduce((sum, i) => sum + i.quantity, 0),
-          "Total Stock Value": invInRange.reduce((sum, i) => sum + i.quantity * i.productPrice, 0),
-          "Max Days in Stock": Math.max(...invInRange.map(i =>
-            Math.floor((now - new Date(i.createdAt)) / (1000 * 60 * 60 * 24))
-          ))
-        };
+        const { data: previewDataSet, details: previewDetails } =
+          generateCategoryReport(inventory, startDate, endDate, filterByDate);
+        data = previewDataSet;
+        details = previewDetails;
         break;
       }
 
       case "Customers": {
-        const arr = filterByDate(customers, "createdAt");
-        const total = customers.length;
-        const newCount = arr.length;
-        const activeCount = arr.filter(c => c.orders?.length > 0).length;
-        // 1. daily new customers
-        const dailyNew = Object.entries(
-          arr.reduce((m, c) => {
-            const d = c.createdAt.slice(0, 10);
-            m[d] = (m[d] || 0) + 1;
-            return m;
-          }, {})
-        ).map(([date, count]) => ({ date, count }));
-        // 2. daily active customers
-        const dailyActive = Object.entries(
-          arr.reduce((m, c) => {
-            if (c.orders?.length > 0) {
-              const d = c.createdAt.slice(0, 10);
-              m[d] = (m[d] || 0) + 1;
-            }
-            return m;
-          }, {})
-        ).map(([date, count]) => ({ date, count }));
-        // 3. orders per customer
-        const ordersPerCust = arr.map(c => ({
-          name: c.name,
-          orders: c.orders?.length || 0
-        }));
-        // 4. average orders/day in range
-        const totalDays = (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) + 1;
-        const avgPerDay = arr.reduce((sum, c) => sum + (c.orders?.length || 0), 0) / totalDays;
-        data = { dailyNew, dailyActive, ordersPerCust, avgPerDay };
-        details = {
-          "Total Customers": total,
-          "New in Range": newCount,
-          "Active in Range": activeCount,
-          "Avg Orders/Day": avgPerDay.toFixed(2)
-        };
+        const { data: previewDataSet, details: previewDetails } =
+          generateCustomerReport(customers, orders, startDate, endDate, filterByDate);
+        data = previewDataSet;
+        details = previewDetails;
         break;
       }
 
+
       case "Orders": {
-        const arr = filterByDate(orders, "createdAt");
-        // 1. count by status
-        const byStatus = arr.reduce((m, o) => {
-          m[o.status] = (m[o.status] || 0) + 1; return m;
-        }, {});
-        const statusData = Object.entries(byStatus).map(([name, value]) => ({ name, value }));
-        // 2. daily orders
-        const daily = Object.entries(
-          arr.reduce((m, o) => {
-            const d = o.createdAt.slice(0, 10);
-            m[d] = (m[d] || 0) + 1; return m;
-          }, {})
-        ).map(([date, count]) => ({ date, count }));
-        // 3. revenue by status
-        const revByStatus = arr.reduce((m, o) => {
-          m[o.status] = (m[o.status] || 0) + o.totalAmount; return m;
-        }, {});
-        const revenueStatusData = Object.entries(revByStatus).map(([name, value]) => ({ name, value }));
-        // 4. average order value
-        const avgValue = arr.reduce((s, o) => s + o.totalAmount, 0) / (arr.length || 1);
-        data = { statusData, daily, revenueStatusData, avgValue };
-        details = {
-          "Total Orders": arr.length,
-          "Pending": byStatus.pending || 0,
-          "Completed": byStatus.completed || 0,
-          "Avg Order Value": avgValue.toFixed(2)
-        };
+        const { data: previewDataSet, details: previewDetails } =
+          generateOrderReport(orders, startDate, endDate, filterByDate);
+        data = previewDataSet;
+        details = previewDetails;
         break;
       }
 
       case "Invoices": {
-        const arr = filterByDate(invoices, "createdAt");
-        // 1. count by status
-        const byStatus = arr.reduce((m, i) => {
-          m[i.status] = (m[i.status] || 0) + 1; return m;
-        }, {});
-        const statusData = Object.entries(byStatus).map(([name, value]) => ({ name, value }));
-        // 2. daily invoice count
-        const dailyCount = Object.entries(
-          arr.reduce((m, i) => {
-            const d = i.createdAt.slice(0, 10);
-            m[d] = (m[d] || 0) + 1; return m;
-          }, {})
-        ).map(([date, count]) => ({ date, count }));
-        // 3. revenue by day
-        const dailyRev = Object.entries(
-          arr.reduce((m, i) => {
-            const d = i.createdAt.slice(0, 10);
-            m[d] = (m[d] || 0) + i.amount; return m;
-          }, {})
-        ).map(([date, total]) => ({ date, total }));
-        // 4. average invoice amount
-        const avgAmount = arr.reduce((s, i) => s + i.amount, 0) / (arr.length || 1);
-        data = { statusData, dailyCount, dailyRev, avgAmount };
-        details = {
-          "Total Revenue": arr.reduce((s, i) => s + i.amount, 0),
-          "Paid": byStatus.paid || 0,
-          "Pending": byStatus.pending || 0,
-          "Avg Invoice": avgAmount.toFixed(2)
-        };
+        const { data: previewDataSet, details: previewDetails } =
+          generateInvoiceReport(invoices, startDate, endDate, filterByDate);
+        data = previewDataSet;
+        details = previewDetails;
         break;
       }
 
       case "Sales": {
-        const arr = filterByDate(invoices, "createdAt");
-        // 1. sales per day
-        const salesDaily = Object.entries(
-          arr.reduce((m, i) => {
-            const d = i.createdAt.slice(0, 10);
-            m[d] = (m[d] || 0) + i.amount; return m;
-          }, {})
-        ).map(([date, total]) => ({ date, total }));
-        // 2. cumulative sales
-        let cum = 0;
-        const salesCumulative = salesDaily
-          .sort((a, b) => a.date.localeCompare(b.date))
-          .map(d => {
-            cum += d.total;
-            return { date: d.date, cumulative: cum };
-          });
-        // 3. average sale per transaction
-        const avgSale = arr.reduce((s, i) => s + i.amount, 0) / (arr.length || 1);
-        // 4. sales by weekday
-        const byWeekday = arr.reduce((m, i) => {
-          const wd = new Date(i.createdAt).toLocaleDateString("en-US", { weekday: "short" });
-          m[wd] = (m[wd] || 0) + i.amount; return m;
-        }, {});
-        const weekdayData = Object.entries(byWeekday).map(([day, total]) => ({ day, total }));
-        data = { salesDaily, salesCumulative, avgSale, weekdayData };
-        details = {
-          "Gross Sales": arr.reduce((s, i) => s + i.amount, 0),
-          "Transactions": arr.length,
-          "Avg Sale": avgSale.toFixed(2),
-          "Days Covered": Object.keys(salesDaily).length
-        };
+        const { data: previewDataSet, details: previewDetails } =
+          generateSalesReport(invoices, startDate, endDate, filterByDate);
+        data = previewDataSet;
+        details = previewDetails;
         break;
       }
       default: break;

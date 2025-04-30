@@ -22,15 +22,15 @@ const OrderReport = ({ data }) => {
                 <ResponsiveContainer width="100%" height={200}>
                     <PieChart>
                         <Pie
-                            data={previewData.statusData}
+                            data={data.statusData}
                             dataKey="value"
                             nameKey="name"
                             cx="50%" cy="50%"
-                            outerRadius={80}
-                            label
+                            outerRadius="75%"
+                            label={{fontSize: "0.6rem"}}
                         >
-                            {previewData.statusData.map((_, i) => (
-                                <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                            {data.statusData.map((_, i) => (
+                                <Cell key={i} fill={COLORS[i % COLORS.length]} style={{ outline: 'none' }} />
                             ))}
                         </Pie>
                         <Tooltip />
@@ -43,7 +43,7 @@ const OrderReport = ({ data }) => {
             <div className={styles.chartBox}>
                 <h4>Daily Orders</h4>
                 <ResponsiveContainer width="100%" height={200}>
-                    <LineChart data={previewData.daily}>
+                    <LineChart data={data.daily}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="date" tick={{ fontSize: 10 }} />
                         <YAxis tick={{ fontSize: 10 }} />
@@ -57,7 +57,7 @@ const OrderReport = ({ data }) => {
             <div className={styles.chartBox}>
                 <h4>Revenue by Status</h4>
                 <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={previewData.revenueStatusData}>
+                    <BarChart data={data.revenueStatusData}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" tick={{ fontSize: 10 }} />
                         <YAxis tick={{ fontSize: 10 }} />

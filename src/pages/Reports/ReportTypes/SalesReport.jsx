@@ -20,7 +20,7 @@ const SalesReport = ({ data }) => {
             <div className={styles.chartBox}>
                 <h4>Daily Sales</h4>
                 <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={previewData.salesDaily}>
+                    <BarChart data={data.salesDaily}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="date" tick={{ fontSize: 10 }} />
                         <YAxis tick={{ fontSize: 10 }} />
@@ -34,7 +34,7 @@ const SalesReport = ({ data }) => {
             <div className={styles.chartBox}>
                 <h4>Cumulative Sales</h4>
                 <ResponsiveContainer width="100%" height={200}>
-                    <LineChart data={previewData.salesCumulative}>
+                    <LineChart data={data.salesCumulative}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="date" tick={{ fontSize: 10 }} />
                         <YAxis tick={{ fontSize: 10 }} />
@@ -49,7 +49,7 @@ const SalesReport = ({ data }) => {
             <div className={styles.chartBox}>
                 <h4>Sales by Weekday</h4>
                 <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={previewData.weekdayData}>
+                    <BarChart data={data.weekdayData}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="day" tick={{ fontSize: 10 }} />
                         <YAxis tick={{ fontSize: 10 }} />

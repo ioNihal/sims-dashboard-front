@@ -8,7 +8,7 @@ import {
     Tooltip, Legend
 } from "recharts";
 import styles from "../../../styles/PageStyles/Reports/common.module.css";
-import { grid2Classes } from "@mui/material";
+
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#6200ea"];
 
@@ -21,8 +21,8 @@ const InventoryReport = ({ data }) => {
                 <h4>Status</h4>
                 <ResponsiveContainer width="100%" height={200} style={{position: "grid", placeItems: "center"}} >
                     <PieChart>
-                        <Pie data={data.statusData} dataKey="value" nameKey="name" outerRadius={80} label>
-                            {data.statusData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                        <Pie data={data.statusData} dataKey="value" nameKey="name" outerRadius="75%" label={{fontSize: "0.6rem"}} >
+                            {data.statusData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]}  style={{ outline: 'none' }} />)}
                         </Pie>
                         <Tooltip />
                         <Legend wrapperStyle={{ fontSize: "0.55rem" }} />
@@ -34,11 +34,11 @@ const InventoryReport = ({ data }) => {
             <div className={styles.chartBox}>
                 <h4>Qty by Category</h4>
                 <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={data.qtyByCatData}>
+                    <BarChart data={data.qtyByCatData} >
                         <XAxis dataKey="category" tick={{ fontSize: "0.55rem" }} />
                         <YAxis tick={{ fontSize: "0.55rem" }} />
                         <Tooltip />
-                        <Bar dataKey="qty" />
+                        <Bar dataKey="qty" fill={COLORS[1]} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
@@ -51,7 +51,7 @@ const InventoryReport = ({ data }) => {
                         <XAxis dataKey="category" tick={{ fontSize: "0.55rem" }} />
                         <YAxis tick={{ fontSize: "0.55rem" }} />
                         <Tooltip />
-                        <Bar dataKey="total" />
+                        <Bar dataKey="total" fill={COLORS[2]}  />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
@@ -64,7 +64,7 @@ const InventoryReport = ({ data }) => {
                         <XAxis dataKey="range" tick={{ fontSize: "0.55rem" }} />
                         <YAxis tick={{ fontSize: "0.55rem" }} />
                         <Tooltip />
-                        <Bar dataKey="count" />
+                        <Bar dataKey="count" fill={COLORS[3]} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>

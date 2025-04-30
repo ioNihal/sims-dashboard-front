@@ -113,6 +113,7 @@
   font-size: 1rem;
   background-color: var(--bg);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
 }
 
 .inputGroup textarea {

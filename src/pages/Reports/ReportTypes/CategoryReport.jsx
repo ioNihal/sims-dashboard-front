@@ -19,11 +19,11 @@ const CategoryReport = ({ data }) => {
             <div className={styles.chartBox}>
                 <h4>Quantity by Category</h4>
                 <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={previewData.qtyData}>
+                    <BarChart data={data.qtyData}>
                         <XAxis dataKey="category" tick={{ fontSize: "0.55rem" }} />
                         <YAxis tick={{ fontSize: "0.55rem" }} />
                         <Tooltip />
-                        <Bar dataKey="qty" />
+                        <Bar dataKey="qty" fill={COLORS[1]} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
@@ -32,11 +32,11 @@ const CategoryReport = ({ data }) => {
             <div className={styles.chartBox}>
                 <h4>Value by Category</h4>
                 <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={previewData.valueData}>
+                    <BarChart data={data.valueData}>
                         <XAxis dataKey="category" tick={{ fontSize: "0.55rem" }} />
                         <YAxis tick={{ fontSize: "0.55rem" }} />
                         <Tooltip />
-                        <Bar dataKey="totalValue" />
+                        <Bar dataKey="totalValue" fill={COLORS[2]} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
@@ -45,11 +45,11 @@ const CategoryReport = ({ data }) => {
             <div className={styles.chartBox}>
                 <h4>Distinct SKUs</h4>
                 <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={previewData.skuData}>
+                    <BarChart data={data.skuData}>
                         <XAxis dataKey="category" tick={{ fontSize: "0.55rem" }} />
                         <YAxis tick={{ fontSize: "0.55rem" }} />
                         <Tooltip />
-                        <Bar dataKey="skus" />
+                        <Bar dataKey="skus" fill={COLORS[4]} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
@@ -58,7 +58,7 @@ const CategoryReport = ({ data }) => {
             <div className={styles.chartBox}>
                 <h4>Avg Days in Stock</h4>
                 <ResponsiveContainer width="100%" height={200}>
-                    <LineChart data={previewData.ageData}>
+                    <LineChart data={data.ageData}>
                         <XAxis dataKey="category" tick={{ fontSize: "0.55rem" }} />
                         <YAxis tick={{ fontSize: "0.55rem" }} />
                         <Tooltip />

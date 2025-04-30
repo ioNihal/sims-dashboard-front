@@ -20,21 +20,21 @@ const InvoiceReport = ({ data }) => {
             <div className={styles.chartBox}>
                 <h4>Invoices by Status</h4>
                 <ResponsiveContainer width="100%" height={200}>
-                    <PieChart>previewData
+                    <PieChart>
                         <Pie
-                            data={previewData.statusData}
+                            data={data.statusData}
                             dataKey="value"
                             nameKey="name"
                             cx="50%" cy="50%"
-                            outerRadius={80}
-                            label
+                            outerRadius="75%"
+                            label={{fontSize: "0.6rem"}}
                         >
-                            {previewData.statusData.map((_, i) => (
-                                <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                            {data.statusData.map((_, i) => (
+                                <Cell key={i} fill={COLORS[i % COLORS.length]} style={{ outline: 'none' }} />
                             ))}
                         </Pie>
                         <Tooltip />
-                        <Legend wrapperStyle={{ fontSize: "0.7rem" }} />
+                        <Legend wrapperStyle={{ fontSize: "0.55rem" }} />
                     </PieChart>
                 </ResponsiveContainer>
             </div>
@@ -43,10 +43,10 @@ const InvoiceReport = ({ data }) => {
             <div className={styles.chartBox}>
                 <h4>Daily Invoice Count</h4>
                 <ResponsiveContainer width="100%" height={200}>
-                    <LineChart data={previewData.dailyCount}>
+                    <LineChart data={data.dailyCount}>
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="date" tick={{ fontSize: 10 }} />
-                        <YAxis tick={{ fontSize: 10 }} />
+                        <XAxis dataKey="date" tick={{ fontSize: "0.55rem" }} />
+                        <YAxis tick={{ fontSize: "0.55rem" }} />
                         <Tooltip />
                         <Line type="monotone" dataKey="count" stroke={COLORS[1]} strokeWidth={2} />
                     </LineChart>
@@ -57,10 +57,10 @@ const InvoiceReport = ({ data }) => {
             <div className={styles.chartBox}>
                 <h4>Daily Revenue</h4>
                 <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={previewData.dailyRev}>
+                    <BarChart data={data.dailyRev}>
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="date" tick={{ fontSize: 10 }} />
-                        <YAxis tick={{ fontSize: 10 }} />
+                        <XAxis dataKey="date" tick={{ fontSize: "0.55rem" }} />
+                        <YAxis tick={{ fontSize: "0.55rem" }} />
                         <Tooltip />
                         <Bar dataKey="total" fill={COLORS[2]} barSize={15} />
                     </BarChart>

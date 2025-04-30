@@ -58,12 +58,12 @@
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   font-weight: 500;
-  background-color: var(--btn);
+  background-color: var(--btn-edit);
   color: #fff;
 }
 
 .previewBtn:hover {
-  background-color: var(--btn-hover);
+  background-color: var(--btn-edit-hover);
 }
 
 .form {
@@ -201,26 +201,10 @@
   margin: 0;
 }
 
-.chartContainer {
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
 .detailSection {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.detailSectionhover {
-  transform: translateY(-2px);
-  background: var(--bg-dim);
 }
 
 .detailSection h3,
@@ -229,6 +213,8 @@
   padding: 0;
   font-size: 0.9rem;
 }
+
+
 
 .detailSection li {
   background: var(--bg);
@@ -246,6 +232,11 @@
   flex: 1;
 }
 
+.detailSection li:hover {
+  transform: translateY(-2px);
+  background: var(--bg-dim);
+}
+
 .detailSection ul {
   list-style: none;
   width: 100%;
@@ -256,6 +247,19 @@
   padding: 0;
   margin: 0;
 }
+
+.chartContainer {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+
 
 
 
@@ -279,8 +283,6 @@
   .previewTitle {
     flex: 0;
   }
-
-
 
   .chartContainer {
     flex-direction: column;

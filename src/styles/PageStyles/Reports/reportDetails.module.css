@@ -17,8 +17,15 @@
   flex-direction: column;
 }
 
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+}
+
 .backButton {
-  align-self: flex-start;
+  margin-right: 0;
   background-color: var(--btn);
   color: #fff;
   border: none;
@@ -27,7 +34,6 @@
   cursor: pointer;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, box-shadow 0.3s;
-  margin-bottom: 20px;
 }
 
 .backButton:hover {
@@ -35,21 +41,47 @@
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
 }
 
+.printBtn,
+.csvBtn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.printBtn {
+  margin-left: auto;
+  background: var(--btn-edit);
+  color: #fff;
+}
+
+.printBtn:hover {
+  background: var(--btn-edit-hover);
+}
+
+.csvBtn {
+  background: var(--btn-delete);
+  color: #fff;
+}
+
+.csvBtn:hover {
+  background: var(--btn-delete-hover);
+}
+
 .card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--bg-dim);
   min-height: 300px;
   height: 100%;
-  background: var(--bg-dim);
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
 
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  overflow-y: auto;
+  color: var(--text);
 }
 
 .topSection {
@@ -66,62 +98,75 @@
 }
 
 .meta {
-  margin: 0 0 1rem;
+  margin: 0;
   font-size: 0.85rem;
   color: var(--text-light);
+  display: flex;
+  gap: 0.5rem;
 }
 
 .description {
-  margin-bottom: 1rem;
+  font-size: 1rem;
+  text-align: justify;
   color: var(--text);
+  font-style: italic;
+}
+
+.detailSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+}
+
+.detailSection h2,
+.detailSection li {
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.detailSection li {
+  background: var(--bg);
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid var(--border);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex: 1;
+}
+
+.detailSection li:hover {
+  transform: translateY(-2px);
+  background: var(--bg-dim);
+}
+
+.detailSection ul {
+  list-style: none;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
 }
 
 .chartWrapper {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  height: 70%;
   width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 1rem;
-}
-
-
-.actions {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: flex-end;
-  margin-top: 1rem;
-}
-
-.printBtn,
-.csvBtn {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.3s;
-}
-
-.printBtn {
-  background: var(--btn-edit);
-  color: #fff;
-}
-
-.printBtn:hover {
-  background: var(--btn-edit-hover);
-}
-
-.csvBtn {
-  background: var(--btn);
-  color: #fff;
-}
-
-.csvBtn:hover {
-  background: var(--btn-hover);
 }
 
 .loading {
@@ -136,57 +181,35 @@
   padding: 1rem;
 }
 
-.detailSection {
-  flex: 2;
-  border: 1px solid var(--border);
-  padding: 10px;
-  color: var(--text);
-}
-
-.detailTitle {
-  font-size: 1.1rem;
-  margin: 0 0 1rem 0;
-  padding: 0;
-
-}
-
-.detailList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-size: 0.9rem;
-}
 
 
 
 
 /* Responsiveness */
 @media (max-width: 768px) {
+  .page {
+    padding: 10px;
+  }
+
   .title {
     font-size: 1.2rem;
   }
 
   .meta {
-    font-size: 0.7rem;
-    display: flex;
-    flex-wrap: wrap;
+    font-size: 0.65rem;
+    flex-direction: column;
+    gap: 0.2rem;
   }
 
-  .meta:nth-child(1) {
-    margin-left: 1rem;
-  }
-
-  .hiddenChar {
-    display: none;
+  .description {
+    font-size: 0.8rem;
+    text-align: justify;
   }
 
   .card {
+    padding: 10px;
     flex-direction: column;
     flex-wrap: nowrap;
-  }
-
-  .topSection {
-    flex: 0;
   }
 
   .detailSection {
@@ -194,7 +217,8 @@
   }
 
   .chartWrapper {
-    height: 300px;
+    flex-direction: column;
+    flex-wrap: nowrap;
   }
 
   .detailTitle {
@@ -206,7 +230,15 @@
   }
 
   .actions {
-    justify-content: center;
+    justify-content: space-between;
+  }
+
+  .backButton,
+  .printBtn,
+  .csvBtn {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+    border-radius: 5px;
   }
 }
 

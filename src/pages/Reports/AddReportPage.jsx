@@ -21,12 +21,14 @@ import {
   generateOrderReport,
   generateSalesReport
 } from "../../services/reportHelpers";
+import { createReport } from "../../api/reports";
+import { validateDateRange, clampDateRange } from "../../utils/dateValidation";
 
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#6200ea"];
 
 const AddReportPage = () => {
   const nav = useNavigate();
+  const [isSaving, setSaving] = useState(false);
 
   // form state
   const [reportName, setReportName] = useState("");
@@ -34,6 +36,7 @@ const AddReportPage = () => {
   const [reportType, setReportType] = useState("Inventory");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [errors, setErrors] = useState("");
   const [previewData, setPreviewData] = useState(null);
   const [previewOn, setPreviewOn] = useState(false);
 
@@ -55,13 +58,25 @@ const AddReportPage = () => {
       setCustomers(cust);
       setOrders(ord);
       setInvoices(invc);
+    }).catch((err) => {
+      console.error("Failed to load data:", err);
     });
+    ;
   }, []);
 
   // filter helper
   const filterByDate = (arr, key = "createdAt") => {
+    console.log(arr)
     if (!startDate || !endDate) return arr;
-    const s = new Date(startDate), e = new Date(endDate);
+
+    // start at 00:00:00.000
+    const s = new Date(startDate);
+    s.setHours(0, 0, 0, 0);
+
+    // end at 23:59:59.999
+    const e = new Date(endDate);
+    e.setHours(23, 59, 59, 999);
+
     return arr.filter(x => {
       const d = new Date(x[key]);
       return d >= s && d <= e;
@@ -71,6 +86,7 @@ const AddReportPage = () => {
   // recompute previewData + details on form change
   const [dataDetails, setDataDetails] = useState({});
   useEffect(() => {
+    console.log("Filtering between", startDate, "and", endDate);
     if (!startDate || !endDate) { setPreviewData(null); setDataDetails({}); return; }
     let data = [];
     let details = {};
@@ -109,7 +125,7 @@ const AddReportPage = () => {
         break;
       }
 
-      case "Invoices": {
+      case "Invoice": {
         const { data: previewDataSet, details: previewDetails } =
           generateInvoiceReport(invoices, startDate, endDate, filterByDate);
         data = previewDataSet;
@@ -131,20 +147,36 @@ const AddReportPage = () => {
     setDataDetails(details);
   }, [reportType, startDate, endDate, inventory, customers, orders, invoices]);
 
-  const handleSave = () => {
-    if (!reportName || !startDate || !endDate) return alert("Name & dates required");
-    const saved = JSON.parse(localStorage.getItem("reports") || "[]");
-    saved.push({
-      _id: Date.now(),
+  const handleSave = async () => {
+    if (!reportName || !startDate || !endDate) {
+      return ("Name & dates required");
+    }
+
+    const { valid, error } = validateDateRange(startDate, endDate);
+    if (!valid) {
+      setErrors(error);
+      return;
+    }
+
+    setSaving(true);
+
+    const payload = {
       name: reportName,
-      description: reportDesc,
       type: reportType,
+      description: reportDesc,
       dateRange: { start: startDate, end: endDate },
       chartData: previewData,
       dataDetails
-    });
-    localStorage.setItem("reports", JSON.stringify(saved));
-    nav("/reports");
+    };
+
+    try {
+      await createReport(payload);
+      nav("/reports");
+    } catch (err) {
+      alert("Could not save report: " + err.message);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -181,7 +213,7 @@ const AddReportPage = () => {
                 <CustomerReport data={previewData} />
               ) : reportType === "Orders" ? (
                 <OrderReport data={previewData} />
-              ) : reportType === "Invoices" ? (
+              ) : reportType === "Invoice" ? (
                 <InvoiceReport data={previewData} />
               ) : reportType === "Sales" ? (
                 <SalesReport data={previewData} />
@@ -200,7 +232,7 @@ const AddReportPage = () => {
               <option value="Category">Category-wise Report</option>
               <option value="Customers">Customer Report</option>
               <option value="Orders">Order Report</option>
-              <option value="Invoices">Payment/Invoice Report</option>
+              <option value="Invoice">Invoice Report</option>
               <option value="Sales">Sales Report</option>
             </select>
           </div>
@@ -212,15 +244,42 @@ const AddReportPage = () => {
 
           <div className={styles.inputGroup}>
             <label>Start Date</label>
-            <input type="date" className={styles.input} value={startDate} onChange={e => setStartDate(e.target.value)} />
+            <input type="date" className={styles.input}
+              value={startDate}
+              max={new Date().toISOString().slice(0, 10)}
+              onChange={e => {
+                const { start, end } = clampDateRange(e.target.value, endDate);
+                setStartDate(start);
+                setEndDate(end);
+                setErrors("");
+              }} />
+            {errors && (
+              <div className={styles.errorText}>
+                {errors}
+              </div>
+            )}
           </div>
           <div className={styles.inputGroup}>
             <label>End Date</label>
-            <input type="date" className={styles.input} value={endDate} onChange={e => setEndDate(e.target.value)} />
+            <input type="date" className={styles.input}
+              value={endDate}
+              min={startDate || undefined}
+              max={new Date().toISOString().slice(0, 10)}
+              onChange={e => {
+                const { start, end } = clampDateRange(startDate, e.target.value);
+                setStartDate(start);
+                setEndDate(end);
+                setErrors("");
+              }} />
+            {errors && (
+              <div className={styles.errorText}>
+                {errors}
+              </div>
+            )}
           </div>
 
           <div className={styles.btnGroup}>
-            <button className={styles.saveBtn} onClick={handleSave}>Save</button>
+            <button className={styles.saveBtn} onClick={handleSave} disabled={isSaving}>{`${isSaving ? "Saving..." : "Save"}`}</button>
             <button className={styles.cancelBtn} onClick={() => nav("/reports")}>Cancel</button>
           </div>
 
@@ -228,7 +287,7 @@ const AddReportPage = () => {
       }
 
 
-    </div >
+    </div>
   );
 };
 

@@ -10,6 +10,13 @@ import {
   CartesianGrid, XAxis, YAxis, Tooltip, Legend
 } from "recharts";
 
+import InventoryReport from "./ReportTypes/InventoryReport";
+import CategoryReport from "./ReportTypes/CategoryReport";
+import CustomerReport from "./ReportTypes/CustomerReport";
+import OrderReport from "./ReportTypes/OrderReport";
+import InvoiceReport from "./ReportTypes/InvoiceReport";
+import SalesReport from "./ReportTypes/SalesReport";
+
 // simple CSV-download helper (unchanged)
 function downloadCSV(rows, filename = "report.csv") {
   if (!rows || !rows.length) return;
@@ -46,99 +53,54 @@ const ReportDetails = () => {
   const { name, description, type, dateRange, chartData, dataDetails } = report;
 
   const renderChart = () => {
-    if (!chartData?.length) return <p className={styles.noChart}>No data</p>;
+    if (!report.chartData)
+      return <p className={styles.noChart}>No data</p>;
 
-    // Sales → line chart of revenue by date
-    if (type === "Sales") {
-      return (
-        <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
-          <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" tick={{ fontSize: "0.7rem" }} />
-            <YAxis tick={{ fontSize: "0.7rem" }} />
-            <Tooltip />
-            <Legend wrapperStyle={{fontSize: "0.7rem"}} />
-            <Line type="monotone" dataKey="total" stroke={COLORS[0]} strokeWidth={2} />
-          </LineChart>
-        </ResponsiveContainer>
-      );
+    // chartData is now an object containing the series for each widget
+    const data = report.chartData;
+
+    switch (report.type) {
+      case "inventory":
+        return <InventoryReport data={data} />;
+
+      case "category":
+        return <CategoryReport data={data} />;
+
+      case "customers":
+        return <CustomerReport data={data} />;
+
+      case "orders":
+        return <OrderReport data={data} />;
+
+      case "invoice":
+        return <InvoiceReport data={data} />;
+
+      case "sales":
+        return <SalesReport data={data} />;
+
+      default:
+        return <p className={styles.noChart}>Unsupported report type</p>;
     }
-
-    // Orders → bar chart of order count by date
-    if (type === "Orders") {
-      return (
-        <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
-          <BarChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" tick={{ fontSize: "0.7rem" }} />
-            <YAxis tick={{ fontSize: "0.8rem" }} />
-            <Tooltip />
-            <Legend wrapperStyle={{fontSize: "0.7rem"}} />
-            <Bar dataKey="count" fill={COLORS[1]} barSize={20} />
-          </BarChart>
-        </ResponsiveContainer>
-      );
-    }
-
-    // Inventory status, Category-wise, Invoices → pie chart
-    if (type === "Inventory" || type === "Category" || type === "Invoices") {
-      return (
-        <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
-          <PieChart>
-            <Pie
-              data={chartData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%" cy="50%"
-              outerRadius={80}
-              label
-            >
-              {chartData.map((_, i) => (
-                <Cell key={i} fill={COLORS[i % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend wrapperStyle={{fontSize: "0.7rem"}} />
-          </PieChart>
-        </ResponsiveContainer>
-      );
-    }
-
-    // Customers → line chart of customer count by date
-    if (type === "Customers") {
-      return (
-        <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
-          <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" tick={{ fontSize: "0.7rem" }} />
-            <YAxis tick={{ fontSize: "0.7rem" }} />
-            <Tooltip />
-            <Legend wrapperStyle={{fontSize: "0.7rem"}} />
-            <Line type="monotone" dataKey="count" stroke={COLORS[2]} strokeWidth={2} />
-          </LineChart>
-        </ResponsiveContainer>
-      );
-    }
-
-    // Fallback
-    return <p className={styles.noChart}>Unsupported report type</p>;
   };
+
 
   return (
     <div className={styles.page}>
-      <button className={styles.backButton} onClick={() => nav("/reports")}>Back</button>
-
+      <div className={styles.actions}>
+        <button className={styles.backButton} onClick={() => nav("/reports")}>Back</button>
+        <button className={styles.printBtn} onClick={() => window.print()}>Print</button>
+        <button className={styles.csvBtn} onClick={() => downloadCSV(chartData, `${name || type}-report.csv`)}>Export CSV</button>
+      </div>
       <div className={styles.card}>
         <div className={styles.topSection}>
           <h1 className={styles.title}>{name || `${type} Report`}</h1>
           <p className={styles.meta}>
-            <span><strong>Type:</strong> {type} <span className={styles.hiddenChar}> |</span></span>
-            <span><strong>Period:</strong> {new Date(dateRange.start).toLocaleDateString()} – {new Date(dateRange.end).toLocaleDateString()}</span>
+            <span>Type: {type}</span>
+            <span>Period: {new Date(dateRange.start).toLocaleDateString()} – {new Date(dateRange.end).toLocaleDateString()}</span>
           </p>
           {description && <p className={styles.description}>{description}</p>}
         </div>
 
-        <div className={styles.chartWrapper}>{renderChart()}</div>
 
         {/* — TEXTUAL SUMMARY DETAILS — */}
         {dataDetails && (
@@ -153,13 +115,10 @@ const ReportDetails = () => {
             </ul>
           </div>
         )}
-      </div>
 
-      <div className={styles.actions}>
-        <button className={styles.printBtn} onClick={() => window.print()}>Print</button>
-        <button className={styles.csvBtn} onClick={() => downloadCSV(chartData, `${name || type}-report.csv`)}>Download CSV</button>
+        <div className={styles.chartWrapper}>{renderChart()}</div>
       </div>
-    </div>
+    </div >
   );
 };
 

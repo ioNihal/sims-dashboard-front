@@ -13,6 +13,7 @@ export function generateInventoryReport(inventory, startDate, endDate, filterByD
   // 1. status distribution
   const statusMap = { in_stock: 0, out_of_stock: 0, low_stock: 0, overstocked: 0 };
   const invInRange = filterByDate(inventory, "createdAt");
+  console.log(invInRange)
   invInRange.forEach(i => {
     const status = i.status === "low_stock" ? "low_stock" : i.status;
     statusMap[status] = (statusMap[status] || 0) + 1;
@@ -71,7 +72,7 @@ export function generateInventoryReport(inventory, startDate, endDate, filterByD
 */
 export function generateCategoryReport(inventory, startDate, endDate, filterByDate) {
   const invInRange = filterByDate(inventory, "createdAt");
-
+  console.log(invInRange)
   // 1. Quantity by category
   const qtyMap = {};
   invInRange.forEach(i => {
@@ -230,6 +231,7 @@ export function generateCustomerReport(customers, orders, startDate, endDate, fi
 export function generateOrderReport(orders, startDate, endDate, filterByDate) {
   // 1. filter by date
   const arr = filterByDate(orders, "createdAt");
+  console.log(arr)
 
   // 2. count by status
   const byStatus = arr.reduce((m, o) => {
@@ -298,7 +300,7 @@ export function generateOrderReport(orders, startDate, endDate, filterByDate) {
 export function generateInvoiceReport(invoices, startDate, endDate, filterByDate) {
   // 1. filter by date
   const arr = filterByDate(invoices, "createdAt");
-
+  console.log(arr)
   // 2. count by status
   const byStatus = arr.reduce((m, i) => {
     m[i.status] = (m[i.status] || 0) + 1;
@@ -368,7 +370,7 @@ export function generateInvoiceReport(invoices, startDate, endDate, filterByDate
 export function generateSalesReport(invoices, startDate, endDate, filterByDate) {
   // 1. filter by date
   const arr = filterByDate(invoices, "createdAt");
-
+  console.log(arr)
   // 2. sales per day (sorted oldest→newest)
   const salesDaily = Object.entries(
     arr.reduce((m, i) => {

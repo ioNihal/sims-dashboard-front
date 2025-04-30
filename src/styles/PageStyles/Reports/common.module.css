@@ -8,6 +8,7 @@
 }
 
 .chartBox h4 {
+    font-size: 1rem;
     margin: 0;
     padding: 0;
 }
@@ -16,5 +17,9 @@
 
     .chartBox {
         flex: 0;
+    }
+
+    .chartBox h4 {
+        font-size: 0.8rem;
     }
 }

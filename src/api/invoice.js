@@ -89,7 +89,12 @@ export async function payInvoice(id, status) {
  * @throws {Error} If deletion fails.
  */
 export async function deleteInvoice(id) {
-  const res = await fetch(`${BASE_URL}/${id}`)
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error.message || "Failed to delete invoice");
+  const res = await fetch(`${BASE_URL}/${id}`, {
+    method: 'DELETE',
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data?.error?.message || "Failed to delete invoice");
+  }
 }

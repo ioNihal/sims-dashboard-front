@@ -102,24 +102,37 @@ export default function ReportDetails() {
   };
 
   const handlePrint = async () => {
-    // 1) snapshot chart
-    const chartNode = document.getElementById('chart-to-capture');
-    const canvas = await html2canvas(chartNode, { scale: 2 });
-    const chartDataUrl = canvas.toDataURL('image/png');
-  
-    // 2) generate PDF with chart embedded
-    const blob = await pdf(
-      <ReportDocument report={report} chartImage={chartDataUrl}/>
-    ).toBlob();
-  
-    // 3) download
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${report.name || report.type}-report.pdf`;
-    a.click();
-    URL.revokeObjectURL(url);
+    try {
+      setActionLoading(true);
+      // 1) Snapshot chart
+      const chartNode = document.getElementById('chart-to-capture');
+      if (!chartNode) {
+        throw new Error('Chart element not found');
+      }
+
+      const canvas = await html2canvas(chartNode, { scale: 2 });
+      const chartDataUrl = canvas.toDataURL('image/png');
+
+      // 2) Generate PDF with chart embedded
+      const blob = await pdf(
+        <ReportDocument report={report} chartImage={chartDataUrl} />
+      ).toBlob();
+
+      // 3) Download
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${report.name || report.type}-report.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to generate or download the PDF:', error);
+      alert('Something went wrong while generating the PDF. Please try again.');
+    } finally {
+      setActionLoading(false);
+    }
   };
+
 
   const handleDelete = async id => {
     try {
@@ -140,12 +153,12 @@ export default function ReportDetails() {
         <button className={styles.backButton} onClick={() => nav("/reports")}>
           Back
         </button>
-        <button className={styles.dltButton} onClick={() => handleDelete(report._id)}>
+        <button className={styles.dltButton} onClick={() => handleDelete(report._id)} disabled={actionLoading}>
           {`${actionLoading ? "Deleting..." : "Delete"}`}
         </button>
         <div className={styles.saveActions}>
-          <button className={styles.printBtn} onClick={handlePrint}>
-            Print
+          <button className={styles.printBtn} onClick={handlePrint} disabled={actionLoading}>
+            {`${actionLoading ? "Printing..." : "Print"}`}
           </button>
           <button
             className={styles.csvBtn}

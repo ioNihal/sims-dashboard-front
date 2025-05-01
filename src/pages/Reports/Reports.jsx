@@ -4,6 +4,7 @@ import styles from "../../styles/PageStyles/Reports/reports.module.css";
 import RefreshButton from "../../components/RefreshButton";
 import { capitalize, formatDate } from "../../utils/validators";
 import SearchBar from "../../components/SearchBar";
+import { deleteReport, fetchReports } from "../../api/reports";
 
 const Reports = () => {
   const [reports, setReports] = useState([]);
@@ -12,20 +13,21 @@ const Reports = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
 
-  const fetchReports = async () => {
+  const load = async () => {
     setLoading(true);
     try {
-      const res = await fetch("https://suims.vercel.app/api/report");
-      const data = await res.json();
-      if (!res.ok) throw new Error("Something wrong")
-      setReports(data.reports);
-      setLoading(false);
+      const data = await fetchReports();
+      setReports(data);
     } catch (err) {
-      console.error(err)
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
+
+
   useEffect(() => {
-    fetchReports();
+    load();
   }, []);
 
 
@@ -41,17 +43,7 @@ const Reports = () => {
   });
 
 
-  const handleDelete = async (id) => {
-    try {
-      const res = await fetch(`https://suims.vercel.app/api/report/${id}`, { method: "DELETE" })
-      if (!res.ok) throw new Error("Delete failed");
-    } catch (err) {
-      console.log(err)
-    } finally {
-      fetchReports();
-    }
-  }
-
+ 
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>Reports</h1>
@@ -61,7 +53,7 @@ const Reports = () => {
         </Link>
 
         <div className={styles.rightSide}>
-          <RefreshButton onClick={fetchReports} loading={loading} />
+          <RefreshButton onClick={load} loading={loading} />
           <SearchBar
             placeholder="Search Reports..."
             searchQuery={searchQuery}
@@ -92,12 +84,6 @@ const Reports = () => {
                   >
                     View
                   </button>
-                  <button
-                    className={styles.viewBtn}
-                    onClick={() => handleDelete(r._id)}
-                  >
-                  DELETE
-                </button>
                 </li>
         ))}
       </ul>

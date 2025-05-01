@@ -41,8 +41,14 @@
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
 }
 
+.saveActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .printBtn,
-.csvBtn {
+.csvBtn,
+.dltButton {
   padding: 10px 20px;
   border-radius: 5px;
   border: none;
@@ -51,7 +57,6 @@
 }
 
 .printBtn {
-  margin-left: auto;
   background: var(--btn-edit);
   color: #fff;
 }
@@ -61,11 +66,21 @@
 }
 
 .csvBtn {
-  background: var(--btn-delete);
+  background: var(--btn);
   color: #fff;
 }
 
 .csvBtn:hover {
+  background: var(--btn-hover);
+}
+
+.dltButton {
+  margin-left: auto;
+  background: var(--btn-delete);
+  color: #fff;
+}
+
+.dltButton:hover {
   background: var(--btn-delete-hover);
 }
 
@@ -169,10 +184,12 @@
   gap: 1rem;
 }
 
-.loading {
+.loading,
+.error {
+  margin-top: 1rem;
   text-align: center;
   font-size: 1rem;
-  color: var(--text-light);
+  color: var(--text);
 }
 
 .noChart {
@@ -230,7 +247,17 @@
   }
 
   .actions {
+    flex-wrap: wrap;
     justify-content: space-between;
+  }
+
+  .saveActions {
+    flex: 1 1 100%;
+  }
+
+  .printBtn,
+  .csvBtn {
+    flex: 1;
   }
 
   .backButton,

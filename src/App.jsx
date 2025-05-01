@@ -34,11 +34,12 @@ import InvoiceDetails from './pages/Invoices/InvoiceDetails';
 import ProfileWidget from "./components/widgets/ProfileWidget";
 import Feedbacks from './pages/Feedbacks/Feedbacks';
 import { ThemeToggleButton } from './components/ThemeToggleButton';
+import { Toaster } from 'react-hot-toast';
 
 
 function App() {
 
- 
+
 
   const storedUser = localStorage.getItem("user");
   const user = storedUser
@@ -54,11 +55,18 @@ function App() {
           path="/*"
           element={
             <ProtectedRoute>
+              <Toaster
+                position="top-right"
+                toastOptions={{
+                  success: { style: { background: 'green', color: 'white' } },
+                  error: { style: { background: 'red', color: 'white' } },
+                }}
+              />
               <div className="dashboard">
                 <Sidebar />
                 <div className="main">
                   <div className="topbar" >
-                   <ThemeToggleButton />
+                    <ThemeToggleButton />
                     <ProfileWidget user={user} />
                   </div>
                   <div className="content">

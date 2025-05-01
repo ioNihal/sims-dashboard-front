@@ -5,11 +5,14 @@ import { getCustomerById } from "../../api/customers";
 import { getOrderById } from "../../api/orders";
 import { formatDate } from "../../utils/validators";
 import { approveInvoice, deleteInvoice, getInvoiceById, payInvoice } from "../../api/invoice";
-import { Toaster, toast } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 const InvoiceDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const MySwal = withReactContent(Swal);
 
   const [invoice, setInvoice] = useState(null);
   const [customer, setCustomer] = useState(null);
@@ -85,7 +88,6 @@ const InvoiceDetails = () => {
 
   return (
     <div className={styles.page}>
-      <Toaster position="top-center" reverseOrder={false} />
       <button className={styles.backButton} onClick={() => navigate("/invoices")}>Back</button>
 
       <div className={styles.invoiceCard}>

@@ -1,14 +1,8 @@
 // src/pages/Reports/ReportDetails.jsx
 import React, { useEffect, useState } from "react";
+
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "../../styles/PageStyles/Reports/reportDetails.module.css";
-import {
-  ResponsiveContainer,
-  LineChart, Line,
-  BarChart, Bar,
-  PieChart, Pie, Cell,
-  CartesianGrid, XAxis, YAxis, Tooltip, Legend
-} from "recharts";
 
 import InventoryReport from "./ReportTypes/InventoryReport";
 import CategoryReport from "./ReportTypes/CategoryReport";
@@ -16,6 +10,12 @@ import CustomerReport from "./ReportTypes/CustomerReport";
 import OrderReport from "./ReportTypes/OrderReport";
 import InvoiceReport from "./ReportTypes/InvoiceReport";
 import SalesReport from "./ReportTypes/SalesReport";
+import { deleteReport, fetchReports } from "../../api/reports";
+import { capitalize } from "../../utils/validators";
+import { ReportDocument } from "../../pdf/ReportDocument";
+import html2canvas from 'html2canvas';
+import { pdf } from '@react-pdf/renderer';
+
 
 // simple CSV-download helper (unchanged)
 function downloadCSV(rows, filename = "report.csv") {
@@ -34,73 +34,140 @@ function downloadCSV(rows, filename = "report.csv") {
   URL.revokeObjectURL(url);
 }
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#6200ea"];
-
-const ReportDetails = () => {
+export default function ReportDetails() {
   const { id } = useParams();
   const nav = useNavigate();
+
   const [report, setReport] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [actionLoading, setActionLoading] = useState(false);
+
+
+  const load = async (id) => {
+    try {
+      const fetched = await fetchReports();
+      const singleReport = fetched.find(r => r._id === id);
+      if (!singleReport) throw new Error("Report not found");
+      setReport(singleReport);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    const all = JSON.parse(localStorage.getItem("reports") || "[]");
-    const found = all.find(r => String(r._id) === id);
-    if (!found) return nav("/reports");
-    setReport(found);
+    load(id);
   }, [id, nav]);
 
-  if (!report) return <div className={styles.loading}>Loading…</div>;
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.loading}>Loading…</div>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.error}>
+          <p>Failed to load report: {error}</p>
+          <button onClick={() => nav("/reports")}>Back</button>
+        </div>
+      </div>
+    );
+  }
 
   const { name, description, type, dateRange, chartData, dataDetails } = report;
 
   const renderChart = () => {
-    if (!report.chartData)
-      return <p className={styles.noChart}>No data</p>;
-
-    // chartData is now an object containing the series for each widget
-    const data = report.chartData;
-
-    switch (report.type) {
+    if (!chartData) return <p className={styles.noChart}>No data</p>;
+    switch (type) {
       case "inventory":
-        return <InventoryReport data={data} />;
-
+        return <InventoryReport data={chartData} />;
       case "category":
-        return <CategoryReport data={data} />;
-
+        return <CategoryReport data={chartData} />;
       case "customers":
-        return <CustomerReport data={data} />;
-
+        return <CustomerReport data={chartData} />;
       case "orders":
-        return <OrderReport data={data} />;
-
+        return <OrderReport data={chartData} />;
       case "invoice":
-        return <InvoiceReport data={data} />;
-
+        return <InvoiceReport data={chartData} />;
       case "sales":
-        return <SalesReport data={data} />;
-
+        return <SalesReport data={chartData} />;
       default:
         return <p className={styles.noChart}>Unsupported report type</p>;
     }
   };
 
+  const handlePrint = async () => {
+    // 1) snapshot chart
+    const chartNode = document.getElementById('chart-to-capture');
+    const canvas = await html2canvas(chartNode, { scale: 2 });
+    const chartDataUrl = canvas.toDataURL('image/png');
+  
+    // 2) generate PDF with chart embedded
+    const blob = await pdf(
+      <ReportDocument report={report} chartImage={chartDataUrl}/>
+    ).toBlob();
+  
+    // 3) download
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${report.name || report.type}-report.pdf`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleDelete = async id => {
+    try {
+      if (!window.confirm("Are you sure you want to delete this report?")) return;
+      setActionLoading(true);
+      await deleteReport(id);
+      nav("/reports");
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setActionLoading(false);
+    }
+  };
 
   return (
     <div className={styles.page}>
       <div className={styles.actions}>
-        <button className={styles.backButton} onClick={() => nav("/reports")}>Back</button>
-        <button className={styles.printBtn} onClick={() => window.print()}>Print</button>
-        <button className={styles.csvBtn} onClick={() => downloadCSV(chartData, `${name || type}-report.csv`)}>Export CSV</button>
+        <button className={styles.backButton} onClick={() => nav("/reports")}>
+          Back
+        </button>
+        <button className={styles.dltButton} onClick={() => handleDelete(report._id)}>
+          {`${actionLoading ? "Deleting..." : "Delete"}`}
+        </button>
+        <div className={styles.saveActions}>
+          <button className={styles.printBtn} onClick={handlePrint}>
+            Print
+          </button>
+          <button
+            className={styles.csvBtn}
+            onClick={() => downloadCSV(chartData, `${name || type}-report.csv`)}
+          >
+            Export CSV
+          </button>
+        </div>
       </div>
-      <div className={styles.card}>
+
+      <div className={styles.card} >
         <div className={styles.topSection}>
-          <h1 className={styles.title}>{name || `${type} Report`}</h1>
+          <h1 className={styles.title}>{capitalize(name) || `${capitalize(type)} Report`}</h1>
           <p className={styles.meta}>
-            <span>Type: {type}</span>
-            <span>Period: {new Date(dateRange.start).toLocaleDateString()} – {new Date(dateRange.end).toLocaleDateString()}</span>
+            <span>Type: {capitalize(type)}</span>
+            <span>
+              Period: {new Date(dateRange.start).toLocaleDateString()} –{" "}
+              {new Date(dateRange.end).toLocaleDateString()}
+            </span>
           </p>
           {description && <p className={styles.description}>{description}</p>}
         </div>
-
 
         {/* — TEXTUAL SUMMARY DETAILS — */}
         {dataDetails && (
@@ -116,10 +183,8 @@ const ReportDetails = () => {
           </div>
         )}
 
-        <div className={styles.chartWrapper}>{renderChart()}</div>
+        <div className={styles.chartWrapper} id="chart-to-capture">{renderChart()}</div>
       </div>
-    </div >
+    </div>
   );
-};
-
-export default ReportDetails;
+}

@@ -7,7 +7,7 @@ import { getAllCustomers, getCustomerById } from "../../api/customers";
 import styles from "../../styles/PageStyles/Invoices/invoices.module.css";
 import { capitalize, formatDate } from "../../utils/validators";
 import { generateInvoices, getAllInvoices } from "../../api/invoice";
-import { Toaster, toast } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 const Invoices = () => {
   const navigate = useNavigate();
@@ -87,7 +87,6 @@ const Invoices = () => {
 
   return (
     <div className={styles.page}>
-       <Toaster position="top-center" reverseOrder={false} />
       <h1 className={styles.title}>Invoices</h1>
 
       <div className={styles.actions}>

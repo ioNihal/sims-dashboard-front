@@ -5,7 +5,7 @@ import { FaUserCircle, FaEdit, FaKey, FaSave, FaTimes } from "react-icons/fa";
 import styles from "../../styles/PageStyles/Profile/profilePage.module.css";
 import { capitalize, validateName, validateEmail, validatePassword } from "../../utils/validators";
 import { updateAdmin } from "../../api/admin";
-import { Toaster, toast } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -134,7 +134,6 @@ const ProfilePage = () => {
 
   return (
     <div className={styles.page}>
-      <Toaster position="top-center" reverseOrder={false} />
       <div className={styles.profileHeader}>
         <FaUserCircle className={styles.avatar} />
         <p className={styles.role}>{profile.role}</p>

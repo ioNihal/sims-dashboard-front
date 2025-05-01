@@ -8,7 +8,7 @@ import {
   validatePhone,
   validateAddress,
 } from "../../utils/validators";
-import { generatePassword } from "../../utils/passwordUtils";
+
 import { addCustomer } from "../../api/customers";
 
 const AddCustomerPage = () => {
@@ -84,7 +84,7 @@ const AddCustomerPage = () => {
       return;
     }
 
-    const newCustomer = { ...customer, password: generatePassword() };
+    const newCustomer = { ...customer };
     setIsSaving(true);
 
     try {

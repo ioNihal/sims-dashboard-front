@@ -57,11 +57,11 @@ export const getCustomerById = async (id) => {
  * @returns {Promise<Object>}            Resolves to the created customer object
  * @throws {Error}                       Throws if the network request fails or returns non‑OK
  */
-export async function addCustomer({ name, email, phone, address, paymentPreference, password }) {
+export async function addCustomer({ name, email, phone, address, paymentPreference }) {
     const res = await fetch(`${BASE_URL}/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, address, paymentPreference, password })
+        body: JSON.stringify({ name, email, phone, address, paymentPreference })
     });
     const json = await res.json();
     if (!res.ok) {

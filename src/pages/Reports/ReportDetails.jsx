@@ -17,22 +17,7 @@ import html2canvas from 'html2canvas';
 import { pdf } from '@react-pdf/renderer';
 
 
-// simple CSV-download helper (unchanged)
-function downloadCSV(rows, filename = "report.csv") {
-  if (!rows || !rows.length) return;
-  const keys = Object.keys(rows[0]);
-  const csv = [
-    keys.join(","),
-    ...rows.map(r => keys.map(k => JSON.stringify(r[k], (k, v) => typeof v === "string" ? v.replace(/,/g, "") : v)).join(","))
-  ].join("\n");
-  const blob = new Blob([csv], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
-}
+
 
 export default function ReportDetails() {
   const { id } = useParams();
@@ -134,6 +119,59 @@ export default function ReportDetails() {
   };
 
 
+  const downloadCSV = async (dataObject, filename = "report.csv", setActionLoading) => {
+    try {
+      setActionLoading?.(true);
+
+      if (!dataObject || typeof dataObject !== "object") {
+        throw new Error("Invalid report data.");
+      }
+
+      let csvContent = "";
+
+      for (const [sectionName, rows] of Object.entries(dataObject)) {
+        if (!Array.isArray(rows) || rows.length === 0) continue;
+
+        const keys = Object.keys(rows[0]);
+
+        // Section title
+        csvContent += `\n\n${sectionName.toUpperCase()}\n`;
+
+        // Headers
+        csvContent += keys.join(",") + "\n";
+
+        // Rows
+        csvContent += rows.map(row =>
+          keys.map(k =>
+            JSON.stringify(row[k], (key, value) =>
+              typeof value === "string" ? value.replace(/,/g, "") : value
+            )
+          ).join(",")
+        ).join("\n");
+      }
+
+      if (!csvContent.trim()) {
+        throw new Error("No valid data found for export.");
+      }
+
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("CSV Export Error:", error);
+      alert("Failed to export CSV. Please check the data.");
+    } finally {
+      setActionLoading?.(false);
+    }
+  };
+
+
+
+
   const handleDelete = async id => {
     try {
       if (!window.confirm("Are you sure you want to delete this report?")) return;
@@ -162,9 +200,10 @@ export default function ReportDetails() {
           </button>
           <button
             className={styles.csvBtn}
-            onClick={() => downloadCSV(chartData, `${name || type}-report.csv`)}
+            onClick={() => downloadCSV(chartData, `${name || type}-report.csv`, setActionLoading)}
+            disabled={actionLoading}
           >
-            Export CSV
+            {`${actionLoading ? "Exporting..." : "Export CSV"}`}
           </button>
         </div>
       </div>

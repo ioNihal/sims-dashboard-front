@@ -80,31 +80,25 @@
   margin-bottom: 20px;
 }
 
-.approve {
+.approve,
+.pay {
   background: var(--btn-edit);
 }
 
-.approve:hover {
+.approve:hover,
+.pay:hover {
   background: var(--btn-edit-hover);
 }
 
-.pay {
-  background: var(--btn);
-
-}
-
-.pay:hover {
-  background: var(--btn-hover);
-}
 
 .print {
-  background: var(--btn-edit);
+  background: var(--btn-secondary);
   ;
 
 }
 
 .print:hover {
-  background: var(--btn-edit-hover);
+  background: var(--btn-secondary-hover);
 }
 
 .deleteBtn {
@@ -179,7 +173,7 @@
   .orderTable {
     font-size: 0.7rem;
   }
-  
+
   .btnGroup button {
     margin-bottom: 5px;
     padding: 8px 15px;

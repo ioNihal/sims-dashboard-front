@@ -209,12 +209,10 @@
 }
 
 
-
-
-.loading {
+.loading, .error {
   text-align: center;
-  font-size: 20px;
-  padding: 2rem;
+  font-size: 1rem;
+  margin-top: 2rem;
   color: var(--text);
 }
 

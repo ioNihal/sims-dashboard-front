@@ -1,3 +1,4 @@
+// pages/Orders/OrderDetails.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from '../../styles/PageStyles/Orders/orderDetails.module.css';
@@ -7,70 +8,97 @@ import { deleteOrder, getOrderById, updateOrderStatus } from '../../api/orders';
 export default function OrderDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [order, setOrder] = useState(null);
   const [status, setStatus] = useState('');
   const [originalStatus, setOriginalStatus] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState(null);
 
+  // Fetch order on mount
   useEffect(() => {
     (async () => {
+      setLoading(true);
+      setError(null);
       try {
         const fetched = await getOrderById(id);
         setOrder(fetched);
         setStatus(fetched.status);
         setOriginalStatus(fetched.status);
       } catch (err) {
-        console.error(err);
-        alert(err.message);
-        navigate('/orders');
+        console.error("Error loading order details:", err);
+        setError(err.message || 'Failed to load order details');
       } finally {
         setLoading(false);
       }
     })();
-  }, [id, navigate]);
+  }, [id]);
 
-  // generic PATCH helper
-  const patchStatus = async newStatus => {
+  // Handle status patch
+  const patchStatus = async (newStatus) => {
     setSaving(true);
+    setError(null);
     try {
       await updateOrderStatus(order._id, newStatus);
       navigate('/orders');
     } catch (err) {
-      console.error(err);
-      alert(err.message);
+      console.error("Error updating status:", err);
+      setError(err.message || 'Failed to update status');
     } finally {
       setSaving(false);
     }
   };
 
+  // Back with unsaved‐changes guard
   const handleBack = () => {
     if (status !== originalStatus) {
-      if (!window.confirm('You have unsaved changes. Are you sure you want to leave?')) return;
+      if (!window.confirm('You have unsaved changes. Are you sure you want to leave?')) {
+        return;
+      }
     }
     navigate('/orders');
-  }
+  };
 
   const handleSave = () => patchStatus(status);
 
   const handleConfirm = () => {
-    if (!window.confirm('Are you sure you want to confirm this order?')) return;
+    // if (window.confirm('Are you sure you want to confirm this order?')) {
+    //   patchStatus('confirmed');
+    // }
+
     patchStatus('confirmed');
   };
 
-  const handleDelete = async orderId => {
+  const handleDelete = async (orderId) => {
     if (!window.confirm('Really delete this order?')) return;
+    setError(null);
     try {
-      await deleteOrder(orderId)
-      navigate('/orders');
+      await deleteOrder(orderId);
       alert('Order deleted');
+      navigate('/orders');
     } catch (err) {
-      console.error(err);
-      alert(err.message);
+      console.error("Error deleting order:", err);
+      setError(err.message || 'Failed to delete order');
     }
   };
 
-  if (loading) return <div className={styles.loading}>Loading details…</div>;
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.loading}>Loading details…</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.page}>
+        <p className={styles.error}>Error: {error}</p>
+        <button onClick={() => navigate('/orders')}>Back to list</button>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
@@ -88,83 +116,66 @@ export default function OrderDetails() {
       </div>
 
       <div className={styles.card}>
-        <h2 className={styles.title}>Order Details</h2>
+        <h2 className={styles.title}>Order Details</h2>
 
         <div className={styles.detailGroup}>
-          <span className={styles.label}>Order ID:</span>
+          <span className={styles.label}>Order ID:</span>
           <span className={styles.value}>{order._id}</span>
         </div>
 
         <div className={styles.detailGroup}>
           <span className={styles.label}>Customer:</span>
-          <span className={styles.value}>{capitalize(order.customerId?.name) || '—'}</span>
-        </div>
-
-        <div className={styles.detailGroup}>
-          <span className={styles.label}>Order Date:</span>
           <span className={styles.value}>
-            {formatDate(order.createdAt)}
+            {capitalize(order.customerId?.name) || '—'}
           </span>
         </div>
 
         <div className={styles.detailGroup}>
-          <span className={styles.label}>Total Amount:</span>
+          <span className={styles.label}>Order Date:</span>
+          <span className={styles.value}>{formatDate(order.createdAt)}</span>
+        </div>
+
+        <div className={styles.detailGroup}>
+          <span className={styles.label}>Total Amount:</span>
           <span className={styles.value}>₹{order.totalAmount}</span>
         </div>
 
         <div className={styles.detailGroup}>
           <span className={styles.label}>Status:</span>
-          {order.status === 'cancelled' ? (
-            <span className={`${styles.value} ${styles.cancelled}`}>
-              cancelled
+          {['cancelled', 'pending'].includes(order.status) ? (
+            <span className={`${styles.value} ${styles[order.status]}`}>
+              {order.status}
             </span>
-
-          ) : order.status === 'pending' ? (
-            <span className={`${styles.value} ${styles.pending}`}>
-              pending
-            </span>
-
-          ) : order.status === 'confirmed' ? (
+          ) : (
             <select
               className={styles.statusDropdown}
               value={status}
-              onChange={e => setStatus(e.target.value)}
+              onChange={(e) => setStatus(e.target.value)}
               disabled={saving}
             >
-              <option value="cancelled">confirmed</option>
-              <option value="cancelled">cancelled</option>
-              <option value="shipped">shipped</option>
-              <option value="delivered">delivered</option>
+              {/* ensure current status is always an option */}
+              <option value={originalStatus}>{originalStatus}</option>
+              {['confirmed', 'shipped', 'delivered', 'cancelled']
+                .filter((s) => s !== originalStatus)
+                .map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
             </select>
-
-          ) :
-            order.status === 'shipped' ? (
-              <select
-                className={styles.statusDropdown}
-                value={status}
-                onChange={e => setStatus(e.target.value)}
-                disabled={saving}
-              >
-                <option value="cancelled">cancelled</option>
-                <option value="shipped">shipped</option>
-                <option value="delivered">delivered</option>
-              </select>
-            ) :
-              <span className={`${styles.value} ${styles[order.status.toLowerCase()]}`}>
-                {order.status}
-              </span>
-          }
+          )}
         </div>
 
         <div className={styles.deleteWrapper}>
-          {order.status === "pending" && <button
-            className={styles.confirmBtn}
-            onClick={handleConfirm}
-            disabled={saving || order.status !== 'pending'}
-          >
-            {`${saving ? 'Confirming…' : 'Confirm Order'}`}
-          </button>
-          }
+          {order.status === 'pending' && (
+            <button
+              className={styles.confirmBtn}
+              onClick={handleConfirm}
+              disabled={saving}
+            >
+              {saving ? 'Confirming…' : 'Confirm Order'}
+            </button>
+          )}
           <button className={styles.deleteBtn} onClick={() => handleDelete(order._id)}>
             Delete
           </button>
@@ -172,7 +183,7 @@ export default function OrderDetails() {
 
         <div className={styles.itemsSection}>
           <h3>Ordered Items</h3>
-          {order.orderProducts.map(item => (
+          {order.orderProducts.map((item) => (
             <div key={item._id} className={styles.itemRow}>
               <div className={styles.itemInfo}>
                 <span className={styles.itemName}>
@@ -189,7 +200,6 @@ export default function OrderDetails() {
             </div>
           ))}
         </div>
-
       </div>
     </div>
   );

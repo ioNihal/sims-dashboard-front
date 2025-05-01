@@ -26,7 +26,9 @@ export default function ReportDetails() {
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [actionLoading, setActionLoading] = useState(false);
+  const [printing, setPrinting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
 
   const load = async (id) => {
@@ -88,7 +90,7 @@ export default function ReportDetails() {
 
   const handlePrint = async () => {
     try {
-      setActionLoading(true);
+      setPrinting(true);
       // 1) Snapshot chart
       const chartNode = document.getElementById('chart-to-capture');
       if (!chartNode) {
@@ -114,14 +116,14 @@ export default function ReportDetails() {
       console.error('Failed to generate or download the PDF:', error);
       alert('Something went wrong while generating the PDF. Please try again.');
     } finally {
-      setActionLoading(false);
+      setPrinting(false);
     }
   };
 
 
   const downloadCSV = async (dataObject, filename = "report.csv", setActionLoading) => {
     try {
-      setActionLoading?.(true);
+      setExporting?.(true);
 
       if (!dataObject || typeof dataObject !== "object") {
         throw new Error("Invalid report data.");
@@ -165,7 +167,7 @@ export default function ReportDetails() {
       console.error("CSV Export Error:", error);
       alert("Failed to export CSV. Please check the data.");
     } finally {
-      setActionLoading?.(false);
+      setExporting?.(false);
     }
   };
 
@@ -175,13 +177,13 @@ export default function ReportDetails() {
   const handleDelete = async id => {
     try {
       if (!window.confirm("Are you sure you want to delete this report?")) return;
-      setActionLoading(true);
+      setDeleting(true);
       await deleteReport(id);
       nav("/reports");
     } catch (err) {
       console.error(err);
     } finally {
-      setActionLoading(false);
+      setDeleting(false);
     }
   };
 
@@ -191,19 +193,19 @@ export default function ReportDetails() {
         <button className={styles.backButton} onClick={() => nav("/reports")}>
           Back
         </button>
-        <button className={styles.dltButton} onClick={() => handleDelete(report._id)} disabled={actionLoading}>
-          {`${actionLoading ? "Deleting..." : "Delete"}`}
+        <button className={styles.dltButton} onClick={() => handleDelete(report._id)} disabled={deleting}>
+          {`${deleting ? "Deleting..." : "Delete"}`}
         </button>
         <div className={styles.saveActions}>
-          <button className={styles.printBtn} onClick={handlePrint} disabled={actionLoading}>
-            {`${actionLoading ? "Printing..." : "Print"}`}
+          <button className={styles.printBtn} onClick={handlePrint} disabled={printing}>
+            {`${printing ? "Printing..." : "Print"}`}
           </button>
           <button
             className={styles.csvBtn}
-            onClick={() => downloadCSV(chartData, `${name || type}-report.csv`, setActionLoading)}
-            disabled={actionLoading}
+            onClick={() => downloadCSV(chartData, `${name || type}-report.csv`, setExporting)}
+            disabled={exporting}
           >
-            {`${actionLoading ? "Exporting..." : "Export CSV"}`}
+            {`${exporting ? "Exporting..." : "Export CSV"}`}
           </button>
         </div>
       </div>

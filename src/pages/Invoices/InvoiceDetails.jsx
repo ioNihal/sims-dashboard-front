@@ -6,19 +6,20 @@ import { getOrderById } from "../../api/orders";
 import { formatDate } from "../../utils/validators";
 import { approveInvoice, deleteInvoice, getInvoiceById, payInvoice } from "../../api/invoice";
 import { toast } from 'react-hot-toast';
-import withReactContent from "sweetalert2-react-content";
-import Swal from "sweetalert2";
+
 
 const InvoiceDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const MySwal = withReactContent(Swal);
+
 
   const [invoice, setInvoice] = useState(null);
   const [customer, setCustomer] = useState(null);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [actionLoading, setActionLoading] = useState(false);
+  const [approving, setApproving] = useState(false);
+  const [marking, setMarking] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
 
   const fetchData = useCallback(async () => {
@@ -47,7 +48,7 @@ const InvoiceDetails = () => {
   }, [fetchData]);
 
   const doApprove = async () => {
-    setActionLoading(true);
+    setApproving(true);
     try {
       await approveInvoice(id);
       fetchData();
@@ -55,12 +56,12 @@ const InvoiceDetails = () => {
     } catch (err) {
       toast.error("Approve failed: " + err);
     } finally {
-      setActionLoading(false);
+      setApproving(false);
     }
   };
 
   const doPay = async () => {
-    setActionLoading(true);
+    setMarking(true);
     try {
       await payInvoice(id, "paid");
       setInvoice((inv) => ({
@@ -70,19 +71,19 @@ const InvoiceDetails = () => {
     } catch (err) {
       toast.error("Payment update failed: " + err);
     } finally {
-      setActionLoading(false);
+      setMarking(false);
     }
   };
 
   const handleDelete = async () => {
-    setActionLoading(true);
+    setDeleting(true);
     try {
       await deleteInvoice(id);
+      navigate("/invoices");
     } catch(err) {
       toast.error("Error: ", err);
     } finally {
-      setActionLoading(false);
-      navigate("/invoices");
+      setDeleting(false);
     }
   }
 
@@ -101,20 +102,20 @@ const InvoiceDetails = () => {
               <h1>Invoice</h1>
               <div className={styles.btnGroup}>
                 {invoice.draft && (
-                  <button onClick={doApprove} disabled={actionLoading} className={styles.approve}>
-                    {`${actionLoading ? "Approving..." : "Approve"}`}
+                  <button onClick={doApprove} disabled={approving} className={styles.approve}>
+                    {`${approving ? "Approving..." : "Approve"}`}
                   </button>
                 )}
-                {!invoice.draft && invoice.status === "pending" && (
-                  <button onClick={doPay} disabled={actionLoading} className={styles.pay}>
-                    {`${actionLoading ? "Marking..." : "Mark Paid"}`}
+                {invoice.method && (
+                  <button onClick={doPay} disabled={marking} className={styles.pay}>
+                    {`${marking ? "Marking..." : "Mark Paid"}`}
                   </button>
                 )}
                 <button onClick={() => window.print()} className={styles.print}>
                   Print
                 </button>
-                <button  onClick={handleDelete} className={styles.deleteBtn} disabled={actionLoading}>
-                  {`${actionLoading ? "Deleting..." : "Delete"}`}
+                <button  onClick={handleDelete} className={styles.deleteBtn} disabled={deleting}>
+                  {`${deleting ? "Deleting..." : "Delete"}`}
                 </button>
               </div>
             </header>

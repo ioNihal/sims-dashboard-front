@@ -39,7 +39,7 @@
 }
 
 
-.loading {
+.loading, .error {
     text-align: center;
     font-size: 1rem;
     padding: 20px;

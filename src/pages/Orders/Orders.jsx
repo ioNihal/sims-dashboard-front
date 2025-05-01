@@ -21,7 +21,7 @@ const Orders = () => {
       const data = await getAllOrders();
       setOrders(data);
     } catch (err) {
-      setError(err.message || "Failed to load orders");
+      setError(err?.message || "Failed to load orders");
     } finally {
       setLoading(false);
     }
@@ -41,14 +41,6 @@ const Orders = () => {
     );
   });
 
-  // single error display
-  if (error) {
-    return (
-      <div className={styles.page}>
-        <p className={styles.error}>Error: {error}</p>
-      </div>
-    );
-  }
 
   return (
     <div className={styles.page}>
@@ -65,7 +57,11 @@ const Orders = () => {
         </div>
       </div>
 
-      {loading ? (
+      {error ? (
+        <div className={styles.tableContainer}>
+          <p className={styles.error}>Error: {error}</p>
+        </div>
+      ) : loading ? (
         <div className={styles.tableContainer}>
           <p className={styles.loading}>Loading orders...</p>
         </div>

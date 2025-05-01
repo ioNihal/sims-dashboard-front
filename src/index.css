@@ -24,6 +24,9 @@ body {
     
   --btn: #7a6f8c;       
   --btn-hover: #685d70;  
+
+  --btn-secondary: #54458b;
+  --btn-secondary-hover: #4b3c85;
     
   --btn-edit: #6b9080;   
   --btn-edit-hover: #5a786a;
@@ -50,6 +53,8 @@ body {
   --bg-hover: #21262d;
   --btn: #5a67d6;
   --btn-hover: #4854c0;
+  --btn-secondary: #6f22c7;
+  --btn-secondary-hover: #611bb1;
   --btn-edit: #5d9e62;
   --btn-edit-hover: #6bae70;
   --btn-delete: #d65a5a;

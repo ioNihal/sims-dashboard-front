@@ -30,14 +30,14 @@
 }
 
 .profileBody {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 2rem;
   margin-bottom: 2rem;
 }
 
 /* Pane visibility toggling */
 .pane {
+  width: 60%;
   display: none;
   background: var(--bg-light);
   padding: 1.5rem;
@@ -49,39 +49,83 @@
   display: block;
 }
 
+.profilePane {
+  width: auto;
+  
+}
+
 .sectionTitle {
   font-size: 1.25rem;
   margin-bottom: 1rem;
   color: var(--text);
 }
 
+.userInfoRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+}
+
 .infoRow {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   color: var(--text);
+
 }
 
 .infoRow label {
+  flex: 1;
   min-width: 100px;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text);
-  margin-right: 1rem;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.inputWrapper {
+  position: relative;
+  flex: 2;
 }
 
 .editInput {
-  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   padding: 8px 10px;
   border: 1px solid var(--border);
   border-radius: 5px;
   font-size: 1rem;
   color: var(--text);
   background: var(--bg);
+  outline: none;
 }
 
 .editInput:focus {
   border-color: var(--blue);
   box-shadow: 0 0 5px rgba(3, 169, 244, 0.5);
+}
+
+.editInput::-ms-reveal,
+.editInput::-ms-clear {
+  display: none;
+}
+
+.editInput::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+  color: #555;
 }
 
 .actions {
@@ -139,29 +183,41 @@
 }
 
 .fieldError {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: red;
-  margin-left: 100px;
-  margin-top: -0.75rem;
-  margin-bottom: 0.75rem;
-  display: block;
+
+  position: absolute;
+  right: 5px;
+  bottom: -20px;
 }
 
 @media (max-width: 768px) {
-  .profileBody {
-    grid-template-columns: 1fr;
-  }
 
   .pane {
+    width: 100%;
     padding: 5px;
   }
+
   .infoRow {
     flex-direction: column;
     align-items: flex-start;
+    margin-bottom: 2rem;
+  }
+
+  .userInfoRow {
+    overflow: hidden;
   }
 
   .infoRow label {
     margin-bottom: 0.5rem;
+  }
+
+  .inputWrapper, .infoRow label {
+    width: 100%;
+  }
+
+  .editInput, .inputWrapper {
+    flex: 0;
   }
 
   .editInput {

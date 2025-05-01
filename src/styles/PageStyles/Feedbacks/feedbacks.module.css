@@ -105,11 +105,13 @@
 .error {
     color: red;
     padding: 1rem;
+    text-align: center;
 }
 
 .message {
     padding: 1rem;
     color: var(--text);
+    text-align: center;
 }
 
 

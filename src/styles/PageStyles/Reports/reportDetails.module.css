@@ -66,12 +66,12 @@
 }
 
 .csvBtn {
-  background: var(--btn);
+  background: var(--btn-secondary);
   color: #fff;
 }
 
 .csvBtn:hover {
-  background: var(--btn-hover);
+  background: var(--btn-secondary-hover);
 }
 
 .dltButton {

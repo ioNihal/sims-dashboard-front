@@ -53,8 +53,8 @@
 
 .loading {
     text-align: center;
-    font-size: 1rem;
-    padding: 20px;
+    font-size: 0.9rem;
+    margin-top: 20px;
     color: var(--text);
 }
 

@@ -80,42 +80,69 @@
   border-radius: 12px;
   padding: 20px;
   width: 100%;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+
+  /* make cards flow in a column with consistent gap */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .ordersSection h3 {
   font-size: 1.3rem;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  /* tighten up under‐heading spacing */
   color: var(--text);
 }
 
+/* turn list into a responsive grid of cards */
 .orderList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
 .orderCard {
-  background-color: var(--bg);
+  background-color: var(--bg-dim);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  color: var(--text);
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* subtle lift on hover for affordance */
+.orderCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .orderCard p {
-  margin: 5px 0;
+  margin: 6px 0;
   font-size: 1rem;
   color: var(--text);
+}
+
+/* style the order-ID link inside the card */
+.orderCard a {
+  color: var(--link);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.orderCard a:hover {
+  text-decoration: underline;
 }
 
 .noOrder {
   color: var(--text);
   font-size: 0.9rem;
+  padding: 10px 0;
+  text-align: center;
 }
 
 .loading,
@@ -146,6 +173,10 @@
     font-size: 0.9rem;
     padding: 8px 10px;
   }
+
+  .orderList {
+    grid-template-columns: repeat(auto-fill, minmax(auto, 1fr));
+  }
 }
 
 @media (max-width: 480px) {
@@ -161,6 +192,10 @@
   .detailSection p,
   .orderCard p {
     font-size: 0.7rem;
+  }
+
+  .orderList {
+    grid-template-columns: 1fr;
   }
 
   .noOrder {

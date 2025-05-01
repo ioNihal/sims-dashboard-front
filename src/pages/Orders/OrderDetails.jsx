@@ -95,7 +95,7 @@ export default function OrderDetails() {
     return (
       <div className={styles.page}>
         <p className={styles.error}>Error: {error}</p>
-        <button onClick={() => navigate('/orders')}>Back to list</button>
+        <button onClick={() => navigate('/orders')}>Back</button>
       </div>
     );
   }

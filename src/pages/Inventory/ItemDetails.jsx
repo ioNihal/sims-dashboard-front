@@ -4,6 +4,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "../../styles/PageStyles/Inventory/itemDetails.module.css";
 import { capitalize, formatDate } from "../../utils/validators";
 import { getInventoryItemById } from "../../api/inventory";
+import { getAllOrders } from "../../api/orders";
 
 const ItemDetails = () => {
   const { id } = useParams();
@@ -14,18 +15,36 @@ const ItemDetails = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchItem = async () => {
+    const fetchAll = async () => {
+      setLoading(true);
+      setError("");
       try {
-        const fetchedItem = await getInventoryItemById(id);
+        const [fetchedItem, allOrders] = await Promise.all([
+          getInventoryItemById(id),
+          getAllOrders()
+        ]);
+
         setItem(fetchedItem);
+
+        const recent = allOrders
+          .filter(order =>
+            order.orderProducts.some(p => p.inventoryId?._id === id)
+          )
+          // sort by date descending
+          .sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+
+        setItemOrders(recent);
       } catch (err) {
-        console.error("Error fetching item:", err);
-        setError("Item not found. Try again later!");
+        console.error("Error loading item or orders:", err);
+        setError(err.message || "Failed to load data");
       } finally {
         setLoading(false);
       }
     };
-    fetchItem();
+
+    fetchAll();
   }, [id]);
 
 
@@ -46,6 +65,7 @@ const ItemDetails = () => {
     return (
       <div className={styles.page}>
         <p className={styles.error}>{error}</p>
+        <button onClick={() => navigate('/inventory')}>Back to list</button>
       </div>
     );
   }
@@ -84,12 +104,29 @@ const ItemDetails = () => {
           <h3>Orders:</h3>
           {itemOrders.length > 0 ? (
             <ul className={styles.orderList}>
-              {itemOrders.map((order, index) => (
-                <li key={index} className={styles.orderCard}>
-                  <p><strong>Order Details:</strong> {order.orderDetails}</p>
-                  <p><strong>Ordered By:</strong> {order.orderedBy}</p>
-                </li>
-              ))}
+              {itemOrders.map(order => {
+                // find the product entry in this order
+                const line = order.orderProducts.find(
+                  p => p.inventoryId?._id === id
+                );
+                return (
+                  <li key={order._id} className={styles.orderCard}>
+                    <p>
+                      <strong>Order ID:</strong>{" "}
+                      <Link to={`/orders/${order._id}`}>{order._id}</Link>
+                    </p>
+                    <p>
+                      <strong>Date:</strong> {formatDate(order.createdAt)}
+                    </p>
+                    <p>
+                      <strong>Qty:</strong> {line.quantity} @ ₹{line.price} each
+                    </p>
+                    <p>
+                      <strong>Status:</strong> {order.status}
+                    </p>
+                  </li>
+                );
+              })}
             </ul>
           ) : (
             <p className={styles.noOrder}>No orders available.</p>

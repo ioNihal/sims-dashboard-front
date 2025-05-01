@@ -20,7 +20,7 @@ const SupplierDetail = () => {
         setSupplier(data);
       } catch (err) {
         console.error(err);
-        alert(err.message);
+        setError(err.message);
         navigate("/suppliers");
       } finally {
         setLoading(false);
@@ -33,6 +33,15 @@ const SupplierDetail = () => {
     return (
       <div className={styles.page}>
         <p className={styles.loading}>Loading supplier details…</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.page}>
+        <p className={styles.error}>Error: {error}</p>
+        <button onClick={() => navigate('/suppliers')}>Back to list</button>
       </div>
     );
   }

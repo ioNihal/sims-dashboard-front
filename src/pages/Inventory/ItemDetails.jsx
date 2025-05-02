@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "../../styles/PageStyles/Inventory/itemDetails.module.css";
 import { capitalize, formatDate } from "../../utils/validators";
-import { getInventoryItemById } from "../../api/inventory";
+import { getInventoryItemById, deleteInventoryItem } from "../../api/inventory";
 import { getAllOrders } from "../../api/orders";
+import { toast } from "react-hot-toast";
 
 const ItemDetails = () => {
   const { id } = useParams();
@@ -12,46 +13,59 @@ const ItemDetails = () => {
   const [item, setItem] = useState(null);
   const [itemOrders, setItemOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchAll = async () => {
       setLoading(true);
-      setError("");
       try {
-        const [fetchedItem, allOrders] = await Promise.all([
-          getInventoryItemById(id),
-          getAllOrders()
-        ]);
-
+        // first fetch the item
+        const fetchedItem = await getInventoryItemById(id);
+        if (!fetchedItem) {
+          toast.error("Item not found");
+          return navigate("/inventory");
+        }
         setItem(fetchedItem);
 
-        const recent = allOrders
-          .filter(order =>
+        // then fetch orders
+        let allOrders = [];
+        try {
+          allOrders = await getAllOrders();
+        } catch (_e) {
+          console.error("Could not load orders");
+        }
+
+        // guard orderProducts and filter
+        const recent = (allOrders || [])
+          .filter(order => Array.isArray(order.orderProducts) &&
             order.orderProducts.some(p => p.inventoryId?._id === id)
           )
-          // sort by date descending
           .sort(
             (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
           );
 
         setItemOrders(recent);
       } catch (err) {
-        console.error("Error loading item or orders:", err);
-        setError(err.message || "Failed to load data");
+        // only inventory lookup failures land here
+        toast.error(err.message || "Failed to load item details");
+        return navigate("/inventory");
       } finally {
         setLoading(false);
       }
-    };
+    }
 
     fetchAll();
-  }, [id]);
+  }, [id, navigate]);
 
-
-  // Set orders if present
-  // if (orders) {
-  //   setItemOrders(orders);
-  // }
+  const handleDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete this item?")) return;
+    try {
+      await deleteInventoryItem(id);
+      toast.success("Item deleted");
+      navigate("/inventory");
+    } catch (err) {
+      toast.error(err.message || "Error deleting item");
+    }
+  };
 
   if (loading) {
     return (
@@ -61,39 +75,54 @@ const ItemDetails = () => {
     );
   }
 
-  if (error) {
-    return (
-      <div className={styles.page}>
-        <p className={styles.error}>{error}</p>
-        <button onClick={() => navigate('/inventory')}>Back to list</button>
-      </div>
-    );
-  }
-
   if (!item) return null;
+
+  const supplierName = item.supplierName || "Deleted supplier";
+  const statusLabel =
+    item.quantity > item.threshold
+      ? "In Stock"
+      : item.quantity > 0
+        ? "Low Stock"
+        : "Out of Stock";
 
   return (
     <div className={styles.page}>
-      <button className={styles.backButton} onClick={() => navigate("/inventory")}>
-        Back
-      </button>
+      <div className={styles.btnGroup}>
+        <button
+          className={styles.backButton}
+          onClick={() => navigate("/inventory")}
+        >
+          Back
+        </button>
+        {/* <button className={styles.deleteBtn} onClick={handleDelete}>
+          Delete Item
+        </button> */}
+      </div>
+
       <h2 className={styles.title}>Product Details</h2>
       <div className={styles.card}>
         <div className={styles.detailSection}>
-          <p><strong>Status:</strong> <span
-            style={{ color: item.quantity > item.threshold ? "green" : item.quantity > 0 ? "orange" : "red" }}>
-            {`${item.quantity > item.threshold ? "In Stock" : item.quantity > 0 ? "Low Stock" : "Out of Stock"}`}
-          </span>
+          <p>
+            <strong>Status:</strong>{" "}
+            <span className={
+              statusLabel.replace(/\s+/g, "").toLowerCase() === "instock"
+                ? styles.inStock
+                : statusLabel === "Low Stock"
+                  ? styles.lowStock
+                  : styles.outOfStock
+            }>
+              {statusLabel}
+            </span>
           </p>
           <p><strong>Product Name:</strong> {capitalize(item.productName)}</p>
           <p><strong>Category:</strong> {capitalize(item.category)}</p>
           <p><strong>Quantity:</strong> {item.quantity}</p>
-          <p><strong>Unit Price:</strong> &#8377;{item.productPrice}</p>
+          <p><strong>Unit Price:</strong> ₹{item.productPrice.toFixed(2)}</p>
           <p><strong>Low Stock Threshold:</strong> {item.threshold}</p>
           <p>
             <strong>Supplier: </strong>
             <Link className={styles.link} to={`/suppliers/view/${item.supplierId}`}>
-              {capitalize(item.supplierName)}
+              {capitalize(supplierName)}
             </Link>
           </p>
           <p><strong>Created At:</strong> {formatDate(item.createdAt)}</p>
@@ -105,7 +134,6 @@ const ItemDetails = () => {
           {itemOrders.length > 0 ? (
             <ul className={styles.orderList}>
               {itemOrders.map(order => {
-                // find the product entry in this order
                 const line = order.orderProducts.find(
                   p => p.inventoryId?._id === id
                 );
@@ -115,15 +143,11 @@ const ItemDetails = () => {
                       <strong>Order ID:</strong>{" "}
                       <Link to={`/orders/${order._id}`}>{order._id}</Link>
                     </p>
+                    <p><strong>Date:</strong> {formatDate(order.createdAt)}</p>
                     <p>
-                      <strong>Date:</strong> {formatDate(order.createdAt)}
+                      <strong>Qty:</strong> {line.quantity} @ ₹{line.price.toFixed(2)}
                     </p>
-                    <p>
-                      <strong>Qty:</strong> {line.quantity} @ ₹{line.price} each
-                    </p>
-                    <p>
-                      <strong>Status:</strong> {order.status}
-                    </p>
+                    <p><strong>Status:</strong> {order.status}</p>
                   </li>
                 );
               })}
@@ -133,7 +157,7 @@ const ItemDetails = () => {
           )}
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

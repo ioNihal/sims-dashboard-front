@@ -1,43 +1,49 @@
+// src/pages/Invoices/InvoiceDetails.jsx
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "../../styles/PageStyles/Invoices/invoiceDetails.module.css";
 import { getCustomerById } from "../../api/customers";
 import { getOrderById } from "../../api/orders";
 import { formatDate } from "../../utils/validators";
-import { approveInvoice, deleteInvoice, getInvoiceById, payInvoice } from "../../api/invoice";
-import { toast } from 'react-hot-toast';
-
+import {
+  approveInvoice,
+  deleteInvoice,
+  getInvoiceById,
+  payInvoice,
+} from "../../api/invoice";
+import { toast } from "react-hot-toast";
 
 const InvoiceDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-
   const [invoice, setInvoice] = useState(null);
-  const [customer, setCustomer] = useState(null);
+  const [customer, setCustomer] = useState({ name: "Loading…", email: "", phone: "" });
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [approving, setApproving] = useState(false);
   const [marking, setMarking] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [error, setError] = useState("");
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    setError("");
     try {
       const inv = await getInvoiceById(id);
       setInvoice(inv);
-  
+
+      // fetch customer, fallback if deleted
       const cust = await getCustomerById(inv.customerId);
-      setCustomer(cust);
-  
-      const fetchedOrders = await Promise.all(
-        inv.orders.map((oid) => getOrderById(oid))
+      setCustomer(
+        cust ?? { name: "Deleted customer", email: "-", phone: "-" }
       );
-      setOrders(fetchedOrders);
+
+      // fetch each order
+      const fetchedOrders = await Promise.all(
+        inv.orders.map((oid) => getOrderById(oid).catch(() => null))
+      );
+      setOrders(fetchedOrders.filter(Boolean));
     } catch (err) {
-      setError(err);
+      toast.error("Failed to load invoice: " + err.message);
     } finally {
       setLoading(false);
     }
@@ -51,10 +57,10 @@ const InvoiceDetails = () => {
     setApproving(true);
     try {
       await approveInvoice(id);
-      fetchData();
-      
+      await fetchData();
+      toast.success("Invoice approved");
     } catch (err) {
-      toast.error("Approve failed: " + err);
+      toast.error("Approve failed: " + err.message);
     } finally {
       setApproving(false);
     }
@@ -64,12 +70,10 @@ const InvoiceDetails = () => {
     setMarking(true);
     try {
       await payInvoice(id, "paid");
-      setInvoice((inv) => ({
-        ...inv,
-        status: "paid"
-      }));
+      setInvoice((inv) => ({ ...inv, status: "paid" }));
+      toast.success("Marked as paid");
     } catch (err) {
-      toast.error("Payment update failed: " + err);
+      toast.error("Payment update failed: " + err.message);
     } finally {
       setMarking(false);
     }
@@ -79,63 +83,99 @@ const InvoiceDetails = () => {
     setDeleting(true);
     try {
       await deleteInvoice(id);
+      toast.success("Invoice deleted");
       navigate("/invoices");
-    } catch(err) {
-      toast.error("Error: ", err);
+    } catch (err) {
+      toast.error("Delete failed: " + err.message);
     } finally {
       setDeleting(false);
     }
-  }
+  };
 
   return (
     <div className={styles.page}>
-      <button className={styles.backButton} onClick={() => navigate("/invoices")}>Back</button>
+      <button
+        className={styles.backButton}
+        onClick={() => navigate("/invoices")}
+      >
+        Back
+      </button>
 
       <div className={styles.invoiceCard}>
-        {error ? (
-          <p className={styles.error}>Error: {error}</p>
-        ) : loading ? (
+        {loading || !invoice ? (
           <p className={styles.loading}>Loading…</p>
-        ) : invoice ? (
+        ) : (
           <>
             <header className={styles.header}>
               <h1>Invoice</h1>
               <div className={styles.btnGroup}>
                 {invoice.draft && (
-                  <button onClick={doApprove} disabled={approving} className={styles.approve}>
-                    {`${approving ? "Approving..." : "Approve"}`}
+                  <button
+                    onClick={doApprove}
+                    disabled={approving}
+                    className={styles.approve}
+                  >
+                    {approving ? "Approving..." : "Approve"}
                   </button>
                 )}
                 {invoice.method && (
-                  <button onClick={doPay} disabled={marking} className={styles.pay}>
-                    {`${marking ? "Marking..." : "Mark Paid"}`}
+                  <button
+                    onClick={doPay}
+                    disabled={marking}
+                    className={styles.pay}
+                  >
+                    {marking ? "Marking..." : "Mark Paid"}
                   </button>
                 )}
-                <button onClick={() => window.print()} className={styles.print}>
+                <button
+                  onClick={() => window.print()}
+                  className={styles.print}
+                >
                   Print
                 </button>
-                <button  onClick={handleDelete} className={styles.deleteBtn} disabled={deleting}>
-                  {`${deleting ? "Deleting..." : "Delete"}`}
+                <button
+                  onClick={handleDelete}
+                  className={styles.deleteBtn}
+                  disabled={deleting}
+                >
+                  {deleting ? "Deleting..." : "Delete"}
                 </button>
               </div>
             </header>
 
             <section className={styles.section}>
               <h2>Customer</h2>
-              <p><strong>Name:</strong> {customer.name}</p>
-              <p><strong>Email:</strong> {customer.email}</p>
-              <p><strong>Phone:</strong> {customer.phone}</p>
+              <p>
+                <strong>Name:</strong> {customer.name}
+              </p>
+              <p>
+                <strong>Email:</strong> {customer.email}
+              </p>
+              <p>
+                <strong>Phone:</strong> {customer.phone}
+              </p>
             </section>
 
             <section className={styles.section}>
               <h2>Invoice Details</h2>
-              <p><strong>ID:</strong> {invoice._id}</p>
-              <p><strong>Created:</strong> {formatDate(invoice.createdAt)}</p>
-              <p><strong>Due Date:</strong> {formatDate(invoice.dueDate)}</p>
-              <p><strong>Status:</strong> {invoice.status}</p>
-              <p><strong>Amount:</strong> ₹{invoice.amount.toFixed(2)}</p>
+              <p>
+                <strong>ID:</strong> {invoice._id}
+              </p>
+              <p>
+                <strong>Created:</strong> {formatDate(invoice.createdAt)}
+              </p>
+              <p>
+                <strong>Due Date:</strong> {formatDate(invoice.dueDate)}
+              </p>
+              <p>
+                <strong>Status:</strong> {invoice.status}
+              </p>
+              <p>
+                <strong>Amount:</strong> ₹{invoice.amount.toFixed(2)}
+              </p>
             </section>
-            {orders.length > 0 && (
+
+            {orders.length > 0 ? (
               <section className={styles.section}>
                 <h2>Orders</h2>
                 <table className={styles.orderTable}>
@@ -149,7 +189,7 @@ const InvoiceDetails = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {orders.map(order =>
+                    {orders.map((order) =>
                       order.orderProducts.map((o) => (
                         <tr key={o._id}>
                           <td>{o._id}</td>
@@ -163,12 +203,16 @@ const InvoiceDetails = () => {
                   </tbody>
                 </table>
               </section>
+            ) : (
+              <section className={styles.section}>
+                 <p>No orders found</p>
+              </section>
+             
             )}
-          </>) : (
-          <p className={styles.loading}>No Details found.</p>
+          </>
         )}
       </div>
-    </div >
+    </div>
   );
 };
 

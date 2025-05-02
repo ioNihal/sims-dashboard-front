@@ -1,9 +1,10 @@
-// pages/Orders/OrderDetails.jsx
+// src/pages/Orders/OrderDetails.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from '../../styles/PageStyles/Orders/orderDetails.module.css';
 import { capitalize, formatDate } from '../../utils/validators';
 import { deleteOrder, getOrderById, updateOrderStatus } from '../../api/orders';
+import { toast } from 'react-hot-toast';
 
 export default function OrderDetails() {
   const { id } = useParams();
@@ -14,37 +15,34 @@ export default function OrderDetails() {
   const [originalStatus, setOriginalStatus] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState(null);
 
   // Fetch order on mount
   useEffect(() => {
     (async () => {
       setLoading(true);
-      setError(null);
       try {
         const fetched = await getOrderById(id);
         setOrder(fetched);
-        setStatus(fetched.status);
-        setOriginalStatus(fetched.status);
+        setStatus(fetched.status || 'pending');
+        setOriginalStatus(fetched.status || 'pending');
       } catch (err) {
-        console.error("Error loading order details:", err);
-        setError(err.message || 'Failed to load order details');
+        toast.error(err.message || 'Failed to load order details');
+        navigate('/orders');
       } finally {
         setLoading(false);
       }
     })();
-  }, [id]);
+  }, [id, navigate]);
 
-  // Handle status patch
+  // Patch status and navigate back
   const patchStatus = async (newStatus) => {
     setSaving(true);
-    setError(null);
     try {
       await updateOrderStatus(order._id, newStatus);
+      toast.success('Status updated');
       navigate('/orders');
     } catch (err) {
-      console.error("Error updating status:", err);
-      setError(err.message || 'Failed to update status');
+      toast.error(err.message || 'Failed to update status');
     } finally {
       setSaving(false);
     }
@@ -53,33 +51,25 @@ export default function OrderDetails() {
   // Back with unsaved‐changes guard
   const handleBack = () => {
     if (status !== originalStatus) {
-      if (!window.confirm('You have unsaved changes. Are you sure you want to leave?')) {
-        return;
-      }
+      if (!window.confirm('You have unsaved changes. Are you sure you want to leave?')) return;
     }
     navigate('/orders');
   };
 
   const handleSave = () => patchStatus(status);
+  const handleConfirm = () => patchStatus('confirmed');
 
-  const handleConfirm = () => {
-    // if (window.confirm('Are you sure you want to confirm this order?')) {
-    //   patchStatus('confirmed');
-    // }
-
-    patchStatus('confirmed');
-  };
-
-  const handleDelete = async (orderId) => {
+  const handleDelete = async () => {
     if (!window.confirm('Really delete this order?')) return;
-    setError(null);
+    setSaving(true);
     try {
-      await deleteOrder(orderId);
-      alert('Order deleted');
+      await deleteOrder(order._id);
+      toast.success('Order deleted');
       navigate('/orders');
     } catch (err) {
-      console.error("Error deleting order:", err);
-      setError(err.message || 'Failed to delete order');
+      toast.error(err.message || 'Failed to delete order');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -87,15 +77,6 @@ export default function OrderDetails() {
     return (
       <div className={styles.page}>
         <div className={styles.loading}>Loading details…</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className={styles.page}>
-        <p className={styles.error}>Error: {error}</p>
-        <button onClick={() => navigate('/orders')}>Back</button>
       </div>
     );
   }
@@ -126,7 +107,9 @@ export default function OrderDetails() {
         <div className={styles.detailGroup}>
           <span className={styles.label}>Customer:</span>
           <span className={styles.value}>
-            {capitalize(order.customerId?.name) || '—'}
+            {order.customerId?.name
+              ? capitalize(order.customerId.name)
+              : 'Deleted customer'}
           </span>
         </div>
 
@@ -137,15 +120,13 @@ export default function OrderDetails() {
 
         <div className={styles.detailGroup}>
           <span className={styles.label}>Total Amount:</span>
-          <span className={styles.value}>₹{order.totalAmount}</span>
+          <span className={styles.value}>₹{order.totalAmount.toFixed(2)}</span>
         </div>
 
         <div className={styles.detailGroup}>
           <span className={styles.label}>Status:</span>
-          {['cancelled', 'pending'].includes(order.status) ? (
-            <span className={`${styles.value} ${styles[order.status]}`}>
-              {order.status}
-            </span>
+          {['cancelled', 'pending'].includes(status) ? (
+            <span className={`${styles.value} ${styles[status]}`}>{status}</span>
           ) : (
             <select
               className={styles.statusDropdown}
@@ -153,7 +134,6 @@ export default function OrderDetails() {
               onChange={(e) => setStatus(e.target.value)}
               disabled={saving}
             >
-              {/* ensure current status is always an option */}
               <option value={originalStatus}>{originalStatus}</option>
               {['confirmed', 'shipped', 'delivered', 'cancelled']
                 .filter((s) => s !== originalStatus)
@@ -176,8 +156,8 @@ export default function OrderDetails() {
               {saving ? 'Confirming…' : 'Confirm Order'}
             </button>
           )}
-          <button className={styles.deleteBtn} onClick={() => handleDelete(order._id)}>
-            Delete
+          <button className={styles.deleteBtn} onClick={handleDelete} disabled={saving}>
+            {saving ? 'Deleting…' : 'Delete'}
           </button>
         </div>
 
@@ -187,15 +167,21 @@ export default function OrderDetails() {
             <div key={item._id} className={styles.itemRow}>
               <div className={styles.itemInfo}>
                 <span className={styles.itemName}>
-                  {capitalize(item.inventoryId?.productName) || '—'}
+                  {item.inventoryId?.productName
+                    ? capitalize(item.inventoryId.productName)
+                    : '—'}
                 </span>
                 <span className={styles.itemCategory}>
-                  {capitalize(item.inventoryId?.category) || '—'}
+                  {item.inventoryId?.category
+                    ? capitalize(item.inventoryId.category)
+                    : '—'}
                 </span>
               </div>
               <div className={styles.itemMeta}>
-                <span className={styles.itemQuantity}>Qty: {item.quantity}</span>
-                <span className={styles.itemPrice}>₹{item.price}</span>
+                <span className={styles.itemQuantity}>
+                  Qty: {item.quantity}
+                </span>
+                <span className={styles.itemPrice}>₹{item.price.toFixed(2)}</span>
               </div>
             </div>
           ))}

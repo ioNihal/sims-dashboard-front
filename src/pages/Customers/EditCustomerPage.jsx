@@ -9,6 +9,7 @@ import {
   validateAddress,
 } from "../../utils/validators";
 import { getCustomerById, updateCustomer } from "../../api/customers";
+import toast from "react-hot-toast";
 
 const EditCustomerPage = () => {
   const { id } = useParams();
@@ -20,7 +21,6 @@ const EditCustomerPage = () => {
     email: "",
     phone: "",
     address: "",
-    paymentPreference: ""
   });
   // Field-specific errors for live validation
   const [errors, setErrors] = useState({
@@ -28,7 +28,6 @@ const EditCustomerPage = () => {
     email: "",
     phone: "",
     address: "",
-    paymentPreference: "",
   });
   // Global error for fetch or submission failures
   const [submitError, setSubmitError] = useState("");
@@ -45,10 +44,9 @@ const EditCustomerPage = () => {
           email: customerData.email || "",
           phone: customerData.phone || "",
           address: customerData.address || "",
-          paymentPreference: customerData.paymentPreference || "",
         });
       } catch (err) {
-        console.error("Error fetching customer data:", err);
+        console.error("Error fetching customer data:", err.message);
         setSubmitError("Error fetching customer data. Please try again later.");
       } finally {
         setLoading(false);
@@ -79,9 +77,6 @@ const EditCustomerPage = () => {
       case "address":
         errorMessage = validateAddress(value);
         break;
-      case "paymentPreference":
-        errorMessage = value ? "" : "Select preference";
-        break;
       default:
         break;
     }
@@ -94,17 +89,16 @@ const EditCustomerPage = () => {
     const emailError = validateEmail(updatedCustomer.email);
     const phoneError = validatePhone(updatedCustomer.phone);
     const addressError = validateAddress(updatedCustomer.address);
-    const prefErr = updatedCustomer.paymentPreference === "weekly" || updatedCustomer.paymentPreference === "monthly" ? "" : "Select preference";
+    // const prefErr = updatedCustomer.paymentPreference === "weekly" || updatedCustomer.paymentPreference === "monthly" ? "" : "Select preference";
 
     setErrors({
       name: nameError,
       email: emailError,
       phone: phoneError,
       address: addressError,
-      paymentPreference: prefErr,
     });
 
-    return !(nameError || emailError || phoneError || addressError || prefErr);
+    return !(nameError || emailError || phoneError || addressError );
   };
 
   // Handle form submission
@@ -118,10 +112,12 @@ const EditCustomerPage = () => {
     try {
       await updateCustomer(id, updatedCustomer)
       setIsSaving(false);
+      toast.success("Customer updated successfully!");
       navigate("/customers");
     } catch (err) {
-      console.error("Error updating customer:", err);
+      console.error("Error updating customer:", err.message);
       setSubmitError("Error updating customer. Please try again.");
+      toast.error("Error updating customer. Please try again.");
       setIsSaving(false);
     }
   };
@@ -131,7 +127,11 @@ const EditCustomerPage = () => {
   };
 
   if (loading) {
-    return <div className={styles.loading}>Loading...</div>;
+    return (
+      <div className={styles.container}>
+        <div className={styles.loading}>Loading...</div>
+      </div>
+    );
   }
 
   return (
@@ -193,7 +193,7 @@ const EditCustomerPage = () => {
           {errors.address && <p className={styles.error}>{errors.address}</p>}
         </div>
 
-        <div className={`${styles.inputGroup}`}>
+        {/* <div className={`${styles.inputGroup}`}>
           <label>Payment Preference</label>
           <div className={styles.radioGroup}>
             <label htmlFor="pref-weekly">
@@ -223,7 +223,7 @@ const EditCustomerPage = () => {
           {errors.paymentPreference && (
             <p className={styles.error}>{errors.paymentPreference}</p>
           )}
-        </div>
+        </div> */}
 
         <div className={styles.buttonGroup}>
           <button onClick={handleSubmit} className={styles.saveBtn}>

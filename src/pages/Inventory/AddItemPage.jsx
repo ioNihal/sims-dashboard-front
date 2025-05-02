@@ -5,6 +5,7 @@ import styles from "../../styles/PageStyles/Inventory/addItemPage.module.css";
 import { validateQuantity, validateThreshold } from "../../utils/validators";
 import { getSuppliers } from "../../api/suppliers";
 import { addInventoryItem } from "../../api/inventory";
+import toast from "react-hot-toast";
 
 const AddItemPage = () => {
   const navigate = useNavigate();
@@ -35,8 +36,7 @@ const AddItemPage = () => {
         const list = await getSuppliers();
         setSuppliers(list.map(s => ({ ...s, id: s._id })));
       } catch (err) {
-        console.error(err);
-        setErrors(e => ({ ...e, submit: "Failed to load suppliers" }));
+        toast.error(err.message);
       }
     })();
   }, []);
@@ -84,10 +84,10 @@ const AddItemPage = () => {
     setIsSaving(true);
     try {
       await addInventoryItem(payload);
+      toast.success("Item added successfully!");
       navigate("/inventory");
     } catch (err) {
-      console.error(err);
-      setErrors((e) => ({ ...e, submit: err.message }));
+      toast.error(err.message);
       setIsSaving(false);
     }
   };
@@ -179,7 +179,7 @@ const AddItemPage = () => {
           />
           {errors.threshold && <p className={styles.error}>{errors.threshold}</p>}
         </div>
-        {errors.submit && <p className={styles.error}>{errors.submit}</p>}
+        
         <div className={styles.buttonGroup}>
           <button
             onClick={handleSubmit}

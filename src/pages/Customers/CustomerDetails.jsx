@@ -5,6 +5,7 @@ import styles from "../../styles/PageStyles/Customers/customerDetails.module.css
 import { capitalize, formatDate } from "../../utils/validators";
 import { getCustomerById } from "../../api/customers";
 import { getAllOrders } from "../../api/orders";
+import toast from "react-hot-toast";
 
 const CustomerDetails = () => {
   const { id } = useParams();
@@ -20,28 +21,36 @@ const CustomerDetails = () => {
       setLoading(true);
       setError("");
       try {
-        // fetch customer + all orders in parallel
-        const [cust, allOrders] = await Promise.all([
+        const [custRes, ordRes] = await Promise.allSettled([
           getCustomerById(id),
           getAllOrders()
         ]);
-        setCustomer(cust);
 
-        // filter orders for this customer, sort newest first
-        const custOrders = allOrders
-          .filter(o => o.customerId?._id === id)
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setOrders(custOrders);
+        if (custRes.status === "fulfilled" && custRes.value) {
+          setCustomer(custRes.value);
+        } else {
+          toast.error(custRes.reason?.message || "Failed to load customer");
+          return navigate("/customers");
+        }
+
+        if (ordRes.status === "fulfilled" && Array.isArray(ordRes.value)) {
+          const custOrders = ordRes.value
+            .filter(o => o.customerId?._id === id)
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          setOrders(custOrders);
+        } else {
+          toast.error(ordRes.reason?.message || "Failed to load orders");
+          setOrders([]);
+        }
       } catch (err) {
-        console.error("Error loading customer or orders:", err);
-        setError(err.message || "Failed to load data");
+        toast.error(err.message || "Unexpected error");
+        navigate("/customers");
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
-  }, [id]);
+  }, [id, navigate]);
 
   if (loading) {
     return (
@@ -51,74 +60,38 @@ const CustomerDetails = () => {
     );
   }
 
-  if (error) {
-    return (
-      <div className={styles.page}>
-        <div className={styles.error}>{error}</div>
-        <button onClick={() => navigate("/customers")}>Back to list</button>
-      </div>
-    );
-  }
-
   if (!customer) return null;
 
   return (
     <div className={styles.page}>
-      <button className={styles.backButton} onClick={() => navigate("/customers")}>
-        Back
-      </button>
-
+      <button className={styles.backButton} onClick={() => navigate("/customers")}>Back</button>
       <div className={styles.card}>
         <div className={styles.title}>Customer Details</div>
         <div className={styles.details}>
-          <div className={styles.detailItem}>
-            <span className={styles.detailLabel}>Name:</span>
-            <span className={styles.detailValue}>{capitalize(customer.name)}</span>
-          </div>
-          <div className={styles.detailItem}>
-            <span className={styles.detailLabel}>Email:</span>
-            <span className={styles.detailValue}>{customer.email}</span>
-          </div>
-          <div className={styles.detailItem}>
-            <span className={styles.detailLabel}>Phone:</span>
-            <span className={styles.detailValue}>{customer.phone}</span>
-          </div>
-          <div className={styles.detailItem}>
-            <span className={styles.detailLabel}>Address:</span>
-            <span className={styles.detailValue}>{capitalize(customer.address)}</span>
-          </div>
-          <div className={styles.detailItem}>
-            <span className={styles.detailLabel}>Payment Pref.:</span>
-            <span className={styles.detailValue}>{capitalize(customer.paymentPreference)}</span>
-          </div>
-          <div className={styles.detailItem}>
-            <span className={styles.detailLabel}>Created At:</span>
-            <span className={`${styles.detailValue} ${styles.date}`}>
-              {formatDate(customer.createdAt)}
-            </span>
-          </div>
+          {[
+            ["Name", capitalize(customer.name)],
+            ["Email", customer.email],
+            ["Phone", customer.phone],
+            ["Address", capitalize(customer.address)],
+            ["Payment Preference", capitalize(customer.paymentPreference)],
+            ["Created At", formatDate(customer.createdAt)]
+          ].map(([label, value]) => (
+            <div className={styles.detailItem} key={label}>
+              <span className={styles.detailLabel}>{label}:</span>
+              <span className={styles.detailValue}>{value || "—"}</span>
+            </div>
+          ))}
         </div>
-
-        
         <div className={styles.ordersSection}>
           <h3>Recent Orders</h3>
           {orders.length > 0 ? (
             <ul className={styles.orderList}>
               {orders.map(order => (
                 <li key={order._id} className={styles.orderCard}>
-                  <p>
-                    <strong>Order ID:</strong>{" "}
-                    <Link to={`/orders/${order._id}`}>{order._id}</Link>
-                  </p>
-                  <p>
-                    <strong>Date:</strong> {formatDate(order.createdAt)}
-                  </p>
-                  <p>
-                    <strong>Total:</strong> ₹{order.totalAmount}
-                  </p>
-                  <p>
-                    <strong>Status:</strong> {capitalize(order.status)}
-                  </p>
+                  <p><strong>Order ID:</strong> <Link to={`/orders/${order._id}`}>{order._id}</Link></p>
+                  <p><strong>Date:</strong> {formatDate(order.createdAt)}</p>
+                  <p><strong>Total:</strong> ₹{order.totalAmount?.toFixed(2)}</p>
+                  <p><strong>Status:</strong> {capitalize(order.status)}</p>
                 </li>
               ))}
             </ul>

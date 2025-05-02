@@ -65,7 +65,7 @@ export async function addCustomer({ name, email, phone, address, paymentPreferen
     });
     const json = await res.json();
     if (!res.ok) {
-        throw new Error(json.message || `Failed to add customer (status: ${res.status})`);
+        throw new Error(json.error?.message || `Failed to add customer (status: ${res.status})`);
     }
     return json;
 }
@@ -95,7 +95,7 @@ export const updateCustomer = async (id, customerData) => {
 
     const result = await res.json();
     if (!res.ok) {
-        throw new Error(result.message || "Failed to update customer");
+        throw new Error(result.error?.message || "Failed to update customer");
     }
 
     return result;

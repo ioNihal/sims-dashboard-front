@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "../../styles/PageStyles/Inventory/editItemPage.module.css";
 import { validateQuantity, validateThreshold } from "../../utils/validators";
 import { getInventoryItemById, updateInventoryItem } from "../../api/inventory";
+import toast from "react-hot-toast";
 
 
 const EditItemPage = () => {
@@ -42,8 +43,7 @@ const EditItemPage = () => {
           threshold: item.threshold?.toString() || "",
         });
       } catch (err) {
-        console.error("Error fetching item:", err);
-        setSubmitError("Error fetching item. Please try again later.");
+        toast.error(err.message);
       } finally {
         setLoading(false);
       }
@@ -83,10 +83,10 @@ const EditItemPage = () => {
         quantity: parseInt(updatedItem.quantity, 10),
         threshold: parseInt(updatedItem.threshold, 10),
       });
+      toast.success("Inventory item updated successfully!")
       navigate("/inventory");
     } catch (err) {
-      console.error("Error updating inventory:", err);
-      setSubmitError(err.message || "Error updating inventory. Please try again.");
+      toast.error(err.message);
       setIsSaving(false);
     }
   };
@@ -107,7 +107,6 @@ const EditItemPage = () => {
         Back
       </button>
       <h3>Edit Inventory Item</h3>
-      {submitError && <p className={styles.error}>{submitError}</p>}
       <div className={styles.formGroup}>
 
         <div className={styles.inputWrapper}>

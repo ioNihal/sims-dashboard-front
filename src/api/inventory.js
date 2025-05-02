@@ -16,7 +16,6 @@ export async function getAllInventoryItems() {
         throw new Error(`Failed to fetch inventory items (status: ${res.status})`);
     }
     const data = await res.json();
-    // assume API returns { inventory: [...] }
     return data.inventory || [];
 }
 
@@ -65,7 +64,7 @@ export async function addInventoryItem({ supplierId, productId, quantity, thresh
     });
     const json = await res.json();
     if (!res.ok) {
-        throw new Error(json.message || `Failed to add inventory (status: ${res.status})`);
+        throw new Error(json.error?.message || `Failed to add inventory (status: ${res.status})`);
     }
     return json;  // assume API returns created item or success message
 }
@@ -91,7 +90,7 @@ export async function updateInventoryItem(id, { quantity, threshold }) {
     });
     const json = await res.json();
     if (!res.ok) {
-        throw new Error(json.message || `Failed to update item id=${id} (status: ${res.status})`);
+        throw new Error(json.error?.message || `Failed to update item id=${id} (status: ${res.status})`);
     }
     return json;
 }

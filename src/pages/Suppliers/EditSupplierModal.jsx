@@ -12,6 +12,7 @@ import {
 
 import { getSupplier, updateSupplier } from "../../api/suppliers";
 import styles from "../../styles/PageStyles/Suppliers/editSupplierModal.module.css";
+import toast from "react-hot-toast";
 
 const EditSupplierModal = () => {
   const { supplierId } = useParams();
@@ -45,11 +46,11 @@ const EditSupplierModal = () => {
   // simple field validation
   const validateField = (field, value) => {
     switch (field) {
-      case "name":    return validateName(value);
-      case "email":   return validateEmail(value);
-      case "phone":   return validatePhone(value);
+      case "name": return validateName(value);
+      case "email": return validateEmail(value);
+      case "phone": return validatePhone(value);
       case "address": return validateAddress(value);
-      default:        return "";
+      default: return "";
     }
   };
 
@@ -94,15 +95,16 @@ const EditSupplierModal = () => {
 
     // basic required‐field check
     if (!supplier.name || !supplier.email || !supplier.phone || !supplier.address) {
+      toast.error("All fields are required.")
       setSubmitError("All fields are required.");
       return setSaving(false);
     }
 
     // run validators
     const fieldErrs = {
-      name:    validateName(supplier.name),
-      email:   validateEmail(supplier.email),
-      phone:   validatePhone(supplier.phone),
+      name: validateName(supplier.name),
+      email: validateEmail(supplier.email),
+      phone: validatePhone(supplier.phone),
       address: validateAddress(supplier.address),
     };
     if (Object.values(fieldErrs).some(Boolean)) {
@@ -114,6 +116,7 @@ const EditSupplierModal = () => {
     // product rows validation
     for (let p of supplier.products) {
       if (!p.name || !p.category || Number(p.pricePerItem) <= 0) {
+        toast.error("Ensure all products have valid name, category, and price.")
         setSubmitError("Ensure all products have valid name, category, and price.");
         return setSaving(false);
       }
@@ -121,9 +124,9 @@ const EditSupplierModal = () => {
 
     // build payload
     const payload = {
-      name:    capitalize(supplier.name),
-      email:   supplier.email.toLowerCase(),
-      phone:   supplier.phone,
+      name: capitalize(supplier.name),
+      email: supplier.email.toLowerCase(),
+      phone: supplier.phone,
       address: supplier.address,
       products: supplier.products.map(p =>
         p._id
@@ -138,17 +141,22 @@ const EditSupplierModal = () => {
     // call API
     try {
       await updateSupplier(supplierId, payload);
+      toast.success("Supplier updated successfully.")
       navigate("/suppliers");
     } catch (err) {
       setSubmitError(err.message);
-      console.error(err);
+      toast.error(err.message);
     } finally {
       setSaving(false);
     }
   };
 
   if (!supplier) {
-    return <p className={styles.loading}>Loading supplier data…</p>;
+    return (
+      <div className={styles.page}>
+        <p className={styles.loading}>Loading supplier data…</p>
+      </div>
+    );
   }
 
   return (
@@ -161,17 +169,17 @@ const EditSupplierModal = () => {
 
       <form className={styles.formContainer} onSubmit={handleSubmit}>
         {/* Supplier fields */}
-        {["name","email","phone","address"].map(f => (
+        {["name", "email", "phone", "address"].map(f => (
           <div
             key={f}
-            className={`${styles.inputWrapper}${f==="address"?` ${styles.fullWidth}`:""}`}
+            className={`${styles.inputWrapper}${f === "address" ? ` ${styles.fullWidth}` : ""}`}
           >
-            <label>{f.charAt(0).toUpperCase()+f.slice(1)}</label>
-            {f==="address" ? (
+            <label>{f.charAt(0).toUpperCase() + f.slice(1)}</label>
+            {f === "address" ? (
               <textarea name="address" value={supplier.address} onChange={handleChange} />
             ) : (
               <input
-                type={f==="email"?"email": f==="phone"?"tel":"text"}
+                type={f === "email" ? "email" : f === "phone" ? "tel" : "text"}
                 name={f}
                 value={supplier[f]}
                 onChange={handleChange}
@@ -186,11 +194,11 @@ const EditSupplierModal = () => {
           <h4>Supplier Products</h4>
           {supplier.products.map((p, i) => (
             <div key={i} className={styles.productRow}>
-              {["name","category","pricePerItem"].map(attr => (
+              {["name", "category", "pricePerItem"].map(attr => (
                 <input
                   key={attr}
                   name={attr}
-                  type={attr==="pricePerItem"?"number":"text"}
+                  type={attr === "pricePerItem" ? "number" : "text"}
                   placeholder={attr.replace(/([A-Z])/g, " $1")}
                   value={p[attr]}
                   onChange={e => handleProductChange(i, e)}

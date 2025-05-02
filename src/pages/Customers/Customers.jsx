@@ -1,12 +1,12 @@
 // src/pages/Customers/Customers.jsx
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Customers/customers.module.css";
 import SearchBar from "../../components/SearchBar";
 import { capitalize } from "../../utils/validators";
 import RefreshButton from "../../components/RefreshButton";
 import { deleteCustomer, getAllCustomers } from "../../api/customers";
+import toast from "react-hot-toast";
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
@@ -15,12 +15,12 @@ const Customers = () => {
   const navigate = useNavigate();
 
   const fetchCustomers = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
       const all = await getAllCustomers();
-      setCustomers(all);
+      setCustomers(all || []);
     } catch (err) {
-      console.error("Error fetching customers:", err);
+      toast.error(err.message || "Error fetching customers");
     } finally {
       setLoading(false);
     }
@@ -31,25 +31,27 @@ const Customers = () => {
   }, []);
 
   const handleDeleteCustomer = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this customer?");
-    if (!confirmDelete) return;
-
+    if (!window.confirm("Are you sure you want to delete this customer?")) return;
     try {
       await deleteCustomer(id);
-      setCustomers((prev) => prev.filter((customer) => customer.id !== id));
+      setCustomers(prev => prev.filter(c => c.id !== id));
+      toast.success("Customer deleted");
     } catch (err) {
-      console.error("Error deleting customer:", err);
-      alert("Error deleting customer");
+      toast.error(err || "Error deleting customer");
     }
   };
 
-  const filteredCustomers = customers.filter(
-    (customer) =>
-      customer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      customer.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      customer.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      customer.phone.includes(searchQuery)
-  );
+  const filteredCustomers = useMemo(() => {
+    const q = searchQuery.toLowerCase();
+    return (customers || []).filter(c => {
+      return (
+        (c.name || "").toLowerCase().includes(q) ||
+        (c.email || "").toLowerCase().includes(q) ||
+        (c.address || "").toLowerCase().includes(q) ||
+        (c.phone || "").includes(q)
+      );
+    });
+  }, [customers, searchQuery]);
 
   return (
     <div className={styles.page}>
@@ -68,55 +70,36 @@ const Customers = () => {
         </div>
       </div>
 
-      {loading ? (
-        <div className={styles.tableContainer}>
+      <div className={styles.tableContainer}>
+        {loading ? (
           <p className={styles.loading}>Loading Customers...</p>
-        </div>
-      ) : (
-        <div className={styles.tableContainer}>
+        ) : (
           <table className={styles.table}>
             <thead>
               <tr>
-                {/*<th>ID</th>*/}
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Address</th>
-                <th>Actions</th>
+                <th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filteredCustomers.map((customer) => (
-                <tr key={customer.id}>
-                  {/*<td>{`CU${customer.id.substring(5,10).toUpperCase()}`}</td>*/}
-                  <td>{capitalize(customer.name)}</td>
-                  <td>{customer.email}</td>
-                  <td>{customer.phone}</td>
-                  <td>{capitalize(customer.address)}</td>
+              {filteredCustomers.length > 0 ? filteredCustomers.map(c => (
+                <tr key={c.id}>
+                  <td>{capitalize(c.name)}</td>
+                  <td>{c.email}</td>
+                  <td>{c.phone}</td>
+                  <td>{capitalize(c.address)}</td>
                   <td>
-                    <button className={styles.viewBtn} onClick={() => navigate(`/customers/view/${customer.id}`)}>
-                      View
-                    </button>
-                    <button className={styles.editBtn} onClick={() => navigate(`/customers/edit/${customer.id}`)}>
-                      Edit
-                    </button>
-                    <button className={styles.deleteBtn} onClick={() => handleDeleteCustomer(customer.id)}>
-                      Delete
-                    </button>
+                    <button className={styles.viewBtn} onClick={() => navigate(`/customers/view/${c.id}`)}>View</button>
+                    <button className={styles.editBtn} onClick={() => navigate(`/customers/edit/${c.id}`)}>Edit</button>
+                    <button className={styles.deleteBtn} onClick={() => handleDeleteCustomer(c.id)}>Delete</button>
                   </td>
                 </tr>
-              ))}
-              {filteredCustomers.length === 0 && (
-                <tr>
-                  <td colSpan="6" className={styles.noResults}>
-                    No customers found.
-                  </td>
-                </tr>
+              )) : (
+                <tr><td colSpan="5" className={styles.noResults}>No customers found.</td></tr>
               )}
             </tbody>
           </table>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+// src/pages/Home.jsx
+import React, { useEffect, useState, useMemo } from "react";
 import {
   BarChart,
   Bar,
@@ -23,6 +24,7 @@ import { getAllOrders } from "../api/orders";
 import { getAllInvoices } from "../api/invoice";
 import RefreshButton from "../components/RefreshButton";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Home = () => {
   const [inventory, setInventory] = useState([]);
@@ -31,126 +33,108 @@ const Home = () => {
   const [orders, setOrders] = useState([]);
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
   const navigate = useNavigate();
 
   const load = async () => {
-    try {
-      setLoading(true);
-      const [
-        inv,
-        sup,
-        cust,
-        ord,
-        invc
-      ] = await Promise.all([
-        getAllInventoryItems(),
-        getSuppliers(),
-        getAllCustomers(),
-        getAllOrders(),
-        getAllInvoices()
-      ]);
-      setInventory(inv);
-      setSuppliers(sup);
-      setCustomers(cust);
-      setOrders(ord);
-      setInvoices(invc);
-    } catch (err) {
-      setError(err.message || "Failed to load data");
-    } finally {
-      setLoading(false);
-    }
-  }
+    setLoading(true);
 
-  useEffect(() => {
-    load();
-  }, []);
+    // Fetch all endpoints independently so one failure won't block others
+    const results = await Promise.allSettled([
+      getAllInventoryItems(),
+      getSuppliers(),
+      getAllCustomers(),
+      getAllOrders(),
+      getAllInvoices()
+    ]);
 
-  // Process data for visualizations
-  const getInventoryStatusData = () => {
-    const statusCounts = inventory.reduce((acc, item) => {
-      acc[item.status] = (acc[item.status] || 0) + 1;
-      return acc;
-    }, {});
-    return Object.entries(statusCounts).map(([name, value]) => ({ name, value }));
+    // Map results to state, showing toast on individual failures
+    const [invRes, supRes, custRes, ordRes, invcRes] = results;
+
+    if (invRes.status === "fulfilled") setInventory(invRes.value || []);
+    else toast.error("Failed to load inventory");
+
+    if (supRes.status === "fulfilled") setSuppliers(supRes.value || []);
+    else toast.error("Failed to load suppliers");
+
+    if (custRes.status === "fulfilled") setCustomers(custRes.value || []);
+    else toast.error("Failed to load customers");
+
+    if (ordRes.status === "fulfilled") setOrders(ordRes.value || []);
+    else setOrders([]) || toast.error("Failed to load orders");
+
+    if (invcRes.status === "fulfilled") setInvoices(invcRes.value || []);
+    else setInvoices([]) || toast.error("Failed to load invoices");
+
+    setLoading(false);
   };
 
-  const getSalesData = () => {
-    const dailySales = orders.reduce((acc, order) => {
-      const iso = order.createdAt.slice(0, 10);    
-      acc[iso] = (acc[iso] || 0) + order.totalAmount;
+  useEffect(() => { load(); }, []);
+
+  const safeOrders = orders;
+  const safeInventory = inventory;
+  const safeInvoices = invoices;
+
+  const inventoryStatusData = useMemo(() => {
+    const counts = safeInventory.reduce((acc, item) => {
+      const key = item.status || "Unknown";
+      acc[key] = (acc[key] || 0) + 1;
       return acc;
     }, {});
+    return Object.entries(counts).map(([name, value]) => ({ name, value }));
+  }, [safeInventory]);
 
-   
-    return Object
-      .entries(dailySales)
+  const salesData = useMemo(() => {
+    const daily = safeOrders.reduce((acc, order) => {
+      const date = order.createdAt?.slice(0, 10) || "Unknown";
+      acc[date] = (acc[date] || 0) + (order.totalAmount || 0);
+      return acc;
+    }, {});
+    return Object.entries(daily)
       .map(([date, total]) => ({ date, total }))
       .sort((a, b) => a.date.localeCompare(b.date));
-  };
+  }, [safeOrders]);
 
-  const getOrderStatusData = () => {
-    const statusCounts = orders.reduce((acc, order) => {
-      acc[order.status] = (acc[order.status] || 0) + 1;
+  const orderStatusData = useMemo(() => {
+    const counts = safeOrders.reduce((acc, order) => {
+      const key = order.status || "Unknown";
+      acc[key] = (acc[key] || 0) + 1;
       return acc;
     }, {});
-    return Object.entries(statusCounts).map(([name, value]) => ({ name, value }));
-  };
+    return Object.entries(counts).map(([name, value]) => ({ name, value }));
+  }, [safeOrders]);
 
-  const getTopProducts = () => {
-    const productSales = {};
-    orders.forEach(order => {
-      order.orderProducts.forEach(product => {
-        productSales[product.name] =
-          (productSales[product.name] || 0) + product.quantity;
+  const topProductsData = useMemo(() => {
+    const sales = {};
+    safeOrders.forEach(order => {
+      (order.orderProducts || []).forEach(p => {
+        const name = p.inventoryId?.productName || p.name || "Unknown";
+        sales[name] = (sales[name] || 0) + (p.quantity || 0);
       });
     });
-    return Object.entries(productSales)
+    return Object.entries(sales)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 5)
       .map(([name, quantity]) => ({ name, quantity }));
-  };
+  }, [safeOrders]);
 
-  // Calculate additional metrics
-  const totalRevenue = invoices.reduce((sum, inv) => sum + inv.amount, 0);
-  const pendingOrders = orders.filter(o => o.status === 'pending').length;
-  const lowStockItems = inventory.filter(item => item.quantity < item.threshold).length;
-  const unpaidInvoices = invoices.filter(inv => inv.status === 'pending').length;
+  const totalRevenue = safeInvoices.reduce((sum, inv) => sum + (inv.amount || 0), 0);
+  const pendingOrders = safeOrders.filter(o => o.status === "pending").length;
+  const lowStockItems = safeInventory.filter(i => i.quantity < i.threshold).length;
+  const unpaidInvoices = safeInvoices.filter(inv => inv.status === "pending").length;
 
   const widgets = [
-    // Existing widgets
-    { title: "Inventory Items", value: inventory.length, link: "/inventory" },
+    { title: "Inventory Items", value: safeInventory.length, link: "/inventory" },
     { title: "Suppliers", value: suppliers.length, link: "/suppliers" },
     { title: "Customers", value: customers.length, link: "/customers" },
-    { title: "Orders", value: orders.length, link: "/orders" },
-    { title: "Invoices", value: invoices.length, link: "/invoices" },
-    // New KPIs
-    {
-      title: "Total Revenue",
-      value: `₹${totalRevenue.toLocaleString()}`,
-      description: "Total sales value",
-      link: "/invoices"
-    },
-    {
-      title: "Pending Orders",
-      value: pendingOrders,
-      description: "Require attention",
-      link: "/orders"
-    },
-    {
-      title: "Low Stock Items",
-      value: lowStockItems,
-      description: "Below threshold",
-      link: "/inventory"
-    },
-    {
-      title: "Unpaid Invoices",
-      value: unpaidInvoices,
-      description: "Pending payments",
-      link: "/invoices"
-    }
+    { title: "Orders", value: safeOrders.length, link: "/orders" },
+    { title: "Invoices", value: safeInvoices.length, link: "/invoices" },
+    { title: "Total Revenue", value: `₹${totalRevenue.toLocaleString()}`, description: "Total sales value", link: "/invoices" },
+    { title: "Pending Orders", value: pendingOrders, description: "Require attention", link: "/orders" },
+    { title: "Low Stock Items", value: lowStockItems, description: "Below threshold", link: "/inventory" },
+    { title: "Unpaid Invoices", value: unpaidInvoices, description: "Pending payments", link: "/invoices" }
   ];
+
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A28FD0"];
 
   return (
     <div className={styles.page}>
@@ -160,95 +144,66 @@ const Home = () => {
         <RefreshButton onClick={load} loading={loading} />
       </div>
       <div className={styles.insightContainer}>
-        {error ? (
-          <div className={styles.error}>{error}</div>
-        ) : loading ? (
+        {loading ? (
           <div className={styles.loading}>Loading...</div>
         ) : (
           <>
             <div className={styles.widgetsGrid}>
               {widgets.map((w, idx) => (
-                <WidgetCard
-                  key={idx}
-                  title={w.title}
-                  value={w.value}
-                  description={w.description}
-                  link={w.link}
-                />
+                <WidgetCard key={idx} title={w.title} value={w.value} description={w.description} link={w.link} />
               ))}
             </div>
-
             <div className={styles.chartsGrid}>
               <div className={styles.chartCard}>
                 <h3>Sales Trend</h3>
                 <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
-                  <LineChart data={getSalesData()}>
+                  <LineChart data={salesData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" tick={{ fontSize: "0.7rem" }} />
                     <YAxis tick={{ fontSize: "0.7rem" }} />
-                    <Tooltip wrapperStyle={{ fontSize: "1rem", color: "purple" }} />
+                    <Tooltip wrapperStyle={{ fontSize: "1rem" }} />
                     <Legend wrapperStyle={{ fontSize: '0.7rem' }} />
-                    <Line
-                      type="monotone"
-                      dataKey="total"
-                      stroke="#8884d8"
-                      strokeWidth={1}
-                    />
+                    <Line type="monotone" dataKey="total" stroke={COLORS[0]} strokeWidth={2} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
-
-              {/* Inventory Status */}
               <div className={styles.chartCard}>
                 <h3>Inventory Status</h3>
                 <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
-                  <PieChart >
-                    <Pie
-                      data={getInventoryStatusData()}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius="70%"
-                      fill="#8884d8"
-                      label={{ fontSize: "0.55rem" }}
-                    >
-                      {getInventoryStatusData().map((entry, index) => (
-                        <Cell key={index} fill={["#0088FE", "#00C49F", "#FFBB28"][index % 3]} style={{ outline: 'none' }} />
+                  <PieChart>
+                    <Pie data={inventoryStatusData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius="70%" label={{ fontSize: "0.55rem" }}>
+                      {inventoryStatusData.map((entry, i) => (
+                        <Cell key={i} fill={COLORS[i % COLORS.length]} />
                       ))}
                     </Pie>
-                    <Tooltip wrapperStyle={{ fontSize: "1rem", color: "purple" }} />
+                    <Tooltip wrapperStyle={{ fontSize: "1rem" }} />
                     <Legend wrapperStyle={{ fontSize: '0.55rem' }} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
-
-              {/* Top Products */}
               <div className={styles.chartCard}>
                 <h3>Top Selling Products</h3>
                 <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
-                  <BarChart data={getTopProducts()}>
+                  <BarChart data={topProductsData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" tick={{ fontSize: "0.7rem" }} />
                     <YAxis tick={{ fontSize: "0.7rem" }} />
-                    <Tooltip wrapperStyle={{ fontSize: "1rem", color: "purple" }} />
+                    <Tooltip wrapperStyle={{ fontSize: "1rem" }} />
                     <Legend wrapperStyle={{ fontSize: '0.7rem' }} />
-                    <Bar dataKey="quantity" fill="#82ca9d" barSize={10} />
+                    <Bar dataKey="quantity" fill={COLORS[1]} barSize={10} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
-
-              {/* Order Status */}
               <div className={styles.chartCard}>
                 <h3>Order Status Distribution</h3>
                 <ResponsiveContainer width="95%" height="85%" wrapperStyle={{ margin: "auto" }}>
-                  <BarChart data={getOrderStatusData()}>
+                  <BarChart data={orderStatusData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" tick={{ fontSize: "0.7rem" }} />
                     <YAxis tick={{ fontSize: "0.7rem" }} />
-                    <Tooltip wrapperStyle={{ fontSize: "1rem", color: "purple" }} />
+                    <Tooltip wrapperStyle={{ fontSize: "1rem" }} />
                     <Legend wrapperStyle={{ fontSize: '0.7rem' }} />
-                    <Bar dataKey="value" fill="#ff7300" barSize={20} />
+                    <Bar dataKey="value" fill={COLORS[2]} barSize={20} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -259,6 +214,5 @@ const Home = () => {
     </div>
   );
 };
-
 
 export default Home;

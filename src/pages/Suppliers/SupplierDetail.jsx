@@ -1,26 +1,29 @@
+// src/pages/Suppliers/SupplierDetail.jsx
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "../../styles/PageStyles/Suppliers/supplierDetail.module.css";
 import { capitalize, formatDate } from "../../utils/validators";
-
 import { getSupplier } from "../../api/suppliers";
+import { toast } from "react-hot-toast";
 
 const SupplierDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [supplier, setSupplier] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const loadSupplier = async () => {
+      setLoading(true);
       try {
         const data = await getSupplier(id);
-        data.id = data._id;
-        setSupplier(data);
+        if (!data) {
+          toast.error("Supplier not found");
+          return navigate("/suppliers");
+        }
+        setSupplier({ id: data._id, ...data });
       } catch (err) {
-        console.error(err);
-        setError(err.message);
+        toast.error(err.message || "Failed to load supplier");
         navigate("/suppliers");
       } finally {
         setLoading(false);
@@ -37,16 +40,17 @@ const SupplierDetail = () => {
     );
   }
 
-  if (error) {
-    return (
-      <div className={styles.page}>
-        <p className={styles.error}>Error: {error}</p>
-        <button onClick={() => navigate('/suppliers')}>Back to list</button>
-      </div>
-    );
-  }
-
   if (!supplier) return null;
+
+  const {
+    name = "—",
+    email = "—",
+    phone = "—",
+    address = "—",
+    createdAt,
+    updatedAt,
+    products = []
+  } = supplier;
 
   return (
     <div className={styles.page}>
@@ -63,37 +67,33 @@ const SupplierDetail = () => {
         <div className={styles.details}>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Name:</span>
-            <span>{capitalize(supplier.name)}</span>
+            <span>{capitalize(name)}</span>
           </div>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Email:</span>
-            <span>{supplier.email}</span>
+            <span>{email}</span>
           </div>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Phone:</span>
-            <span>{supplier.phone}</span>
+            <span>{phone}</span>
           </div>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Address:</span>
-            <span>{supplier.address}</span>
+            <span>{address}</span>
           </div>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Created At:</span>
-            <span className={styles.date}>
-              {formatDate(supplier.createdAt)}
-            </span>
+            <span className={styles.date}>{formatDate(createdAt)}</span>
           </div>
           <div className={styles.detailItem}>
             <span className={styles.detailLabel}>Updated At:</span>
-            <span className={styles.date}>
-              {formatDate(supplier.updatedAt)}
-            </span>
+            <span className={styles.date}>{formatDate(updatedAt)}</span>
           </div>
         </div>
 
         <div className={styles.products}>
           <h3 className={styles.productsTitle}>Products</h3>
-          {supplier.products && supplier.products.length > 0 ? (
+          {products.length > 0 ? (
             <table className={styles.table}>
               <thead>
                 <tr>
@@ -103,11 +103,11 @@ const SupplierDetail = () => {
                 </tr>
               </thead>
               <tbody>
-                {supplier.products.map((p) => (
+                {products.map((p) => (
                   <tr key={p._id}>
                     <td>{capitalize(p.name)}</td>
                     <td>{capitalize(p.category)}</td>
-                    <td>₹{p.pricePerItem}</td>
+                    <td>₹{p.pricePerItem?.toFixed(2) ?? "—"}</td>
                   </tr>
                 ))}
               </tbody>

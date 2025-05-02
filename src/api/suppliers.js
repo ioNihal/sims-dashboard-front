@@ -80,7 +80,7 @@ export async function deleteSupplier(id) {
         let msg = `Failed to delete supplier (${res.status})`;
         try {
             const body = await res.json();
-            msg = body.message || msg;
+            msg = body.error?.message || msg;
         } catch { }
         throw new Error(msg);
     }

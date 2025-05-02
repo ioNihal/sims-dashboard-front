@@ -1,13 +1,20 @@
 // src/pages/Invoices/Invoices.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
 import RefreshButton from "../../components/RefreshButton";
-import { getAllCustomers, getCustomerById } from "../../api/customers";
+import { getAllCustomers } from "../../api/customers";
 import styles from "../../styles/PageStyles/Invoices/invoices.module.css";
-import { capitalize, formatDate } from "../../utils/validators";
+import { formatDate } from "../../utils/validators";
 import { generateInvoices, getAllInvoices } from "../../api/invoice";
 import { toast } from 'react-hot-toast';
+
+const STATUS_OPTIONS = [
+  { value: "all", label: "All" },
+  { value: "draft", label: "Draft" },
+  { value: "pending", label: "Unpaid" },
+  { value: "paid", label: "Paid" },
+];
 
 const Invoices = () => {
   const navigate = useNavigate();
@@ -16,74 +23,70 @@ const Invoices = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [genLoading, setGenLoading] = useState(false);
-  const [error, setError] = useState("");
-
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
-
-  const fetchInvoices = async () => {
-    setError("");
+  // Fetch both customers and invoices in one go
+  const fetchData = async () => {
     setLoading(true);
     try {
+      const fetchedCustomers = await getAllCustomers();
+      setCustomers(fetchedCustomers || []);
+
       const data = await getAllInvoices();
-      const populated = await Promise.all(
-        data.map(async inv => {
-          const cust = await getCustomerById(inv.customerId);
-          return { ...inv, customer: cust.name };
-        })
-      );
-      setInvoices(populated || []);
+      if (data && data.length) {
+        // build map of id -> name
+        const custMap = (fetchedCustomers || []).reduce((map, c) => {
+          map[c._id] = c.name;
+          return map;
+        }, {});
+
+        const populated = data.map(inv => ({
+          ...inv,
+          customer: custMap[inv.customerId] ?? "Deleted customer"
+        }));
+        setInvoices(populated);
+      } else {
+        setInvoices([]);
+      }
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message || "Failed to load invoices");
     } finally {
       setLoading(false);
     }
   };
 
-
-  const fetchCustomers = async () => {
-    try {
-      const fetched = await getAllCustomers();
-      setCustomers(fetched || []);
-    } catch (err) {
-      console.error("Could not load customers:", err);
-    }
-  };
-
   useEffect(() => {
-    fetchInvoices();
-    fetchCustomers();
+    fetchData();
   }, []);
-
 
   const handleGenerate = async () => {
     if (!customers.length) return;
-    // if (!window.confirm(`Generate invoices now for ${customers.length} customers?`)) return;
     setGenLoading(true);
     try {
-      const ids = customers.map((c) => c._id);
+      const ids = customers.map(c => c._id);
       await generateInvoices(ids);
-      await fetchInvoices();
+      await fetchData();
+      toast.success("Invoices generated successfully");
     } catch (err) {
-      toast.error("Error: " + err);
+      toast.error("Error generating invoices: " + err.message);
     } finally {
       setGenLoading(false);
     }
   };
 
-  const filtered = invoices
-    .filter((inv) => {
-      const q = searchQuery.toLowerCase();
-      return (
-        inv._id.toLowerCase().includes(q) ||
-        inv.customer.toLowerCase().includes(q) ||
-        formatDate(inv.createdAt, false).toLowerCase().includes(q)
-      );
-    })
-    .filter((inv) =>
-      statusFilter === "all" ? true : inv.status === statusFilter
-    );
+  const filtered = useMemo(() => {
+    return invoices
+      .filter(inv => {
+        const q = searchQuery.toLowerCase();
+        return (
+          inv._id.toLowerCase().includes(q) ||
+          inv.customer.toLowerCase().includes(q) ||
+          formatDate(inv.createdAt, false).toLowerCase().includes(q)
+        );
+      })
+      .filter(inv => (statusFilter === "all" ? true : inv.status === statusFilter));
+  }, [invoices, searchQuery, statusFilter]);
 
   return (
     <div className={styles.page}>
@@ -103,17 +106,16 @@ const Invoices = () => {
           <select
             id="statusFilter"
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={e => setStatusFilter(e.target.value)}
           >
-            <option value="all">All</option>
-            <option value="draft">Draft</option>
-            <option value="pending">Unpaid</option>
-            <option value="paid">Paid</option>
+            {STATUS_OPTIONS.map(opt => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
           </select>
         </div>
 
         <div className={styles.rightSide}>
-          <RefreshButton onClick={fetchInvoices} loading={loading} />
+          <RefreshButton onClick={fetchData} loading={loading} />
           <SearchBar
             placeholder="Search invoices..."
             searchQuery={searchQuery}
@@ -122,55 +124,45 @@ const Invoices = () => {
         </div>
       </div>
 
-      {error ? (
-        <div className={styles.listCard}>
-          <p className={styles.error}>Error: {error}</p>
-        </div>
-      ) : loading ? (
-        <div className={styles.listCard}>
+      <div className={styles.listCard}>
+        {loading ? (
           <p className={styles.loading}>Loading…</p>
-        </div>
-      ) : (
-        <div className={styles.listCard}>
-          {filtered.length > 0 ? (
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>Invoice ID</th>
-                  <th>Customer</th>
-                  <th>Total</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>Action</th>
+        ) : filtered.length > 0 ? (
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Invoice ID</th>
+                <th>Customer</th>
+                <th>Total</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map(inv => (
+                <tr key={inv._id}>
+                  <td>{inv._id}</td>
+                  <td>{inv.customer}</td>
+                  <td>₹{inv.amount.toFixed(2)}</td>
+                  <td>{formatDate(inv.createdAt, false)}</td>
+                  <td className={styles.statusCell}>{inv.status}</td>
+                  <td>
+                    <button
+                      className={styles.viewBtn}
+                      onClick={() => navigate(`/invoice/view/${inv._id}`)}
+                    >
+                      View
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {filtered.map((inv) => (
-                  <tr key={inv._id}>
-                    <td>{inv._id}</td>
-                    <td>{inv.customer}</td>
-                    <td>₹{inv.amount.toFixed(2)}</td>
-                    <td>
-                      {formatDate(inv.createdAt, false)}
-                    </td>
-                    <td className={styles.statusCell}>{inv.status}</td>
-                    <td>
-                      <button
-                        className={styles.viewBtn}
-                        onClick={() => navigate(`/invoice/view/${inv._id}`)}
-                      >
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p className={styles.noInvoices}>No invoices found.</p>
-          )}
-        </div>
-      )}
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p className={styles.noInvoices}>No invoices found.</p>
+        )}
+      </div>
     </div>
   );
 };

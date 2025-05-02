@@ -11,6 +11,7 @@ import {
 } from "../../utils/validators";
 import { getSuppliers, createSupplier } from "../../api/suppliers";
 import styles from "../../styles/PageStyles/Suppliers/addSupplierModal.module.css";
+import toast from "react-hot-toast";
 
 const AddSupplierModal = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const AddSupplierModal = () => {
         const list = await getSuppliers();
         setExistingSuppliers(list.map(s => ({ ...s, id: s._id })));
       } catch (err) {
-        console.error("Error loading suppliers:", err);
+        console.error("Error loading suppliers:", err.message);
       }
     })();
   }, []);
@@ -88,6 +89,7 @@ const AddSupplierModal = () => {
         ...prev,
         email: "This email is already in use. Choose another."
       }));
+      toast.error("This email is already in use. Choose another.");
       setSaving(false);
       return;
     }
@@ -105,9 +107,10 @@ const AddSupplierModal = () => {
 
     try {
       await createSupplier(payload);
+      toast.success("Supplier added successfully!");
       navigate("/suppliers");
     } catch (err) {
-      console.error("Error adding supplier:", err);
+      toast.error("Error adding supplier:", err.message);
       setSubmitError(err.message);
     } finally {
       setSaving(false);

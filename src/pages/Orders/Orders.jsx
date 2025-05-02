@@ -1,46 +1,44 @@
-// pages/Orders/Orders.jsx
-import React, { useState, useEffect } from "react";
+// src/pages/Orders/Orders.jsx
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Orders/orders.module.css";
 import SearchBar from "../../components/SearchBar";
-import { capitalize, formatDate } from "../../utils/validators";
 import RefreshButton from "../../components/RefreshButton";
+import { formatDate } from "../../utils/validators";
 import { getAllOrders } from "../../api/orders";
+import { toast } from 'react-hot-toast';
 
 const Orders = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const fetchOrders = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      setError(null);
       const data = await getAllOrders();
-      setOrders(data);
+      setOrders(data || []);
     } catch (err) {
-      setError(err?.message || "Failed to load orders");
+      toast.error(err.message || "Failed to load orders");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
+  useEffect(() => { fetchOrders(); }, []);
 
-  const filteredOrders = orders.filter((order) => {
-    const text = searchQuery.toLowerCase();
-    return (
-      order._id.includes(text) ||
-      (order.customerId?.name || "").toLowerCase().includes(text) ||
-      (order.status || "").toLowerCase().includes(text) ||
-      formatDate(order.createdAt, false).toLowerCase().includes(text)
-    );
-  });
-
+  const filteredOrders = useMemo(() => {
+    return orders.filter(order => {
+      const text = searchQuery.toLowerCase();
+      return (
+        order._id.toLowerCase().includes(text) ||
+        (order.customerId?.name || "").toLowerCase().includes(text) ||
+        (order.status || "").toLowerCase().includes(text) ||
+        formatDate(order.createdAt, false).toLowerCase().includes(text)
+      );
+    });
+  }, [orders, searchQuery]);
 
   return (
     <div className={styles.page}>
@@ -57,16 +55,10 @@ const Orders = () => {
         </div>
       </div>
 
-      {error ? (
-        <div className={styles.tableContainer}>
-          <p className={styles.error}>Error: {error}</p>
-        </div>
-      ) : loading ? (
-        <div className={styles.tableContainer}>
+      <div className={styles.tableContainer}>
+        {loading ? (
           <p className={styles.loading}>Loading orders...</p>
-        </div>
-      ) : (
-        <div className={styles.tableContainer}>
+        ) : filteredOrders.length > 0 ? (
           <table className={styles.table}>
             <thead>
               <tr>
@@ -79,19 +71,17 @@ const Orders = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredOrders.map((order) => {
-                const statusKey = order.status?.toLowerCase() || "unknown";
+              {filteredOrders.map(order => {
+                const statusKey = (order.status || "").toLowerCase();
                 return (
                   <tr key={order._id}>
                     <td>{order._id}</td>
-                    <td>{capitalize(order.customerId?.name) || "—"}</td>
-                    <td>₹{order.totalAmount}</td>
+                    <td>{order.customerId?.name ? order.customerId.name : "Deleted customer"}</td>
+                    <td>₹{order.totalAmount.toFixed(2)}</td>
                     <td>{formatDate(order.createdAt, false)}</td>
                     <td>
-                      <span
-                        className={`${styles.status} ${styles[statusKey]}`}
-                      >
-                        {order.status}
+                      <span className={`${styles.status} ${styles[statusKey]}`}>
+                        {order.status || "—"}
                       </span>
                     </td>
                     <td>
@@ -107,8 +97,10 @@ const Orders = () => {
               })}
             </tbody>
           </table>
-        </div>
-      )}
+        ) : (
+          <p className={styles.error}>No orders found.</p>
+        )}
+      </div>
     </div>
   );
 };

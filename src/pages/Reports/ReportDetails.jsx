@@ -15,6 +15,7 @@ import { capitalize } from "../../utils/validators";
 import { ReportDocument } from "../../pdf/ReportDocument";
 import html2canvas from 'html2canvas';
 import { pdf } from '@react-pdf/renderer';
+import toast from "react-hot-toast";
 
 
 
@@ -38,7 +39,8 @@ export default function ReportDetails() {
       if (!singleReport) throw new Error("Report not found");
       setReport(singleReport);
     } catch (err) {
-      setError(err);
+      setError(err.message);
+      toast.error("Failed to load report!");
     } finally {
       setLoading(false);
     }

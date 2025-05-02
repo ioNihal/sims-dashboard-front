@@ -64,7 +64,7 @@ const InventoryReport = ({ data }) => {
                         <XAxis dataKey="range" tick={{ fontSize: "0.55rem" }} />
                         <YAxis tick={{ fontSize: "0.55rem" }} />
                         <Tooltip />
-                        <Bar dataKey="count" fill={COLORS[3]} />
+                        <Bar dataKey="count" fill={COLORS[3]} barSize={15} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>

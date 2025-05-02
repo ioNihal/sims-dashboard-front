@@ -127,12 +127,12 @@ const InvoiceDetails = () => {
                     {marking ? "Marking..." : "Mark Paid"}
                   </button>
                 )}
-                <button
+                {/* <button
                   onClick={() => window.print()}
                   className={styles.print}
                 >
                   Print
-                </button>
+                </button> */}
                 <button
                   onClick={handleDelete}
                   className={styles.deleteBtn}

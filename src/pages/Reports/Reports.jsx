@@ -5,6 +5,7 @@ import RefreshButton from "../../components/RefreshButton";
 import { capitalize, formatDate } from "../../utils/validators";
 import SearchBar from "../../components/SearchBar";
 import { deleteReport, fetchReports } from "../../api/reports";
+import toast from "react-hot-toast";
 
 const Reports = () => {
   const [reports, setReports] = useState([]);
@@ -19,7 +20,8 @@ const Reports = () => {
       const data = await fetchReports();
       setReports(data);
     } catch (err) {
-      console.error(err);
+      console.error(err.message);
+      toast.error("Failed to load reports!");
     } finally {
       setLoading(false);
     }

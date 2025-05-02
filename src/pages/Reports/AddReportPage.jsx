@@ -48,21 +48,40 @@ const AddReportPage = () => {
 
   // load raw once
   useEffect(() => {
-    Promise.all([
+    Promise.allSettled([
       getAllInventoryItems(),
       getAllCustomers(),
       getAllOrders(),
       getAllInvoices()
-    ]).then(([inv, cust, ord, invc]) => {
-      setInventory(inv);
-      setCustomers(cust);
-      setOrders(ord);
-      setInvoices(invc);
-    }).catch((err) => {
-      console.error("Failed to load data:", err);
+    ]).then((results) => {
+      const [invRes, custRes, ordRes, invcRes] = results;
+
+      if (invRes.status === "fulfilled" && Array.isArray(invRes.value)) {
+        setInventory(invRes.value);
+      } else {
+        console.warn("Inventory fetch failed or returned invalid data", invRes.reason);
+      }
+
+      if (custRes.status === "fulfilled" && Array.isArray(custRes.value)) {
+        setCustomers(custRes.value);
+      } else {
+        console.warn("Customers fetch failed or returned invalid data", custRes.reason);
+      }
+
+      if (ordRes.status === "fulfilled" && Array.isArray(ordRes.value)) {
+        setOrders(ordRes.value);
+      } else {
+        console.warn("Orders fetch failed or returned invalid data", ordRes.reason);
+      }
+
+      if (invcRes.status === "fulfilled" && Array.isArray(invcRes.value)) {
+        setInvoices(invcRes.value);
+      } else {
+        console.warn("Invoices fetch failed or returned invalid data", invcRes.reason);
+      }
     });
-    ;
   }, []);
+
 
   // filter helper
   const filterByDate = (arr, key = "createdAt") => {

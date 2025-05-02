@@ -38,7 +38,7 @@ const InventoryReport = ({ data }) => {
                         <XAxis dataKey="category" tick={{ fontSize: "0.55rem" }} />
                         <YAxis tick={{ fontSize: "0.55rem" }} />
                         <Tooltip />
-                        <Bar dataKey="qty" fill={COLORS[1]} />
+                        <Bar dataKey="qty" fill={COLORS[1]} barSize={15} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
@@ -51,7 +51,7 @@ const InventoryReport = ({ data }) => {
                         <XAxis dataKey="category" tick={{ fontSize: "0.55rem" }} />
                         <YAxis tick={{ fontSize: "0.55rem" }} />
                         <Tooltip />
-                        <Bar dataKey="total" fill={COLORS[2]}  />
+                        <Bar dataKey="total" fill={COLORS[2]} barSize={15}  />
                     </BarChart>
                 </ResponsiveContainer>
             </div>

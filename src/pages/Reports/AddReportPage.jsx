@@ -46,46 +46,80 @@ const AddReportPage = () => {
   const [orders, setOrders] = useState([]);
   const [invoices, setInvoices] = useState([]);
 
+  // at top of your component:
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+
   // load raw once
   useEffect(() => {
+    const safeArray = arr => Array.isArray(arr) ? arr : [];
+    const hasCreatedAt = item => item && typeof item.createdAt === "string";
+
+    setLoading(true);
     Promise.allSettled([
       getAllInventoryItems(),
       getAllCustomers(),
       getAllOrders(),
       getAllInvoices()
-    ]).then((results) => {
-      const [invRes, custRes, ordRes, invcRes] = results;
+    ])
+      .then((results) => {
+        const [invRes, custRes, ordRes, invcRes] = results;
 
-      if (invRes.status === "fulfilled" && Array.isArray(invRes.value)) {
-        setInventory(invRes.value);
-      } else {
-        console.warn("Inventory fetch failed or returned invalid data", invRes.reason);
-      }
+        // Inventory
+        if (invRes.status === "fulfilled") {
+          const arr = safeArray(invRes.value).filter(hasCreatedAt);
+          setInventory(arr);
+        } else {
+          console.warn("Inventory fetch failed:", invRes.reason);
+          setInventory([]);           
+        }
 
-      if (custRes.status === "fulfilled" && Array.isArray(custRes.value)) {
-        setCustomers(custRes.value);
-      } else {
-        console.warn("Customers fetch failed or returned invalid data", custRes.reason);
-      }
+        // Customers
+        if (custRes.status === "fulfilled") {
+          setCustomers(safeArray(custRes.value));
+        } else {
+          console.warn("Customers fetch failed:", custRes.reason);
+          setCustomers([]);
+        }
 
-      if (ordRes.status === "fulfilled" && Array.isArray(ordRes.value)) {
-        setOrders(ordRes.value);
-      } else {
-        console.warn("Orders fetch failed or returned invalid data", ordRes.reason);
-      }
+        // Orders
+        if (ordRes.status === "fulfilled") {
+          const arr = safeArray(ordRes.value).filter(hasCreatedAt);
+          setOrders(arr);
+        } else {
+          console.warn("Orders fetch failed:", ordRes.reason);
+          setOrders([]);
+        }
 
-      if (invcRes.status === "fulfilled" && Array.isArray(invcRes.value)) {
-        setInvoices(invcRes.value);
-      } else {
-        console.warn("Invoices fetch failed or returned invalid data", invcRes.reason);
-      }
-    });
+        // Invoices
+        if (invcRes.status === "fulfilled") {
+          const arr = safeArray(invcRes.value).filter(hasCreatedAt);
+          setInvoices(arr);
+        } else {
+          console.warn("Invoices fetch failed:", invcRes.reason);
+          setInvoices([]);
+        }
+
+        // if all four actually rejected, show a message
+        const allRejected = results.every(r => r.status === "rejected");
+        if (allRejected) {
+          setLoadError("Could not load any report data. Please try again later.");
+        }
+      })
+      .catch((err) => {
+        console.error("Unexpected error loading data:", err);
+        setLoadError("Unexpected network error. Please check your connection.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
+
 
 
   // filter helper
   const filterByDate = (arr, key = "createdAt") => {
-    console.log(arr)
+    
     if (!startDate || !endDate) return arr;
 
     // start at 00:00:00.000

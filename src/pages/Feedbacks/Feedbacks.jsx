@@ -38,6 +38,7 @@ const Feedbacks = () => {
         })
       );
 
+      enriched.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setFeedbacks(enriched);
     } catch (err) {
       console.error(err);

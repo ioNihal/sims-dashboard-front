@@ -45,6 +45,7 @@ const Invoices = () => {
           ...inv,
           customer: custMap[inv.customerId] ?? "Deleted customer"
         }));
+        populated.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setInvoices(populated);
       } else {
         setInvoices([]);

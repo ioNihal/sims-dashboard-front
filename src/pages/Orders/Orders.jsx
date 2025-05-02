@@ -18,7 +18,9 @@ const Orders = () => {
     setLoading(true);
     try {
       const data = await getAllOrders();
-      setOrders(data || []);
+      const sorted = Array.isArray(data) ?
+        data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) : [];
+      setOrders(sorted || []);
     } catch (err) {
       toast.error(err.message || "Failed to load orders");
     } finally {

@@ -118,7 +118,7 @@ const InvoiceDetails = () => {
                     {approving ? "Approving..." : "Approve"}
                   </button>
                 )}
-                {invoice.method && (
+                {invoice.method && invoice.status === "pending" && (
                   <button
                     onClick={doPay}
                     disabled={marking}
@@ -144,6 +144,7 @@ const InvoiceDetails = () => {
             </header>
 
             <section className={styles.section}>
+
               <h2>Customer</h2>
               <p>
                 <strong>Name:</strong> {customer.name}
@@ -153,6 +154,16 @@ const InvoiceDetails = () => {
               </p>
               <p>
                 <strong>Phone:</strong> {customer.phone}
+              </p>
+              <hr />
+              <p>
+                <strong>Method:</strong> {invoice.method || "N/A"}
+              </p>
+              <p>
+                <strong>Transaction ID:</strong> {invoice.transactionId || "N/A"}
+              </p>
+              <p>
+                <strong>Transaction Date:</strong> {`${invoice.transactionDate && formatDate(invoice.transactionDate, false)}` || "N/A"}
               </p>
             </section>
 
@@ -173,6 +184,7 @@ const InvoiceDetails = () => {
               <p>
                 <strong>Amount:</strong> ₹{invoice.amount.toFixed(2)}
               </p>
+
             </section>
 
             {orders.length > 0 ? (
@@ -205,9 +217,9 @@ const InvoiceDetails = () => {
               </section>
             ) : (
               <section className={styles.section}>
-                 <p>No orders found</p>
+                <p>No orders found</p>
               </section>
-             
+
             )}
           </>
         )}

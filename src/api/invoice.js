@@ -1,4 +1,5 @@
-const BASE_URL = "https://suims.vercel.app/api/invoice";
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 
 /**
  * Fetch all invoices.
@@ -6,7 +7,7 @@ const BASE_URL = "https://suims.vercel.app/api/invoice";
  * @throws {Error} If the fetch fails.
  */
 export async function getAllInvoices() {
-  const res = await fetch(BASE_URL);
+  const res = await fetch(`${API_BASE}/api/invoice`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.error?.message || "Failed to load invoices");
   return data.invoice;
@@ -19,7 +20,7 @@ export async function getAllInvoices() {
  * @throws {Error} If the fetch fails.
  */
 export async function getInvoiceById(id) {
-  const res = await fetch(`${BASE_URL}/${id}`);
+  const res = await fetch(`${API_BASE}/api/invoice/${id}`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.error.message || "Failed to load invoice");
   return data.invoice;
@@ -32,7 +33,7 @@ export async function getInvoiceById(id) {
  * @throws {Error} If generation fails.
  */
 export async function generateInvoices(customerIds) {
-  const res = await fetch(BASE_URL, {
+  const res = await fetch(`${API_BASE}/api/invoice`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ customers: customerIds }),
@@ -49,7 +50,7 @@ export async function generateInvoices(customerIds) {
  * @throws {Error} If approval fails.
  */
 export async function approveInvoice(id) {
-  const res = await fetch(`${BASE_URL}/${id}`, {
+  const res = await fetch(`${API_BASE}/api/invoice/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ draft: false }),
@@ -68,7 +69,7 @@ export async function approveInvoice(id) {
  * @throws {Error} If payment update fails.
  */
 export async function payInvoice(id, status) {
-  const res = await fetch(`${BASE_URL}/payment/status/${id}`, {
+  const res = await fetch(`${API_BASE}/api/invoice/payment/status/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -89,7 +90,7 @@ export async function payInvoice(id, status) {
  * @throws {Error} If deletion fails.
  */
 export async function deleteInvoice(id) {
-  const res = await fetch(`${BASE_URL}/${id}`, {
+  const res = await fetch(`${API_BASE}/api/invoice/${id}`, {
     method: 'DELETE',
   });
 

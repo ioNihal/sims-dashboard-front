@@ -1,6 +1,5 @@
 
-
-const BASE_URL = "https://suims.vercel.app/api/customer";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 
 /**
  * Fetches all customers from the server.
@@ -12,7 +11,7 @@ const BASE_URL = "https://suims.vercel.app/api/customer";
  * @throws {Error} Throws if the network request fails or returns a non-OK status.
  */
 export async function getAllCustomers() {
-    const res = await fetch(`${BASE_URL}/`);
+    const res = await fetch(`${API_BASE}/api/customer`);
     if (!res.ok) {
         throw new Error(`Failed to fetch customers (status: ${res.status})`);
     }
@@ -32,7 +31,7 @@ export async function getAllCustomers() {
  * @throws Will throw an error if the fetch fails or response is not ok.
  */
 export const getCustomerById = async (id) => {
-    const res = await fetch(`${BASE_URL}/${id}`);
+    const res = await fetch(`${API_BASE}/api/customer}/${id}`);
     if (!res.ok) {
         throw new Error("Failed to fetch customer data");
     }
@@ -58,7 +57,7 @@ export const getCustomerById = async (id) => {
  * @throws {Error}                       Throws if the network request fails or returns non‑OK
  */
 export async function addCustomer({ name, email, phone, address, paymentPreference }) {
-    const res = await fetch(`${BASE_URL}/`, {
+    const res = await fetch(`${API_BASE}/api/customer/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, phone, address, paymentPreference })
@@ -87,7 +86,7 @@ export async function addCustomer({ name, email, phone, address, paymentPreferen
  * @throws Will throw an error if the update fails or response is not ok.
  */
 export const updateCustomer = async (id, customerData) => {
-    const res = await fetch(`${BASE_URL}/${id}`, {
+    const res = await fetch(`${API_BASE}/api/customer/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(customerData),
@@ -112,7 +111,7 @@ export const updateCustomer = async (id, customerData) => {
  * @throws {Error} Throws if the network request fails or returns a non-OK status.
  */
 export async function deleteCustomer(id) {
-    const res = await fetch(`${BASE_URL}/${id}`, { method: "DELETE" });
+    const res = await fetch(`${API_BASE}/api/customer/${id}`, { method: "DELETE" });
     if (!res.ok) {
         throw new Error(`Failed to delete customer id=${id} (status: ${res.status})`);
     }

@@ -1,3 +1,7 @@
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
+
+
+
 /**
  * Send a PATCH request to update admin details.
  *
@@ -6,7 +10,7 @@
  * @throws {Error} Throws if the network request fails or the response is not ok.
  */
 export async function updateAdmin(payload) {
-    const res = await fetch('https://suims.vercel.app/api/admin', {
+    const res = await fetch(`${API_BASE}/api/admin`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

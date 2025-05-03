@@ -1,6 +1,5 @@
 
-
-const BASE_URL = "https://suims.vercel.app/api/inventory";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 
 /**
  * Fetches all inventory items from the server.
@@ -11,7 +10,7 @@ const BASE_URL = "https://suims.vercel.app/api/inventory";
  * @throws {Error} Throws if the network request fails or returns a non-OK status.
  */
 export async function getAllInventoryItems() {
-    const res = await fetch(`${BASE_URL}/`);
+    const res = await fetch(`${API_BASE}/api/inventory/`);
     if (!res.ok) {
         throw new Error(`Failed to fetch inventory items (status: ${res.status})`);
     }
@@ -31,7 +30,7 @@ export async function getAllInventoryItems() {
  * @throws {Error} Throws if the network request fails or returns non‐OK
  */
 export async function getInventoryItemById(id) {
-    const res = await fetch(`${BASE_URL}/${id}`);
+    const res = await fetch(`${API_BASE}/api/inventory/${id}`);
     if (!res.ok) {
         throw new Error(`Failed to fetch item id=${id} (status: ${res.status})`);
     }
@@ -57,7 +56,7 @@ export async function getInventoryItemById(id) {
  * @throws {Error}                      Throws if the network request fails or returns non‐OK
  */
 export async function addInventoryItem({ supplierId, productId, quantity, threshold }) {
-    const res = await fetch(`${BASE_URL}`, {
+    const res = await fetch(`${API_BASE}/api/inventory`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ supplierId, productId, quantity, threshold })
@@ -83,7 +82,7 @@ export async function addInventoryItem({ supplierId, productId, quantity, thresh
 * @throws {Error} Throws if the network request fails or returns non‐OK
 */
 export async function updateInventoryItem(id, { quantity, threshold }) {
-    const res = await fetch(`${BASE_URL}/${id}`, {
+    const res = await fetch(`${API_BASE}/api/inventory/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ quantity, threshold })
@@ -106,7 +105,7 @@ export async function updateInventoryItem(id, { quantity, threshold }) {
  * @throws {Error} Throws if the network request fails or returns a non-OK status.
  */
 export async function deleteInventoryItem(id) {
-    const res = await fetch(`${BASE_URL}/${id}`, {
+    const res = await fetch(`${API_BASE}/api/inventory/${id}`, {
         method: "DELETE",
     });
     if (!res.ok) {

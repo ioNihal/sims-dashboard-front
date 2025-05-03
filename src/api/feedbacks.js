@@ -1,13 +1,13 @@
 // src/api/feedbacks.js
 
-const BASE_URL = 'https://suims.vercel.app/api/feedback';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 
 /**
  * Fetch all feedbacks
  * @returns {Promise<Array>} array of feedback objects
  */
 export async function getAllFeedbacks() {
-    const res = await fetch(`${BASE_URL}/`);
+    const res = await fetch(`${API_BASE}/api/feedback/`);
     if (!res.ok) {
         const text = await res.text();
         throw new Error(text || 'Failed to fetch feedbacks');
@@ -24,7 +24,7 @@ export async function getAllFeedbacks() {
  * @returns {Promise<void>}
  */
 export async function deleteFeedbackById(id) {
-    const res = await fetch(`${BASE_URL}/${id}`, { method: 'DELETE' });
+    const res = await fetch(`${API_BASE}/api/feedback/${id}`, { method: 'DELETE' });
     if (!res.ok) {
         const text = await res.text();
         throw new Error(text || 'Failed to delete feedback');

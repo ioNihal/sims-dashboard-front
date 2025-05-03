@@ -1,5 +1,6 @@
 
-const BASE_URL = "https://suims.vercel.app/api/supplier";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
+
 
 /**
  * Fetches the list of suppliers.
@@ -7,7 +8,7 @@ const BASE_URL = "https://suims.vercel.app/api/supplier";
  * @throws on network or parsing error
  */
 export async function getSuppliers() {
-    const res = await fetch(`${BASE_URL}/`);
+    const res = await fetch(`${API_BASE}/api/supplier/`);
     if (!res.ok) {
         throw new Error(`Failed to fetch suppliers (${res.status})`);
     }
@@ -21,7 +22,7 @@ export async function getSuppliers() {
  * @returns {Promise<Object>}
  */
 export async function getSupplier(id) {
-    const res = await fetch(`${BASE_URL}/${id}`);
+    const res = await fetch(`${API_BASE}/api/supplier/${id}`);
     if (!res.ok) {
         if (res.status === 404) throw new Error("Supplier not found");
         throw new Error(`Failed to fetch supplier (${res.status})`);
@@ -36,7 +37,7 @@ export async function getSupplier(id) {
  * @returns {Promise<Object>} the created supplier
  */
 export async function createSupplier(supplierData) {
-    const res = await fetch(`${BASE_URL}`, {
+    const res = await fetch(`${API_BASE}/api/supplier`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(supplierData),
@@ -55,7 +56,7 @@ export async function createSupplier(supplierData) {
  * @param {object} payload
  */
 export async function updateSupplier(id, payload) {
-    const res = await fetch(`${BASE_URL}/${id}`, {
+    const res = await fetch(`${API_BASE}/api/supplier/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -75,7 +76,7 @@ export async function updateSupplier(id, payload) {
  * @throws on network error or non-2xx response
  */
 export async function deleteSupplier(id) {
-    const res = await fetch(`${BASE_URL}/${id}`, { method: "DELETE" });
+    const res = await fetch(`${API_BASE}/api/supplier/${id}`, { method: "DELETE" });
     if (!res.ok) {
         let msg = `Failed to delete supplier (${res.status})`;
         try {

@@ -1,6 +1,6 @@
 // src/api/report.js
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 
 
 
@@ -13,7 +13,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
  * @throws {Error} If the network request fails or returns a non-OK status.
  */
 export async function fetchReports() {
-    const url = `${BASE_URL}/report`;
+    const url = `${API_BASE}/api/report`;
     const res = await fetch(url);
     const data = await res.json();
     if (!res.ok) {
@@ -33,7 +33,7 @@ export async function fetchReports() {
  * @throws {Error} if the fetch fails or report not found
  */
 async function getReportById(id) {
-    const res = await fetch(`https://suims.vercel.app/api/report/${encodeURIComponent(id)}`);
+    const res = await fetch(`${API_BASE}/api/report/${encodeURIComponent(id)}`);
     const json = await res.json();
     if (!res.ok) {
         throw new Error(json.message || `Failed to fetch report (status ${res.status})`);
@@ -60,7 +60,7 @@ async function getReportById(id) {
  * @throws Will throw if the network request fails or the response is not ok.
  */
 export async function createReport(payload) {
-    const res = await fetch(`${BASE_URL}/report`, {
+    const res = await fetch(`${API_BASE}/api/report`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -85,7 +85,7 @@ export async function createReport(payload) {
  * @throws {Error} If the network request fails or returns a non-OK status.
  */
 export async function deleteReport(id) {
-    const url = `${BASE_URL}/report/${encodeURIComponent(id)}`;
+    const url = `${API_BASE}/api/report/${encodeURIComponent(id)}`;
     const res = await fetch(url, { method: 'DELETE' });
     if (!res.ok) {
         const data = await res.json().catch(() => ({}));

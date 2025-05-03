@@ -7,12 +7,14 @@ import { capitalize } from "../../utils/validators";
 import RefreshButton from "../../components/RefreshButton";
 import { deleteCustomer, getAllCustomers } from "../../api/customers";
 import toast from "react-hot-toast";
+import ConfirmDialog from "../../components/ConfirmDialog";
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const fetchCustomers = async () => {
     setLoading(true);
@@ -31,7 +33,7 @@ const Customers = () => {
   }, []);
 
   const handleDeleteCustomer = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this customer?")) return;
+   
     try {
       await deleteCustomer(id);
       setCustomers(prev => prev.filter(c => c.id !== id));
@@ -90,7 +92,17 @@ const Customers = () => {
                   <td>
                     <button className={styles.viewBtn} onClick={() => navigate(`/customers/view/${c.id}`)}>View</button>
                     <button className={styles.editBtn} onClick={() => navigate(`/customers/edit/${c.id}`)}>Edit</button>
-                    <button className={styles.deleteBtn} onClick={() => handleDeleteCustomer(c.id)}>Delete</button>
+                    <button className={styles.deleteBtn} onClick={() => setShowConfirm(true)}>Delete</button>
+                    {showConfirm && (
+                      <ConfirmDialog
+                        message="Sure you want to delete??"
+                        onConfirm={() => {
+                          setShowConfirm(false);
+                          handleDeleteCustomer(c.id);
+                        }}
+                        onCancel={() => setShowConfirm(false)}
+                      />
+                    )}
                   </td>
                 </tr>
               )) : (

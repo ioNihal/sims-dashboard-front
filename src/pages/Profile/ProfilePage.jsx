@@ -6,6 +6,7 @@ import styles from "../../styles/PageStyles/Profile/profilePage.module.css";
 import { capitalize, validateName, validateEmail, validatePassword } from "../../utils/validators";
 import { updateAdmin } from "../../api/admin";
 import { toast } from 'react-hot-toast';
+import ConfirmDialog from "../../components/ConfirmDialog";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const ProfilePage = () => {
   const [errors, setErrors] = useState({ name: "", email: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const [showPassword, setShowPassword] = useState({
     newPassword: false,
@@ -167,9 +169,19 @@ const ProfilePage = () => {
               <FaEdit className={styles.icon} /> Edit</button>
             <button className={styles.actionBtn} onClick={() => switchMode("password")}>
               <FaKey className={styles.icon} /> Change Password</button>
-            <button className={styles.logoutBtn} onClick={handleLogout}>
+            <button className={styles.logoutBtn} onClick={() => setShowConfirm(true)}>
               Logout
             </button>
+            {showConfirm && (
+              <ConfirmDialog
+                message="Sure you want to logout?"
+                onConfirm={() => {
+                  setShowConfirm(false);
+                  handleLogout();
+                }}
+                onCancel={() => setShowConfirm(false)}
+              />
+            )}
           </div>
         </div>
 

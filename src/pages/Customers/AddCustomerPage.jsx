@@ -39,7 +39,7 @@ const AddCustomerPage = () => {
     if (name === "address") error = validateAddress(value);
     if (name === "paymentPreference") error = value ? "" : "Select preference";
     setErrors((prev) => ({ ...prev, [name]: error }));
-    if (error) toast.error(error);
+    // if (error) toast.error(error);
   };
 
   const validateAll = () => {
@@ -82,6 +82,7 @@ const AddCustomerPage = () => {
           <div key={field} className={styles.inputGroup}>
             <label htmlFor={field}>{label}</label>
             <input id={field} name={field} value={val} onChange={handleChange} />
+            {errors[field] && <p className={styles.error}>{errors[field]}</p>}
           </div>
         ))}
         <div className={`${styles.inputGroup} ${styles.fullWidth}`}>

@@ -8,6 +8,7 @@ import FilterSortPanel from "../../components/FilterSortPanel";
 import { capitalize } from "../../utils/validators";
 import { getAllInventoryItems, deleteInventoryItem } from "../../api/inventory";
 import { toast } from "react-hot-toast";
+import ConfirmDialog from "../../components/ConfirmDialog";
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
@@ -15,6 +16,7 @@ const Inventory = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const [showConfirm, setShowConfirm] = useState(false);
   const [filters, setFilters] = useState({});
   const [sortKey, setSortKey] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
@@ -36,7 +38,6 @@ const Inventory = () => {
   }, []);
 
   const handleDeleteItem = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this item?")) return;
     try {
       await deleteInventoryItem(id);
       setItems((prev) => prev.filter((item) => item._id !== id));
@@ -160,10 +161,20 @@ const Inventory = () => {
                       </button>
                       <button
                         className={styles.deleteBtn}
-                        onClick={() => handleDeleteItem(item._id)}
+                        onClick={() => setShowConfirm(true)}
                       >
                         Delete
                       </button>
+                      {showConfirm && (
+                      <ConfirmDialog
+                        message="Sure you want to delete??"
+                        onConfirm={() => {
+                          setShowConfirm(false);
+                          handleDeleteItem(item._id);
+                        }}
+                        onCancel={() => setShowConfirm(false)}
+                      />
+                    )}
                     </td>
                   </tr>
                 );

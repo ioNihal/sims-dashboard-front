@@ -173,7 +173,7 @@ const Home = () => {
                   <PieChart>
                     <Pie data={inventoryStatusData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius="70%" label={{ fontSize: "0.55rem" }}>
                       {inventoryStatusData.map((entry, i) => (
-                        <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                        <Cell key={i} fill={COLORS[i % COLORS.length]} style={{ outline: 'none' }} />
                       ))}
                     </Pie>
                     <Tooltip wrapperStyle={{ fontSize: "1rem" }} />

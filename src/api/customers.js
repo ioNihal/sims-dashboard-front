@@ -31,7 +31,7 @@ export async function getAllCustomers() {
  * @throws Will throw an error if the fetch fails or response is not ok.
  */
 export const getCustomerById = async (id) => {
-    const res = await fetch(`${API_BASE}/api/customer}/${id}`);
+    const res = await fetch(`${API_BASE}/api/customer/${id}`);
     if (!res.ok) {
         throw new Error("Failed to fetch customer data");
     }

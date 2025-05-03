@@ -13,6 +13,7 @@ import {
 import { getSupplier, updateSupplier } from "../../api/suppliers";
 import styles from "../../styles/PageStyles/Suppliers/editSupplierModal.module.css";
 import toast from "react-hot-toast";
+import ConfirmDialog from "../../components/ConfirmDialog";
 
 const EditSupplierModal = () => {
   const { supplierId } = useParams();
@@ -22,6 +23,7 @@ const EditSupplierModal = () => {
   const [errors, setErrors] = useState({});
   const [submitError, setSubmitError] = useState("");
   const [isSaving, setSaving] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   // load existing supplier
   useEffect(() => {
@@ -209,13 +211,25 @@ const EditSupplierModal = () => {
                   <MdAdd />
                 </button>
                 {supplier.products.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteProduct(i)}
-                    className={styles.removeProductBtn}
-                  >
-                    <GiCancel />
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirm(true)}
+                      className={styles.removeProductBtn}
+                    >
+                      <GiCancel />
+                    </button>
+                    {showConfirm && (
+                      <ConfirmDialog
+                        message="Sure you want to delete??"
+                        onConfirm={() => {
+                          setShowConfirm(false);
+                          handleDeleteProduct(i);
+                        }}
+                        onCancel={() => setShowConfirm(false)}
+                      />
+                    )}
+                  </>
                 )}
               </div>
             </div>

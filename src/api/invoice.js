@@ -39,7 +39,15 @@ export async function generateInvoices(customerIds) {
     body: JSON.stringify({ customers: customerIds }),
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.error?.message || "Invoice generation failed");
+  // if HTTP-level failed
+  if (!res.ok) {
+    throw new Error(data.error?.message || "Invoice generation failed");
+  }
+
+  // if business-logic failed
+  if (!data.success) {
+    throw new Error(data.message || "No invoices generated");
+  }
   return data;
 }
 

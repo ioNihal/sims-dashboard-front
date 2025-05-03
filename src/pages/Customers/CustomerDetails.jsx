@@ -5,6 +5,7 @@ import styles from "../../styles/PageStyles/Customers/customerDetails.module.css
 import { capitalize, formatDate } from "../../utils/validators";
 import { getCustomerById } from "../../api/customers";
 import { getAllOrders } from "../../api/orders";
+import { generateInvoices } from "../../api/invoice";
 import toast from "react-hot-toast";
 
 const CustomerDetails = () => {
@@ -14,6 +15,7 @@ const CustomerDetails = () => {
   const [customer, setCustomer] = useState(null);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [genLoading, setGenLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -52,6 +54,19 @@ const CustomerDetails = () => {
     fetchData();
   }, [id, navigate]);
 
+  const handleGenerate = async () => {
+    if (!customer) return;
+    setGenLoading(true);
+    try {
+      await generateInvoices([customer._id]);
+      toast.success("Invoice generated successfully");
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setGenLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className={styles.page}>
@@ -82,6 +97,13 @@ const CustomerDetails = () => {
             </div>
           ))}
         </div>
+        <button
+          className={styles.generateBtn}
+          onClick={handleGenerate}
+          disabled={genLoading}
+        >
+          {genLoading ? "Generating…" : "Generate Invoice"}
+        </button>
         <div className={styles.ordersSection}>
           <h3>Recent Orders</h3>
           {orders.length > 0 ? (

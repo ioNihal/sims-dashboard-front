@@ -70,7 +70,7 @@ const Invoices = () => {
       await fetchData();
       toast.success("Invoices generated successfully");
     } catch (err) {
-      toast.error("Error generating invoices: " + err.message);
+      toast.error(err.message);
     } finally {
       setGenLoading(false);
     }

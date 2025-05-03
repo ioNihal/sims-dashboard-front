@@ -7,11 +7,13 @@ import { capitalize } from "../../utils/validators";
 import RefreshButton from "../../components/RefreshButton";
 import { getSuppliers, deleteSupplier } from "../../api/suppliers";
 import { toast } from "react-hot-toast";
+import ConfirmDialog from "../../components/ConfirmDialog";
 
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const fetchSuppliers = async () => {
     setLoading(true);
@@ -31,7 +33,7 @@ const Suppliers = () => {
   }, []);
 
   const handleDeleteSupplier = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this supplier?")) return;
+  
 
     try {
       await deleteSupplier(id);
@@ -104,10 +106,20 @@ const Suppliers = () => {
                       </Link>
                       <button
                         className={styles.deleteBtn}
-                        onClick={() => handleDeleteSupplier(s.id)}
+                        onClick={() => setShowConfirm(true)}
                       >
                         Delete
                       </button>
+                      {showConfirm && (
+                      <ConfirmDialog
+                        message="Sure you want to delete??"
+                        onConfirm={() => {
+                          setShowConfirm(false);
+                          handleDeleteSupplier(s.id);
+                        }}
+                        onCancel={() => setShowConfirm(false)}
+                      />
+                    )}
                     </td>
                   </tr>
                 ))

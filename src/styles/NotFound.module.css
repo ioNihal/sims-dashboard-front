@@ -1,0 +1,45 @@
+/* src/styles/NotFound.module.css */
+.wrapper {
+
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+  
+  .wrapper h1 {
+    font-size: 3rem;
+    color: #ff4d4d;
+  }
+  
+  .wrapper p {
+    margin: 1rem 0;
+    color: var(--text);
+  }
+  
+  .wrapper button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: var(--btn);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .wrapper button:hover {
+    background-color: var(--btn-hover);
+  }
+  
+@media (max-width: 768px) {
+    .wrapper {
+      padding: 1rem;
+    }
+  
+    .wrapper h1 {
+      font-size: 1.5rem;
+    }
+  
+    .wrapper p {
+      font-size: 1rem;
+    }
+}

@@ -35,6 +35,7 @@ import ProfileWidget from "./components/widgets/ProfileWidget";
 import Feedbacks from './pages/Feedbacks/Feedbacks';
 import { ThemeToggleButton } from './components/ThemeToggleButton';
 import { Toaster } from 'react-hot-toast';
+import NotFound from './pages/NotFound';
 
 
 function App() {
@@ -104,6 +105,8 @@ function App() {
                       <Route path="/invoice/view/:id" element={<InvoiceDetails />} />
                       <Route path="/profile" element={<ProfilePage />} />
                       <Route path="/feedbacks" element={<Feedbacks />} />
+                      <Route path="*" element={<NotFound />} />
+
                     </Routes>
                   </div>
                 </div>

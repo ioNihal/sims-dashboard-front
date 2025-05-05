@@ -92,7 +92,7 @@ const Customers = () => {
                   <td>
                     <button className={styles.viewBtn} onClick={() => navigate(`/customers/view/${c.id}`)}>View</button>
                     <button className={styles.editBtn} onClick={() => navigate(`/customers/edit/${c.id}`)}>Edit</button>
-                    <button className={styles.deleteBtn} onClick={() => setShowConfirm(true)}>Delete</button>
+                    {/* <button className={styles.deleteBtn} onClick={() => setShowConfirm(true)}>Delete</button>
                     {showConfirm && (
                       <ConfirmDialog
                         message="Sure you want to delete??"
@@ -102,7 +102,7 @@ const Customers = () => {
                         }}
                         onCancel={() => setShowConfirm(false)}
                       />
-                    )}
+                    )} */}
                   </td>
                 </tr>
               )) : (

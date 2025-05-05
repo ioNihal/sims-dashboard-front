@@ -6,6 +6,7 @@ import { capitalize, formatDate } from "../../utils/validators";
 import { getInventoryItemById, deleteInventoryItem } from "../../api/inventory";
 import { getAllOrders } from "../../api/orders";
 import { toast } from "react-hot-toast";
+import ConfirmDialog from "../../components/ConfirmDialog";
 
 const ItemDetails = () => {
   const { id } = useParams();
@@ -13,6 +14,8 @@ const ItemDetails = () => {
   const [item, setItem] = useState(null);
   const [itemOrders, setItemOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -56,14 +59,16 @@ const ItemDetails = () => {
     fetchAll();
   }, [id, navigate]);
 
-  const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this item?")) return;
+  const handleDeleteItem = async (id) => {
     try {
+      setDeleting(true);
       await deleteInventoryItem(id);
       toast.success("Item deleted");
       navigate("/inventory");
     } catch (err) {
       toast.error(err.message || "Error deleting item");
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -94,9 +99,23 @@ const ItemDetails = () => {
         >
           Back
         </button>
-        {/* <button className={styles.deleteBtn} onClick={handleDelete}>
-          Delete Item
-        </button> */}
+        <button
+          className={styles.deleteBtn}
+          onClick={() => setShowConfirm(true)}
+          disabled={deleting}
+        >
+          {`${deleting ? "Deleting…" : "Delete"}`}
+        </button>
+        {showConfirm && (
+          <ConfirmDialog
+            message="Sure you want to delete??"
+            onConfirm={() => {
+              setShowConfirm(false);
+              handleDeleteItem(item._id);
+            }}
+            onCancel={() => setShowConfirm(false)}
+          />
+        )}
       </div>
 
       <h2 className={styles.title}>Product Details</h2>

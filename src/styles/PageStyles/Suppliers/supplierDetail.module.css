@@ -17,6 +17,13 @@
   flex-direction: column;
 }
 
+.btnGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
 
 .backButton {
   align-self: flex-start;
@@ -28,7 +35,6 @@
   cursor: pointer;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, box-shadow 0.3s;
-  margin-bottom: 20px;
 }
 
 .backButton:hover {
@@ -36,6 +42,21 @@
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
 }
 
+.deleteBtn {
+  background-color: var(--btn-delete);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.deleteBtn:hover {
+  background-color: var(--btn-delete-hover);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+}
 
 .card {
   min-height: 300px;

@@ -104,7 +104,7 @@ const Suppliers = () => {
                       <Link to={`/suppliers/edit/${s.id}`}>
                         <button className={styles.editBtn}>Edit</button>
                       </Link>
-                      <button
+                      {/* <button
                         className={styles.deleteBtn}
                         onClick={() => setShowConfirm(true)}
                       >
@@ -119,7 +119,7 @@ const Suppliers = () => {
                         }}
                         onCancel={() => setShowConfirm(false)}
                       />
-                    )}
+                    )} */}
                     </td>
                   </tr>
                 ))

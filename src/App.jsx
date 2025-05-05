@@ -39,8 +39,6 @@ import { Toaster } from 'react-hot-toast';
 
 function App() {
 
-
-
   let user;
   const stored = localStorage.getItem("user");
   if (stored) {
@@ -48,10 +46,10 @@ function App() {
       user = JSON.parse(stored);
     } catch (_e) {
       console.warn("Corrupt user in storage, resetting to default");
-      user = { name: "Jane Doe", id: "DEFAULT_ID", avatarUrl: "…" };
+      user = { name: "Admin", id: "DEFAULT_ID", avatarUrl: "…" };
     }
   } else {
-    user = { name: "Jane Doe", id: "DEFAULT_ID", avatarUrl: "…" };
+    user = { name: "Admin", id: "DEFAULT_ID", avatarUrl: "…" };
   }
 
 

@@ -3,10 +3,11 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "../../styles/PageStyles/Customers/customerDetails.module.css";
 import { capitalize, formatDate } from "../../utils/validators";
-import { getCustomerById } from "../../api/customers";
+import { deleteCustomer, getCustomerById } from "../../api/customers";
 import { getAllOrders } from "../../api/orders";
 import { generateInvoices } from "../../api/invoice";
 import toast from "react-hot-toast";
+import ConfirmDialog from "../../components/ConfirmDialog";
 
 const CustomerDetails = () => {
   const { id } = useParams();
@@ -17,6 +18,9 @@ const CustomerDetails = () => {
   const [loading, setLoading] = useState(true);
   const [genLoading, setGenLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,6 +71,21 @@ const CustomerDetails = () => {
     }
   };
 
+  const handleDeleteCustomer = async (id) => {
+
+    try {
+      setDeleting(true);
+      await deleteCustomer(id);
+      toast.success("Customer deleted");
+      navigate("/customers");
+    } catch (err) {
+      toast.error(err.message || "Error deleting customer");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+
   if (loading) {
     return (
       <div className={styles.page}>
@@ -79,7 +98,22 @@ const CustomerDetails = () => {
 
   return (
     <div className={styles.page}>
-      <button className={styles.backButton} onClick={() => navigate("/customers")}>Back</button>
+      <div className={styles.btnGroup}>
+        <button className={styles.backButton} onClick={() => navigate("/customers")}>Back</button>
+        <button className={styles.deleteBtn} onClick={() => setShowConfirm(true)} disabled={deleting}>
+          {`${deleting ? "Deleting…" : "Delete"}`}
+        </button>
+        {showConfirm && (
+          <ConfirmDialog
+            message="Sure you want to delete??"
+            onConfirm={() => {
+              setShowConfirm(false);
+              handleDeleteCustomer(customer._id);
+            }}
+            onCancel={() => setShowConfirm(false)}
+          />
+        )}
+      </div>
       <div className={styles.card}>
         <div className={styles.title}>Customer Details</div>
         <div className={styles.details}>

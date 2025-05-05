@@ -14,7 +14,6 @@ export async function addCustomer(payload) {
     const { data } = await callApi("/api/customer/", {
         method: "POST",
         body: payload,
-        requireAuth: false,
     });
     return data;
 }

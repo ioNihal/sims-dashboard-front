@@ -62,6 +62,7 @@ const useLogin = () => {
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("user", JSON.stringify(user));
       if (user.isAdmin) localStorage.setItem("adminEmail", user.email);
+      navigate("/");
     } catch (err) {
       console.error("Login error:", err);
       setError("An error occurred during login. Please try again.");

@@ -17,8 +17,14 @@
   flex-direction: column;
 }
 
+.btnGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
 .backButton {
-  align-self: flex-start;
   background-color: var(--btn);
   color: #fff;
   border: none;
@@ -27,12 +33,28 @@
   cursor: pointer;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, box-shadow 0.3s;
-  margin-bottom: 20px;
   font-size: 1rem;
 }
 
 .backButton:hover {
   background-color: var(--btn-hover);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.deleteBtn {
+  background-color: var(--btn-delete);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, box-shadow 0.3s;
+  font-size: 1rem;
+}
+
+.deleteBtn:hover {
+  background-color: var(--btn-delete-hover);
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
 }
 
@@ -81,6 +103,8 @@
   padding: 20px;
   width: 100%;
   box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 
   /* make cards flow in a column with consistent gap */
@@ -187,6 +211,10 @@
   .detailSection,
   .ordersSection {
     padding: 10px;
+  }
+
+  .ordersSection {
+    width: auto;
   }
 
   .detailSection p,

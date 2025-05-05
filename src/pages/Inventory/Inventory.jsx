@@ -159,7 +159,7 @@ const Inventory = () => {
                       >
                         Edit
                       </button>
-                      <button
+                      {/* <button
                         className={styles.deleteBtn}
                         onClick={() => setShowConfirm(true)}
                       >
@@ -174,7 +174,7 @@ const Inventory = () => {
                         }}
                         onCancel={() => setShowConfirm(false)}
                       />
-                    )}
+                    )} */}
                     </td>
                   </tr>
                 );

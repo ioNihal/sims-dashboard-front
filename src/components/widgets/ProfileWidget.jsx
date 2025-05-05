@@ -11,11 +11,7 @@ const ProfileWidget = ({ user }) => {
   return (
     <div className={styles.widget}
       onClick={() => navigate("/profile")}>
-      {user.avatar ? (
-        <img src={user.avatar} alt="Profile" className={styles.avatar} />
-      ) : (
-        <FaUserCircle className={styles.avatar} />
-      )}
+      <FaUserCircle className={styles.avatar} />
       <div className={styles.info}>
         <span className={styles.username}>{capitalize(user.name)}</span>
       </div>

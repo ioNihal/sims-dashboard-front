@@ -32,7 +32,7 @@ async function callApi(
     // ignore JSON parse errors
   }
 
-  if (res.status === 403) {
+  if (res.status === 401) {
     redirectToLogin();
     throw new Error("Access Denied: Unauthorized!");
   }

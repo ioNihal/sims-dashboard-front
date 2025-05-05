@@ -174,7 +174,7 @@ const ProfilePage = () => {
           <div className={styles.actions}>
             <button className={styles.actionBtn} onClick={() => switchMode("edit")}>
               <FaEdit className={styles.icon} /> Edit</button>
-            <button className={styles.actionBtn} onClick={() => switchMode("password")}>
+            <button className={`${styles.actionBtn} ${styles.changePassBtn}`} onClick={() => switchMode("password")}>
               <FaKey className={styles.icon} /> Change Password</button>
             <button className={styles.logoutBtn} onClick={() => setShowConfirm(true)}>
               Logout
@@ -234,7 +234,7 @@ const ProfilePage = () => {
 
           <div className={styles.actions}>
             <button className={`${styles.actionBtn} ${styles.editBtn}`} onClick={handleSave} disabled={loading}><FaSave className={styles.icon} />{loading ? "Saving..." : "Save"}</button>
-            <button className={styles.actionBtn} onClick={() => switchMode("view")} disabled={loading}><FaTimes className={styles.icon} /> Cancel</button>
+            <button className={`${styles.actionBtn} ${styles.cancelBtn}`} onClick={() => switchMode("view")} disabled={loading}><FaTimes className={styles.icon} /> Cancel</button>
           </div>
         </div>
 
@@ -285,7 +285,7 @@ const ProfilePage = () => {
 
           <div className={styles.actions}>
             <button className={`${styles.actionBtn} ${styles.editBtn}`} onClick={handlePwdSubmit} disabled={pwdLoading}>{pwdLoading ? "Updating..." : "Update"}</button>
-            <button className={styles.actionBtn} onClick={() => switchMode("view")} disabled={pwdLoading}>Cancel</button>
+            <button className={`${styles.actionBtn} ${styles.cancelBtn}`} onClick={() => switchMode("view")} disabled={pwdLoading}>Cancel</button>
           </div>
         </div>
 

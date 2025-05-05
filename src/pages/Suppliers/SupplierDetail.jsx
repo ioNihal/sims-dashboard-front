@@ -3,14 +3,17 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "../../styles/PageStyles/Suppliers/supplierDetail.module.css";
 import { capitalize, formatDate } from "../../utils/validators";
-import { getSupplier } from "../../api/suppliers";
+import { deleteSupplier, getSupplier } from "../../api/suppliers";
 import { toast } from "react-hot-toast";
+import ConfirmDialog from "../../components/ConfirmDialog";
 
 const SupplierDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [supplier, setSupplier] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const loadSupplier = async () => {
@@ -40,6 +43,21 @@ const SupplierDetail = () => {
     );
   }
 
+  const handleDeleteSupplier = async (id) => {
+
+
+    try {
+      setDeleting(true);
+      await deleteSupplier(id);
+      toast.success("Supplier deleted");
+      navigate("/suppliers")
+    } catch (err) {
+      toast.error(err.message || "Failed to delete supplier");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   if (!supplier) return null;
 
   const {
@@ -54,12 +72,31 @@ const SupplierDetail = () => {
 
   return (
     <div className={styles.page}>
-      <button
-        className={styles.backButton}
-        onClick={() => navigate("/suppliers")}
-      >
-        Back
-      </button>
+      <div className={styles.btnGroup}>
+        <button
+          className={styles.backButton}
+          onClick={() => navigate("/suppliers")}
+        >
+          Back
+        </button>
+        <button
+          className={styles.deleteBtn}
+          onClick={() => setShowConfirm(true)}
+          disabled={deleting}
+        >
+          {`${deleting ? "Deleting…" : "Delete"}`}
+        </button>
+        {showConfirm && (
+          <ConfirmDialog
+            message="Sure you want to delete??"
+            onConfirm={() => {
+              setShowConfirm(false);
+              handleDeleteSupplier(id);
+            }}
+            onCancel={() => setShowConfirm(false)}
+          />
+        )}
+      </div>
 
       <div className={styles.card}>
         <h4 className={styles.title}>Supplier Details</h4>
@@ -117,7 +154,7 @@ const SupplierDetail = () => {
           )}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

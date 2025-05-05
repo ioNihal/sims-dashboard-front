@@ -53,7 +53,11 @@ export default function ReportDetails() {
   if (loading) {
     return (
       <div className={styles.page}>
-        <div className={styles.loading}>Loading…</div>
+        <div className={styles.loading}>
+          <div className={styles.skeleton} style={{ width: '60%' }} />
+          <div className={styles.skeleton} style={{ width: '40%' }} />
+          <div className={styles.skeleton} style={{ width: '80%' }} />
+        </div>
       </div>
     );
   }
@@ -195,9 +199,9 @@ export default function ReportDetails() {
         <button className={styles.backButton} onClick={() => nav("/reports")}>
           Back
         </button>
-        <button className={styles.dltButton} onClick={() => handleDelete(report._id)} disabled={deleting}>
+        {/* <button className={styles.dltButton} onClick={() => handleDelete(report._id)} disabled={deleting}>
           {`${deleting ? "Deleting..." : "Delete"}`}
-        </button>
+        </button> */}
         <div className={styles.saveActions}>
           <button className={styles.printBtn} onClick={handlePrint} disabled={printing}>
             {`${printing ? "Printing..." : "Print"}`}

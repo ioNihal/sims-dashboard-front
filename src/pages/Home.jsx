@@ -145,7 +145,9 @@ const Home = () => {
       </div>
       <div className={styles.insightContainer}>
         {loading ? (
-          <div className={styles.loading}>Loading...</div>
+          <div className={styles.loading}>
+            <div className={styles.spinner} />
+          </div>
         ) : (
           <>
             <div className={styles.widgetsGrid}>

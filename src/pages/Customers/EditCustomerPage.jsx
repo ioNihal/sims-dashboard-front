@@ -98,7 +98,7 @@ const EditCustomerPage = () => {
       address: addressError,
     });
 
-    return !(nameError || emailError || phoneError || addressError );
+    return !(nameError || emailError || phoneError || addressError);
   };
 
   // Handle form submission
@@ -129,7 +129,11 @@ const EditCustomerPage = () => {
   if (loading) {
     return (
       <div className={styles.container}>
-        <div className={styles.loading}>Loading...</div>
+        <div className={styles.loading}>
+          <div className={styles.skeleton} style={{ width: '60%' }} />
+          <div className={styles.skeleton} style={{ width: '40%' }} />
+          <div className={styles.skeleton} style={{ width: '80%' }} />
+        </div>
       </div>
     );
   }

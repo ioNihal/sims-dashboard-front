@@ -75,13 +75,13 @@ const AddCustomerPage = () => {
       <h1>Add New Customer</h1>
       <div className={styles.form}>
         {[
-          ["name", "Customer Name", customer.name],
-          ["email", "Email", customer.email],
-          ["phone", "Phone", customer.phone]
-        ].map(([field, label, val]) => (
+          ["name", "Customer Name", "eg: Buisness Name", customer.name],
+          ["email", "Email", "eg: buisness@mail.com", customer.email],
+          ["phone", "Phone (+91)", "eg: 9876543210" , customer.phone]
+        ].map(([field, label, placeholder, val]) => (
           <div key={field} className={styles.inputGroup}>
             <label htmlFor={field}>{label}</label>
-            <input id={field} name={field} value={val} onChange={handleChange} />
+            <input id={field} name={field} value={val} placeholder={placeholder} onChange={handleChange} />
             {errors[field] && <p className={styles.error}>{errors[field]}</p>}
           </div>
         ))}

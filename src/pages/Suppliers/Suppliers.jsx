@@ -33,7 +33,7 @@ const Suppliers = () => {
   }, []);
 
   const handleDeleteSupplier = async (id) => {
-  
+
 
     try {
       await deleteSupplier(id);
@@ -77,7 +77,9 @@ const Suppliers = () => {
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <p className={styles.loading}>Loading suppliers...</p>
+          <p className={styles.loading}>
+            <div className={styles.spinner} />
+          </p>
         ) : (
           <table className={styles.table}>
             <thead>

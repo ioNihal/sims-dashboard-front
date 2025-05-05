@@ -74,7 +74,9 @@ const Customers = () => {
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <p className={styles.loading}>Loading Customers...</p>
+          <p className={styles.loading}>
+             <div className={styles.spinner} />
+          </p>
         ) : (
           <table className={styles.table}>
             <thead>
@@ -92,17 +94,7 @@ const Customers = () => {
                   <td>
                     <button className={styles.viewBtn} onClick={() => navigate(`/customers/view/${c.id}`)}>View</button>
                     <button className={styles.editBtn} onClick={() => navigate(`/customers/edit/${c.id}`)}>Edit</button>
-                    {/* <button className={styles.deleteBtn} onClick={() => setShowConfirm(true)}>Delete</button>
-                    {showConfirm && (
-                      <ConfirmDialog
-                        message="Sure you want to delete??"
-                        onConfirm={() => {
-                          setShowConfirm(false);
-                          handleDeleteCustomer(c.id);
-                        }}
-                        onCancel={() => setShowConfirm(false)}
-                      />
-                    )} */}
+
                   </td>
                 </tr>
               )) : (

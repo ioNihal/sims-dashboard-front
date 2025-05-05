@@ -59,7 +59,9 @@ const Orders = () => {
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <p className={styles.loading}>Loading orders...</p>
+          <p className={styles.loading}>
+             <div className={styles.spinner} />
+          </p>
         ) : filteredOrders.length > 0 ? (
           <table className={styles.table}>
             <thead>

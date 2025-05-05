@@ -85,7 +85,9 @@ const Feedbacks = () => {
       <div className={styles.listContainer}>
         {error ? (<div className={styles.error}>Error: {error}</div>) :
           loading ? (
-            <div className={styles.message}>Loading feedbacks…</div>
+            <div className={styles.message}>
+              <div className={styles.spinner} />
+            </div>
           ) : (
             <ul className={styles.list}>
               {filteredFeedbacks.map(fb => (
@@ -99,14 +101,14 @@ const Feedbacks = () => {
                     <span><strong>Date:</strong> {new Date(fb.createdAt).toLocaleString()}</span>
                   </div>
                   <p className={styles.messageBody}>{fb.message}</p>
-                  <div className={styles.actions}>
+                  {/* <div className={styles.actions}>
                     <button
                       className={styles.deleteBtn}
                       onClick={() => handleDelete(fb._id)}
                     >
                       Delete
                     </button>
-                  </div>
+                  </div> */}
                 </li>
               ))}
               {filteredFeedbacks.length === 0 && (

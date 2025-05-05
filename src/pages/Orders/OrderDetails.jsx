@@ -6,6 +6,7 @@ import { capitalize, formatDate } from '../../utils/validators';
 import { deleteOrder, getOrderById, updateOrderStatus } from '../../api/orders';
 import { toast } from 'react-hot-toast';
 
+
 export default function OrderDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -76,7 +77,11 @@ export default function OrderDetails() {
   if (loading) {
     return (
       <div className={styles.page}>
-        <div className={styles.loading}>Loading details…</div>
+        <div className={styles.loading}>
+          <div className={styles.skeleton} style={{ width: '60%' }} />
+          <div className={styles.skeleton} style={{ width: '40%' }} />
+          <div className={styles.skeleton} style={{ width: '80%' }} />
+        </div>
       </div>
     );
   }
@@ -156,9 +161,9 @@ export default function OrderDetails() {
               {saving ? 'Confirming…' : 'Confirm Order'}
             </button>
           )}
-          <button className={styles.deleteBtn} onClick={handleDelete} disabled={saving}>
+          {/* <button className={styles.deleteBtn} onClick={handleDelete} disabled={saving}>
             {saving ? 'Deleting…' : 'Delete'}
-          </button>
+          </button> */}
         </div>
 
         <div className={styles.itemsSection}>
@@ -167,13 +172,13 @@ export default function OrderDetails() {
             <div key={item._id} className={styles.itemRow}>
               <div className={styles.itemInfo}>
                 <span className={styles.itemName}>
-                  {item.inventoryId?.productName
-                    ? capitalize(item.inventoryId.productName)
+                  {item.name
+                    ? capitalize(item.name)
                     : '—'}
                 </span>
                 <span className={styles.itemCategory}>
-                  {item.inventoryId?.category
-                    ? capitalize(item.inventoryId.category)
+                  {item.category
+                    ? capitalize(item.category)
                     : '—'}
                 </span>
               </div>

@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "../../styles/PageStyles/Invoices/invoiceDetails.module.css";
 import { getCustomerById } from "../../api/customers";
 import { getOrderById } from "../../api/orders";
-import { formatDate } from "../../utils/validators";
+import { capitalize, formatDate } from "../../utils/validators";
 import {
   approveInvoice,
   deleteInvoice,
@@ -103,7 +103,11 @@ const InvoiceDetails = () => {
 
       <div className={styles.invoiceCard}>
         {loading || !invoice ? (
-          <p className={styles.loading}>Loading…</p>
+          <p className={styles.loading}>
+            <div className={styles.skeleton} style={{ width: '60%' }} />
+            <div className={styles.skeleton} style={{ width: '40%' }} />
+            <div className={styles.skeleton} style={{ width: '80%' }} />
+          </p>
         ) : (
           <>
             <header className={styles.header}>
@@ -133,13 +137,13 @@ const InvoiceDetails = () => {
                 >
                   Print
                 </button> */}
-                <button
+                {/* <button
                   onClick={handleDelete}
                   className={styles.deleteBtn}
                   disabled={deleting}
                 >
                   {deleting ? "Deleting..." : "Delete"}
-                </button>
+                </button> */}
               </div>
             </header>
 
@@ -204,11 +208,11 @@ const InvoiceDetails = () => {
                     {orders.map((order) =>
                       order.orderProducts.map((o) => (
                         <tr key={o._id}>
-                          <td>{o._id}</td>
-                          <td>{o.inventoryId.productName}</td>
-                          <td>{o.quantity}</td>
-                          <td>₹{o.price.toFixed(2)}</td>
-                          <td>₹{(o.price * o.quantity).toFixed(2)}</td>
+                          <td>#{o._id}</td>
+                          <td>{capitalize(o.name) || "Deleted product"}</td>
+                          <td>{o.quantity || "N/A"}</td>
+                          <td>₹{o.price.toFixed(2) || "N/A"}</td>
+                          <td>₹{(o.price * o.quantity).toFixed(2) || "N/A"}</td>
                         </tr>
                       ))
                     )}

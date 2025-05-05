@@ -216,6 +216,20 @@
   color: var(--text);
 }
 
+.skeleton {
+  background: var(--border);
+  border-radius: 4px;
+  margin: 1rem 0;
+  height: 1.5rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
 .cancelled {
   color: var(--btn-delete);
 }

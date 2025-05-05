@@ -41,10 +41,19 @@ function App() {
 
 
 
-  const storedUser = localStorage.getItem("user");
-  const user = storedUser
-    ? JSON.parse(storedUser)
-    : { name: "Jane Doe", id: "DEFAULT_ID", avatarUrl: "https://example.com/path/to/avatar.jpg" };
+  let user;
+  const stored = localStorage.getItem("user");
+  if (stored) {
+    try {
+      user = JSON.parse(stored);
+    } catch (_e) {
+      console.warn("Corrupt user in storage, resetting to default");
+      user = { name: "Jane Doe", id: "DEFAULT_ID", avatarUrl: "…" };
+    }
+  } else {
+    user = { name: "Jane Doe", id: "DEFAULT_ID", avatarUrl: "…" };
+  }
+
 
   return (
     <Router>

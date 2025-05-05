@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserCircle, FaEdit, FaKey, FaSave, FaTimes, FaEyeSlash, FaEye } from "react-icons/fa";
 import styles from "../../styles/PageStyles/Profile/profilePage.module.css";
-import { capitalize, validateName, validateEmail, validatePassword } from "../../utils/validators";
+import { capitalize, validateName, validateEmail, validatePassword, validatePhone } from "../../utils/validators";
 import { updateAdmin } from "../../api/admin";
 import { toast } from 'react-hot-toast';
 import ConfirmDialog from "../../components/ConfirmDialog";
@@ -13,7 +13,7 @@ const ProfilePage = () => {
   const [profile, setProfile] = useState({});
   const [mode, setMode] = useState("view");
   const [tempProfile, setTempProfile] = useState({});
-  const [errors, setErrors] = useState({ name: "", email: "" });
+  const [errors, setErrors] = useState({ name: "", email: "", phone: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -34,6 +34,7 @@ const ProfilePage = () => {
       setProfile({
         name: user.name,
         email: user.email,
+        phone: user.phone,
         role: user?.isAdmin ? "Administrator" : "User",
         id: user.id || "AdminID",
       });
@@ -43,12 +44,12 @@ const ProfilePage = () => {
   // sync tempProfile when profile changes
   useEffect(() => {
     setTempProfile(profile);
-    setErrors({ name: "", email: "" });
+    setErrors({ name: "", email: "",phone: "" });
   }, [profile]);
 
   const switchMode = (m) => {
     setError(null);
-    setErrors({ name: "", email: "" });
+    setErrors({ name: "", email: "",phone: "" });
     setPwdErrors({ newPassword: "", confirmPassword: "" });
     if (m === "view") {
       setTempProfile(profile);
@@ -63,19 +64,21 @@ const ProfilePage = () => {
     let msg = "";
     if (name === "name") msg = validateName(value);
     if (name === "email") msg = validateEmail(value);
+    if (name === "phone") msg = validatePhone(value);
     setErrors((prev) => ({ ...prev, [name]: msg }));
   };
 
   const handleSave = async () => {
     const nameErr = validateName(tempProfile.name || "");
     const emailErr = validateEmail(tempProfile.email || "");
-    setErrors({ name: nameErr, email: emailErr });
-    if (nameErr || emailErr) return;
+    const phoneErr = validatePhone(tempProfile.phone || "");
+    setErrors({ name: nameErr, email: emailErr, phone: phoneErr });
+    if (nameErr || emailErr || phoneErr) return;
 
     setLoading(true);
     try {
       const payload = {};
-      ["name", "email"].forEach((key) => {
+      ["name", "email", "phone"].forEach((key) => {
         if (tempProfile[key] !== profile[key]) {
           payload[key] = window.btoa(tempProfile[key]);
         }
@@ -84,7 +87,7 @@ const ProfilePage = () => {
       setProfile(tempProfile);
       localStorage.setItem(
         "user",
-        JSON.stringify({ ...JSON.parse(localStorage.getItem("user") || "{}"), name: tempProfile.name, email: tempProfile.email })
+        JSON.stringify({ ...JSON.parse(localStorage.getItem("user") || "{}"), name: tempProfile.name, email: tempProfile.email, phone: tempProfile.phone })
       );
       toast.success("Profile updated successfully!");
       switchMode("view");
@@ -139,7 +142,7 @@ const ProfilePage = () => {
   };
 
   const handleLogout = () => {
-    ["isLoggedIn", "adminEmail", "user"].forEach((k) => localStorage.removeItem(k));
+    ["isLoggedIn", "adminEmail", "user", "token"].forEach((k) => localStorage.removeItem(k));
     navigate("/login");
   };
 
@@ -157,11 +160,15 @@ const ProfilePage = () => {
           {error && <p className={styles.error}>{error}</p>}
           <div className={styles.userInfoRow}>
             <label>Name:</label>
-            <span>{capitalize(profile.name)}</span>
+            <span> {capitalize(profile.name)}</span>
           </div>
           <div className={styles.userInfoRow}>
             <label>Email:</label>
-            <span>{profile.email}</span>
+            <span> {profile.email}</span>
+          </div>
+          <div className={styles.userInfoRow}>
+            <label>Phone:</label>
+            <span> +91 {profile.phone}</span>
           </div>
 
           <div className={styles.actions}>
@@ -210,6 +217,17 @@ const ProfilePage = () => {
                 className={styles.editInput}
                 disabled={loading} />
               {errors.email && <small className={styles.fieldError}>{errors.email}</small>}
+            </div>
+          </div>
+
+          <div className={styles.infoRow}>
+            <label>Phone (+91):</label>
+            <div className={styles.inputWrapper}>
+              <input name="phone" value={tempProfile.phone || ""}
+                onChange={handleChange}
+                className={styles.editInput}
+                disabled={loading} />
+              {errors.phone && <small className={styles.fieldError}>{errors.phone}</small>}
             </div>
           </div>
 

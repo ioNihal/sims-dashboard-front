@@ -1,114 +1,31 @@
+import callApi from "./_callApi";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
-
-/**
- * Fetches all inventory items from the server.
- *
- * @async
- * @function getAllInventoryItems
- * @returns {Promise<Array<Object>>} Resolves to an array of inventory item objects.
- * @throws {Error} Throws if the network request fails or returns a non-OK status.
- */
-export async function getAllInventoryItems() {
-    const res = await fetch(`${API_BASE}/api/inventory/`);
-    if (!res.ok) {
-        throw new Error(`Failed to fetch inventory items (status: ${res.status})`);
-    }
-    const data = await res.json();
-    return data.inventory || [];
+export async function getAllInventoryItems(signal) {
+  const { inventory = [] } = await callApi("/api/inventory/", { signal });
+  return inventory;
 }
 
-
-
-/**
- * Fetches a single inventory item by its ID.
- *
- * @async
- * @function getInventoryItemById
- * @param {string} id – the `_id` of the inventory item
- * @returns {Promise<Object>} Resolves to the inventory item object
- * @throws {Error} Throws if the network request fails or returns non‐OK
- */
-export async function getInventoryItemById(id) {
-    const res = await fetch(`${API_BASE}/api/inventory/${id}`);
-    if (!res.ok) {
-        throw new Error(`Failed to fetch item id=${id} (status: ${res.status})`);
-    }
-    const data = await res.json();
-    // assume API returns { inventory: { … } }
-    return data.inventory;
+export async function getInventoryItemById(id, signal) {
+  const { inventory } = await callApi(`/api/inventory/${id}`, { signal });
+  return inventory;
 }
 
-
-
-
-/**
- * Posts a new inventory item to the server.
- *
- * @async
- * @function addInventoryItem
- * @param {Object} payload
- * @param {string} payload.supplierId   – the _id of the supplier
- * @param {string} payload.productId    – the _id of the product
- * @param {number} payload.quantity     – number of units to add
- * @param {number} payload.threshold    – low‐stock threshold
- * @returns {Promise<Object>}           Resolves to the created inventory object
- * @throws {Error}                      Throws if the network request fails or returns non‐OK
- */
-export async function addInventoryItem({ supplierId, productId, quantity, threshold }) {
-    const res = await fetch(`${API_BASE}/api/inventory`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ supplierId, productId, quantity, threshold })
-    });
-    const json = await res.json();
-    if (!res.ok) {
-        throw new Error(json.error?.message || `Failed to add inventory (status: ${res.status})`);
-    }
-    return json;  // assume API returns created item or success message
+export async function addInventoryItem(payload) {
+  const { inventory } = await callApi("/api/inventory", {
+    method: "POST",
+    body: payload,
+  });
+  return inventory;
 }
 
-
-/**
-* Updates quantity and threshold of an existing inventory item.
-*
-* @async
-* @function updateInventoryItem
-* @param {string} id – the `_id` of the inventory item
-* @param {Object} updates
-* @param {number} updates.quantity  – new quantity
-* @param {number} updates.threshold – new low-stock threshold
-* @returns {Promise<Object>} Resolves to the updated inventory object
-* @throws {Error} Throws if the network request fails or returns non‐OK
-*/
-export async function updateInventoryItem(id, { quantity, threshold }) {
-    const res = await fetch(`${API_BASE}/api/inventory/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ quantity, threshold })
-    });
-    const json = await res.json();
-    if (!res.ok) {
-        throw new Error(json.error?.message || `Failed to update item id=${id} (status: ${res.status})`);
-    }
-    return json;
+export async function updateInventoryItem(id, updates) {
+  const { inventory } = await callApi(`/api/inventory/${id}`, {
+    method: "PATCH",
+    body: updates,
+  });
+  return inventory;
 }
 
-
-/**
- * Deletes a single inventory item by its ID.
- *
- * @async
- * @function deleteInventoryItem
- * @param {string} id - The `_id` of the inventory item to delete.
- * @returns {Promise<void>} Resolves when deletion is successful.
- * @throws {Error} Throws if the network request fails or returns a non-OK status.
- */
 export async function deleteInventoryItem(id) {
-    const res = await fetch(`${API_BASE}/api/inventory/${id}`, {
-        method: "DELETE",
-    });
-    if (!res.ok) {
-        throw new Error(`Failed to delete item with id=${id} (status: ${res.status})`);
-    }
+  await callApi(`/api/inventory/${id}`, { method: "DELETE" });
 }

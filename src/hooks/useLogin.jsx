@@ -30,7 +30,7 @@ const useLogin = () => {
       setIsLogging(false);
       return;
     }
-    
+
     // Password should be at least 6 characters.
     if (trimmedPassword.length < 6) {
       setError("Password must be at least 6 characters long");
@@ -54,21 +54,18 @@ const useLogin = () => {
         return;
       }
 
-      // Save token and user data in localStorage
-      localStorage.setItem("token", data.token);
+      const { token, tokenType, expiresIn, user } = data;
+      const expiryTimestamp = Date.now() + expiresIn * 1000;
+      localStorage.setItem("token", token);
+      localStorage.setItem("tokenType", tokenType);
+      localStorage.setItem("tokenExpiry", expiryTimestamp.toString());
       localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      // Optionally, store the admin email if applicable
-      if (data.user.isAdmin) {
-        localStorage.setItem("adminEmail", data.user.email);
-      }
-
-      setIsLogging(false);
-      navigate("/"); // Redirect to dashboard
+      localStorage.setItem("user", JSON.stringify(user));
+      if (user.isAdmin) localStorage.setItem("adminEmail", user.email);
     } catch (err) {
       console.error("Login error:", err);
       setError("An error occurred during login. Please try again.");
+    } finally {
       setIsLogging(false);
     }
   };

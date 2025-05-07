@@ -49,7 +49,7 @@ const useLogin = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || "Login failed");
+        setError(data.error?.message || "Login failed");
         setIsLogging(false);
         return;
       }

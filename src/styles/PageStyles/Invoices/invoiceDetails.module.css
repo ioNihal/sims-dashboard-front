@@ -154,6 +154,10 @@
   font-weight: 500;
 }
 
+.orderTable a:hover {
+  text-decoration: underline;
+}
+
 .loading,
 .error {
   text-align: center;

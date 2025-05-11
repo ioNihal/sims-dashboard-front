@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import styles from "../../styles/PageStyles/Invoices/invoiceDetails.module.css";
 import { getCustomerById } from "../../api/customers";
 import { getOrderById } from "../../api/orders";
@@ -183,7 +183,7 @@ const InvoiceDetails = () => {
                     {orders.map((order) =>
                       order.orderProducts.map((o) => (
                         <tr key={o._id}>
-                          <td>#{o._id}</td>
+                          <td><Link to={`/orders/${o._id}`}>#{o._id}</Link></td>
                           <td>{capitalize(o.name) || "Deleted product"}</td>
                           <td>{o.quantity || "N/A"}</td>
                           <td>₹{o.price.toFixed(2) || "N/A"}</td>

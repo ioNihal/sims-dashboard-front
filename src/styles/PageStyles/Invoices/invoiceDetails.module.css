@@ -148,6 +148,12 @@
   color: var(--text);
 }
 
+.orderTable a {
+  color: var(--link);
+  text-decoration: none;
+  font-weight: 500;
+}
+
 .loading,
 .error {
   text-align: center;

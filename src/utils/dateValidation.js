@@ -1,4 +1,4 @@
-// src/utils/dateValidation.js
+
 
 /**
  * Check that both dates are defined, in YYYY-MM-DD form, and that

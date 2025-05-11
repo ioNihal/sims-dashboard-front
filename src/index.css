@@ -63,10 +63,10 @@ body {
   --blue: #4d9fff;
   --border: #2d3848;
 
-  --card-bg: #161b22;       /* Slightly lighter than main bg */
-  --text-secondary: #8b949e; /* Softer gray for secondary text */
-  --radius: 8px;            /* Maintains consistent rounding */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.24); /* Darker shadow */
+  --card-bg: #161b22;      
+  --text-secondary: #8b949e; 
+  --radius: 8px;           
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.24); 
 }
 
 /* WebKit browsers */

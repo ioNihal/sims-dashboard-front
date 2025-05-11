@@ -107,7 +107,7 @@
   -moz-box-sizing: border-box;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 
-  /* make cards flow in a column with consistent gap */
+
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -116,11 +116,11 @@
 .ordersSection h3 {
   font-size: 1.3rem;
   margin-bottom: 10px;
-  /* tighten up under‐heading spacing */
+
   color: var(--text);
 }
 
-/* turn list into a responsive grid of cards */
+
 .orderList {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -139,7 +139,7 @@
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* subtle lift on hover for affordance */
+
 .orderCard:hover {
   transform: translateY(-4px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
@@ -151,7 +151,7 @@
   color: var(--text);
 }
 
-/* style the order-ID link inside the card */
+
 .orderCard a {
   color: var(--link);
   text-decoration: none;

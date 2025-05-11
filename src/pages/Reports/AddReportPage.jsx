@@ -1,4 +1,4 @@
-// src/pages/Reports/AddReportPage.jsx
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Reports/addReportPage.module.css";
@@ -46,7 +46,7 @@ const AddReportPage = () => {
   const [orders, setOrders] = useState([]);
   const [invoices, setInvoices] = useState([]);
 
-  // at top of your component:
+  
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
 

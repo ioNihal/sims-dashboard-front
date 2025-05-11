@@ -1,4 +1,4 @@
-/* pages/Profile/profilePage.module.css */
+
 .page {
   background-color: var(--bg);
   padding: 20px;
@@ -38,7 +38,7 @@
   margin-bottom: 2rem;
 }
 
-/* Pane visibility toggling */
+
 .pane {
   width: 60%;
   display: none;

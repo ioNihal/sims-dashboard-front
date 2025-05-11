@@ -1,11 +1,11 @@
-// src/components/ConfirmDialog.jsx
+
 import React from 'react';
 import styles from '../styles/ComponentStyles/ConfirmDialog.module.css';
 
 export default function ConfirmDialog({  
-  message,    // string to show  
-  onConfirm,  // fn to call when user clicks “Yes”  
-  onCancel    // fn to call when user clicks “No”  
+  message,     
+  onConfirm,  
+  onCancel     
 }) {
   return (
     <div className={styles.backdrop}>

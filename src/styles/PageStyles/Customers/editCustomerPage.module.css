@@ -193,7 +193,7 @@
   color: red;
 }
 
-/* Responsive styling for smaller screens */
+/* Responsive styling  */
 @media (max-width: 769px) {
   .container {
     padding: 15px;

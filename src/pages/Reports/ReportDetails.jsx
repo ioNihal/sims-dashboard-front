@@ -1,4 +1,4 @@
-// src/pages/Reports/ReportDetails.jsx
+
 import React, { useEffect, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
@@ -177,31 +177,13 @@ export default function ReportDetails() {
     }
   };
 
-
-
-
-  const handleDelete = async id => {
-    try {
-      if (!window.confirm("Are you sure you want to delete this report?")) return;
-      setDeleting(true);
-      await deleteReport(id);
-      nav("/reports");
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setDeleting(false);
-    }
-  };
-
   return (
     <div className={styles.page}>
       <div className={styles.actions}>
         <button className={styles.backButton} onClick={() => nav("/reports")}>
           Back
         </button>
-        {/* <button className={styles.dltButton} onClick={() => handleDelete(report._id)} disabled={deleting}>
-          {`${deleting ? "Deleting..." : "Delete"}`}
-        </button> */}
+  
         <div className={styles.saveActions}>
           <button className={styles.printBtn} onClick={handlePrint} disabled={printing}>
             {`${printing ? "Printing..." : "Print"}`}
@@ -229,7 +211,7 @@ export default function ReportDetails() {
           {description && <p className={styles.description}>{description}</p>}
         </div>
 
-        {/* — TEXTUAL SUMMARY DETAILS — */}
+       
         {dataDetails && (
           <div className={styles.detailSection}>
             <h2 className={styles.detailTitle}>Summary</h2>

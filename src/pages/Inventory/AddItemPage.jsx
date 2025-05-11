@@ -1,4 +1,4 @@
-// src/pages/Inventory/AddItemPage.jsx
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Inventory/addItemPage.module.css";
@@ -61,7 +61,6 @@ const AddItemPage = () => {
   };
 
   const handleSubmit = async () => {
-    // clear submit error
     setErrors((e) => ({ ...e, submit: "" }));
 
     // validate all

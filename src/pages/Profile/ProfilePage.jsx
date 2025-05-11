@@ -1,4 +1,4 @@
-// src/pages/Profile/ProfilePage.jsx
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserCircle, FaEdit, FaKey, FaSave, FaTimes, FaEyeSlash, FaEye } from "react-icons/fa";
@@ -154,7 +154,7 @@ const ProfilePage = () => {
       </div>
 
       <div className={styles.profileBody}>
-        {/* VIEW */}
+        
         <div className={`${styles.pane} ${styles.profilePane} ${mode === "view" ? styles.active : ""}`}>
           <h2 className={styles.sectionTitle}>Profile Details</h2>
           {error && <p className={styles.error}>{error}</p>}
@@ -192,7 +192,7 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        {/* EDIT */}
+        
         <div className={`${styles.pane} ${mode === "edit" ? styles.active : ""}`}>
           <h2 className={styles.sectionTitle}>Edit Profile</h2>
 
@@ -238,7 +238,7 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        {/* PASSWORD */}
+        
         <div className={`${styles.pane} ${mode === "password" ? styles.active : ""}`}>
           <h2 className={styles.sectionTitle}>Update Password</h2>
 

@@ -1,4 +1,4 @@
-// src/pages/Orders/OrderDetails.jsx
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from '../../styles/PageStyles/Orders/orderDetails.module.css';
@@ -60,20 +60,7 @@ export default function OrderDetails() {
   const handleSave = () => patchStatus(status);
   const handleConfirm = () => patchStatus('confirmed');
 
-  const handleDelete = async () => {
-    if (!window.confirm('Really delete this order?')) return;
-    setSaving(true);
-    try {
-      await deleteOrder(order._id);
-      toast.success('Order deleted');
-      navigate('/orders');
-    } catch (err) {
-      toast.error(err.message || 'Failed to delete order');
-    } finally {
-      setSaving(false);
-    }
-  };
-
+ 
   if (loading) {
     return (
       <div className={styles.page}>
@@ -161,9 +148,7 @@ export default function OrderDetails() {
               {saving ? 'Confirming…' : 'Confirm Order'}
             </button>
           )}
-          {/* <button className={styles.deleteBtn} onClick={handleDelete} disabled={saving}>
-            {saving ? 'Deleting…' : 'Delete'}
-          </button> */}
+        
         </div>
 
         <div className={styles.itemsSection}>

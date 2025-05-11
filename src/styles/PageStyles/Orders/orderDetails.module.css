@@ -238,7 +238,6 @@
   color: var(--btn-edit);
 }
 
-/* RESPONSIVENESS */
 
 /* For tablets and below */
 @media (max-width: 768px) {

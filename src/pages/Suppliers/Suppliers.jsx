@@ -1,4 +1,4 @@
-// src/pages/Suppliers/Suppliers.jsx
+
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "../../styles/PageStyles/Suppliers/suppliers.module.css";
 import SearchBar from "../../components/SearchBar";
@@ -32,18 +32,7 @@ const Suppliers = () => {
     fetchSuppliers();
   }, []);
 
-  const handleDeleteSupplier = async (id) => {
-
-
-    try {
-      await deleteSupplier(id);
-      setSuppliers(prev => prev.filter(s => s.id !== id));
-      toast.success("Supplier deleted");
-    } catch (err) {
-      toast.error(err.message || "Failed to delete supplier");
-    }
-  };
-
+  
   const filteredSuppliers = useMemo(() => {
     return (suppliers || []).filter(s => {
       const q = searchQuery.toLowerCase();
@@ -106,22 +95,7 @@ const Suppliers = () => {
                       <Link to={`/suppliers/edit/${s.id}`}>
                         <button className={styles.editBtn}>Edit</button>
                       </Link>
-                      {/* <button
-                        className={styles.deleteBtn}
-                        onClick={() => setShowConfirm(true)}
-                      >
-                        Delete
-                      </button>
-                      {showConfirm && (
-                      <ConfirmDialog
-                        message="Sure you want to delete??"
-                        onConfirm={() => {
-                          setShowConfirm(false);
-                          handleDeleteSupplier(s.id);
-                        }}
-                        onCancel={() => setShowConfirm(false)}
-                      />
-                    )} */}
+                     
                     </td>
                   </tr>
                 ))

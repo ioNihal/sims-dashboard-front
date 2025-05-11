@@ -1,4 +1,4 @@
-// src/components/Feedbacks.jsx
+
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/PageStyles/Feedbacks/feedbacks.module.css';
 import { useNavigate } from 'react-router-dom';
@@ -52,16 +52,6 @@ const Feedbacks = () => {
     fetchFeedbacks();
   }, []);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this feedback?')) return;
-    try {
-      await deleteFeedbackById(id);
-      setFeedbacks(fs => fs.filter(f => f._id !== id));
-    } catch (err) {
-      console.error(err);
-      alert('Delete failed: ' + err.message);
-    }
-  };
 
   const filteredFeedbacks = feedbacks.filter(f =>
     f.senderName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -101,14 +91,6 @@ const Feedbacks = () => {
                     <span><strong>Date:</strong> {new Date(fb.createdAt).toLocaleString()}</span>
                   </div>
                   <p className={styles.messageBody}>{fb.message}</p>
-                  {/* <div className={styles.actions}>
-                    <button
-                      className={styles.deleteBtn}
-                      onClick={() => handleDelete(fb._id)}
-                    >
-                      Delete
-                    </button>
-                  </div> */}
                 </li>
               ))}
               {filteredFeedbacks.length === 0 && (

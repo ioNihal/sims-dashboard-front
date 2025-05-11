@@ -1,4 +1,4 @@
-// src/pages/Invoices/InvoiceDetails.jsx
+
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "../../styles/PageStyles/Invoices/invoiceDetails.module.css";
@@ -79,19 +79,6 @@ const InvoiceDetails = () => {
     }
   };
 
-  const handleDelete = async () => {
-    setDeleting(true);
-    try {
-      await deleteInvoice(id);
-      toast.success("Invoice deleted");
-      navigate("/invoices");
-    } catch (err) {
-      toast.error("Delete failed: " + err.message);
-    } finally {
-      setDeleting(false);
-    }
-  };
-
   return (
     <div className={styles.page}>
       <button
@@ -131,19 +118,7 @@ const InvoiceDetails = () => {
                     {marking ? "Marking..." : "Mark Paid"}
                   </button>
                 )}
-                {/* <button
-                  onClick={() => window.print()}
-                  className={styles.print}
-                >
-                  Print
-                </button> */}
-                {/* <button
-                  onClick={handleDelete}
-                  className={styles.deleteBtn}
-                  disabled={deleting}
-                >
-                  {deleting ? "Deleting..." : "Delete"}
-                </button> */}
+    
               </div>
             </header>
 

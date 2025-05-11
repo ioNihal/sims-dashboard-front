@@ -1,4 +1,4 @@
-// src/pages/Customers/AddCustomerPage.jsx
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Customers/addCustomerPage.module.css";
@@ -39,7 +39,7 @@ const AddCustomerPage = () => {
     if (name === "address") error = validateAddress(value);
     if (name === "paymentPreference") error = value ? "" : "Select preference";
     setErrors((prev) => ({ ...prev, [name]: error }));
-    // if (error) toast.error(error);
+    
   };
 
   const validateAll = () => {

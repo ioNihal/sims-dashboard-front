@@ -1,4 +1,4 @@
-// src/pages/Inventory/Inventory.jsx
+
 import React, { useEffect, useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Inventory/inventory.module.css";
@@ -37,15 +37,7 @@ const Inventory = () => {
     fetchItems();
   }, []);
 
-  const handleDeleteItem = async (id) => {
-    try {
-      await deleteInventoryItem(id);
-      setItems((prev) => prev.filter((item) => item._id !== id));
-      toast.success("Item deleted");
-    } catch (err) {
-      toast.error(err.message || "Error deleting item");
-    }
-  };
+ 
 
   const filteredItems = useMemo(() => {
     return items
@@ -161,22 +153,7 @@ const Inventory = () => {
                       >
                         Edit
                       </button>
-                      {/* <button
-                        className={styles.deleteBtn}
-                        onClick={() => setShowConfirm(true)}
-                      >
-                        Delete
-                      </button>
-                      {showConfirm && (
-                      <ConfirmDialog
-                        message="Sure you want to delete??"
-                        onConfirm={() => {
-                          setShowConfirm(false);
-                          handleDeleteItem(item._id);
-                        }}
-                        onCancel={() => setShowConfirm(false)}
-                      />
-                    )} */}
+
                     </td>
                   </tr>
                 );

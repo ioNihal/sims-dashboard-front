@@ -1,4 +1,4 @@
-// src/components/ProfileWidget.jsx
+
 import React from "react";
 import styles from "../../styles/widgets/ProfileWidget.module.css";
 import { NavLink, useNavigate } from "react-router-dom";

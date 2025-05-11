@@ -1,4 +1,4 @@
-// src/components/WidgetCard.jsx
+
 import React from "react";
 import styles from "../../styles/widgets/WidgetCard.module.css";
 import { Link } from "react-router-dom";

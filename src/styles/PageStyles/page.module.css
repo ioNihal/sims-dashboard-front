@@ -110,7 +110,7 @@
   margin-top: 1rem;
 }
 
-/* spinner element */
+
 .spinner {
   margin: 2rem auto;
   width: 3rem;
@@ -121,7 +121,7 @@
   animation: spin 1s linear infinite;
 }
 
-/* keyframes */
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }

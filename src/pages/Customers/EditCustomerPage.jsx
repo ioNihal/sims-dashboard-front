@@ -1,4 +1,4 @@
-// src/pages/Customers/EditCustomerPage.jsx
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "../../styles/PageStyles/Customers/editCustomerPage.module.css";
@@ -89,7 +89,7 @@ const EditCustomerPage = () => {
     const emailError = validateEmail(updatedCustomer.email);
     const phoneError = validatePhone(updatedCustomer.phone);
     const addressError = validateAddress(updatedCustomer.address);
-    // const prefErr = updatedCustomer.paymentPreference === "weekly" || updatedCustomer.paymentPreference === "monthly" ? "" : "Select preference";
+    
 
     setErrors({
       name: nameError,
@@ -196,39 +196,6 @@ const EditCustomerPage = () => {
           ></textarea>
           {errors.address && <p className={styles.error}>{errors.address}</p>}
         </div>
-
-        {/* <div className={`${styles.inputGroup}`}>
-          <label>Payment Preference</label>
-          <div className={styles.radioGroup}>
-            <label htmlFor="pref-weekly">
-              <input
-                type="radio"
-                id="pref-weekly"
-                name="paymentPreference"
-                value="weekly"
-                checked={updatedCustomer.paymentPreference === "weekly"}
-                onChange={handleChange}
-              />
-              Weekly
-            </label>
-
-            <label htmlFor="pref-monthly">
-              <input
-                type="radio"
-                id="pref-monthly"
-                name="paymentPreference"
-                value="monthly"
-                checked={updatedCustomer.paymentPreference === "monthly"}
-                onChange={handleChange}
-              />
-              Monthly
-            </label>
-          </div>
-          {errors.paymentPreference && (
-            <p className={styles.error}>{errors.paymentPreference}</p>
-          )}
-        </div> */}
-
         <div className={styles.buttonGroup}>
           <button onClick={handleSubmit} className={styles.saveBtn}>
             {`${isSaving ? "Saving..." : "Save"}`}

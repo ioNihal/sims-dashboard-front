@@ -1,4 +1,4 @@
-// src/pages/Customers/CustomerDetails.jsx
+
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "../../styles/PageStyles/Customers/customerDetails.module.css";

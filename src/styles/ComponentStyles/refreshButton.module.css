@@ -1,4 +1,4 @@
-/* src/components/RefreshButton.module.css */
+
 .refreshBtn {
     display: inline-flex;
     align-items: center;
@@ -30,10 +30,3 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-
-  /* @media (max-width :767px) {
-    .refreshBtn {
-        display: none;
-    }
-  }
-   */

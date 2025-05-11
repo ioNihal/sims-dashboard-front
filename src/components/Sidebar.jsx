@@ -1,4 +1,4 @@
-// Sidebar.jsx
+
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
@@ -57,12 +57,6 @@ const Sidebar = () => {
               {isOpen && <span>Suppliers</span>}
             </NavLink>
           </li>
-          {/* <li>
-            <NavLink to="/staffs" className={({ isActive }) => isActive ? styles.active : undefined}>
-              <FaUserTie className={styles.icon} />
-              {isOpen && <span>Staffs</span>}
-            </NavLink>
-          </li> */}
           <li>
             <NavLink to="/orders" className={({ isActive }) => isActive ? styles.active : undefined} title="Orders">
               <FaClipboardList className={styles.icon} />

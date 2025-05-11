@@ -1,4 +1,4 @@
-// src/utils/validators.js
+
 export const validateName = (name) => {
   const trimmed = name.trim();
   if (!trimmed) return "Name is required.";

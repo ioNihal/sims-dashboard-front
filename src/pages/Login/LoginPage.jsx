@@ -48,12 +48,6 @@ const LoginPage = () => {
           <button type="submit" className={styles.loginBtn} disabled={isLogging}>
             {isLogging ? "Logging in..." : "Login"}
           </button>
-          {/* <p className={styles.switchText}>
-            Don't have an account?{" "}
-            <span onClick={() => navigate("/register")} className={styles.link}>
-              Register here
-            </span>
-          </p> */}
         </form>
       </div>
     </div>

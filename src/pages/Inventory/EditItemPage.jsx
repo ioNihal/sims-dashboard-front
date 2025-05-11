@@ -1,4 +1,4 @@
-// src/pages/Inventory/EditItemPage.jsx
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "../../styles/PageStyles/Inventory/editItemPage.module.css";

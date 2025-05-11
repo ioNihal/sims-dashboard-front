@@ -174,7 +174,7 @@ const EditSupplierModal = () => {
       {submitError && <p className={styles.error}>{submitError}</p>}
 
       <form className={styles.formContainer} onSubmit={handleSubmit}>
-        {/* Supplier fields */}
+        
         {["name", "email", "phone", "address"].map(f => (
           <div
             key={f}
@@ -195,7 +195,7 @@ const EditSupplierModal = () => {
           </div>
         ))}
 
-        {/* Products */}
+        
         <div className={styles.fullWidth}>
           <h4>Supplier Products</h4>
           {supplier.products.map((p, i) => (
@@ -240,7 +240,7 @@ const EditSupplierModal = () => {
           ))}
         </div>
 
-        {/* Actions */}
+        
         <div className={styles.buttonGroup}>
           <button type="submit" disabled={isSaving} className={styles.saveBtn}>
             {isSaving ? "Saving..." : "Save"}

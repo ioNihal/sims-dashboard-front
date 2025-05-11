@@ -1,4 +1,4 @@
-// src/pages/Customers/Customers.jsx
+
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/PageStyles/Customers/customers.module.css";

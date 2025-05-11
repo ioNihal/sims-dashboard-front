@@ -13,7 +13,6 @@
   border-color: var(--blue);
 }
 
-/* RESPONSIVENESS */
 
 /* Tablets (below 1024px) */
 @media (max-width: 1024px) {}

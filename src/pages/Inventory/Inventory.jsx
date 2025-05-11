@@ -116,9 +116,9 @@ const Inventory = () => {
 
       {loading ? (
         <div className={styles.tableContainer}>
-          <p className={styles.loading}>
+          <div className={styles.loading}>
           <div className={styles.spinner} />
-          </p>
+          </div>
         </div>
       ) : (
         <div className={styles.tableContainer}>

@@ -77,9 +77,9 @@ const Suppliers = () => {
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <p className={styles.loading}>
+          <div className={styles.loading}>
             <div className={styles.spinner} />
-          </p>
+          </div>
         ) : (
           <table className={styles.table}>
             <thead>

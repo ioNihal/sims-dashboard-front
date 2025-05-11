@@ -57,7 +57,7 @@
   gap: 1rem;
   flex: 1 1 100%;
   height: auto;
-  overflow-y: hidden;
+  overflow-y: auto;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -80,7 +80,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 1rem;
-  overflow-y: auto;
+  
   height: auto;
 
 }

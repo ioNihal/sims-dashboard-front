@@ -1,9 +1,11 @@
 .dashboard {
   display: flex;
-  height: 100vh;
+  height: 100dvh;
+  align-items: stretch;
   font-family: 'Inter', sans-serif;
   background: var(--bg);
 }
+
 
 .main {
   flex: 1;

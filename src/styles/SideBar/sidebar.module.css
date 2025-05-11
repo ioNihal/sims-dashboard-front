@@ -15,6 +15,12 @@
   -o-user-select: none;
   touch-action: manipulation;
 
+  box-sizing: border-box;   /* include padding in height calculation */
+  height: 100%;             /* fill the flex‐parent’s full height */
+  max-height: 100%;         /* never exceed it */
+  overflow-y: auto;         /* scroll if content is too tall */
+  overflow-x: hidden;
+
 }
 
 .sidebar.open {
@@ -22,7 +28,7 @@
 }
 
 .sidebar.closed {
-  width: 40px;
+  width: 60px;
 }
 
 .toggleWrapper {

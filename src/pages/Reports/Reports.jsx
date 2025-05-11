@@ -65,9 +65,9 @@ const Reports = () => {
       </div>
       <div className={styles.listContainer}>
         {loading ? (
-          <p className={styles.loading}>
+          <div className={styles.loading}>
              <div className={styles.spinner} />
-          </p>
+          </div>
         ) : filteredReports.length > 0 ? (
           <ul className={styles.reportList}>
             {filteredReports

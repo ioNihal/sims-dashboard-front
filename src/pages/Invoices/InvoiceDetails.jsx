@@ -103,11 +103,11 @@ const InvoiceDetails = () => {
 
       <div className={styles.invoiceCard}>
         {loading || !invoice ? (
-          <p className={styles.loading}>
+          <div className={styles.loading}>
             <div className={styles.skeleton} style={{ width: '60%' }} />
             <div className={styles.skeleton} style={{ width: '40%' }} />
             <div className={styles.skeleton} style={{ width: '80%' }} />
-          </p>
+          </div>
         ) : (
           <>
             <header className={styles.header}>

@@ -75,11 +75,11 @@ const ItemDetails = () => {
   if (loading) {
     return (
       <div className={styles.page}>
-        <p className={styles.loading}>
+        <div className={styles.loading}>
           <div className={styles.skeleton} style={{ width: '60%' }} />
           <div className={styles.skeleton} style={{ width: '40%' }} />
           <div className={styles.skeleton} style={{ width: '80%' }} />
-        </p>
+        </div>
       </div>
     );
   }

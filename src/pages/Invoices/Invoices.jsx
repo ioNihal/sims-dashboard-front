@@ -127,9 +127,9 @@ const Invoices = () => {
 
       <div className={styles.listCard}>
         {loading ? (
-          <p className={styles.loading}>
+          <div className={styles.loading}>
              <div className={styles.spinner} />
-          </p>
+          </div>
         ) : filtered.length > 0 ? (
           <table className={styles.table}>
             <thead>

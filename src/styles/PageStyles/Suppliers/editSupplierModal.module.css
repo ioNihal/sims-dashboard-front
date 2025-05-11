@@ -29,13 +29,17 @@
   flex-wrap: wrap;
   gap: 1rem;
   background-color: var(--bg-dim);
-  min-height: 300px;
-  height: 100%;
+  
+  flex: 1 1 auto;  
+  min-height: 0;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   overflow-y: auto;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 .inputWrapper {
@@ -194,14 +198,14 @@
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
 
 
 .productRow input {
   color: var(--text);
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   flex: 1 1 300px;
   width: 100%;
   text-align: left;

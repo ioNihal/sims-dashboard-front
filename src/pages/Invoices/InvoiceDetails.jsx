@@ -183,7 +183,7 @@ const InvoiceDetails = () => {
                     {orders.map((order) =>
                       order.orderProducts.map((o) => (
                         <tr key={o._id}>
-                          <td><Link to={`/orders/${o._id}`}>#{o._id}</Link></td>
+                          <td><Link to={`/orders/${order._id}`}>#{order._id}</Link></td>
                           <td>{capitalize(o.name) || "Deleted product"}</td>
                           <td>{o.quantity || "N/A"}</td>
                           <td>₹{o.price.toFixed(2) || "N/A"}</td>

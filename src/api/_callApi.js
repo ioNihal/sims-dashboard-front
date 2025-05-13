@@ -22,7 +22,7 @@ async function callApi(
   try {
     res = await fetch(`${API_BASE}${path}`, { method, headers, body, signal });
   } catch (networkErr) {
-    throw new Error(`Network error!`);
+    throw new Error(`Network error! Please check your internet`);
   }
 
   let payload = {};

@@ -43,7 +43,7 @@ async function callApi(
 }
 
 function redirectToLogin() {
-  ["isLoggedIn", "adminEmail", "user", "token"].forEach((k) =>
+  ["isLoggedIn", "adminEmail", "user", "token", "tokenType", "tokenExpiry" ].forEach((k) =>
     localStorage.removeItem(k)
   );
   window.location.href = "/login";

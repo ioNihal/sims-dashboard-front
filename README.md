@@ -58,7 +58,7 @@ This structure ensures clear separation of concerns and easy navigation as your 
 1.  Clone the repository:
 
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/ioNihal/sims-dashboard-front.git
     ```
 
 2.  Navigate to the project directory:

@@ -1,3 +1,6 @@
+[Customer Portal](https://github.com/ioNihal/sims-retailer-front)
+[Backend Code](https://github.com/S488U/ims)
+
 # Sims Dashboard Front
 
 **Sims Dashboard Front**

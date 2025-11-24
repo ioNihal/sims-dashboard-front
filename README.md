@@ -2,8 +2,11 @@
 [Backend Code](https://github.com/S488U/ims)
 
 ### Team Project:
-**Frontend:** ![Nihal K](https://github.com/ioNihal.png?size=32)
-# Sims Dashboard Front
+
+**Frontend:** <img src="https://github.com/ioNihal.png?size=32" width="24" height="24" style="border-radius:50%;" />
+
+**Backend:** <img src="https://github.com/s488u.png?size=32" width="24" height="24" style="border-radius:50%;" />
+
 
 **Sims Dashboard Front**
 

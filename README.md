@@ -2,7 +2,7 @@
 [Backend Code](https://github.com/S488U/ims)
 
 ### Team Project:
-**Frontend:** ![Nihal K](https://github.com/ioNihal.png?size=16)
+**Frontend:** ![Nihal K](https://github.com/ioNihal.png?size=32)
 # Sims Dashboard Front
 
 **Sims Dashboard Front**

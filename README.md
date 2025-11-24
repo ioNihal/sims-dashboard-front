@@ -2,7 +2,13 @@
 [Backend Code](https://github.com/S488U/ims)
 
 ### Team Project:
-- **Frontend:**<img src="https://github.com/ioNihal.png" width="32" style="clip-path: circle(50%);" /> Nihal K  
+- **Frontend:**<!--
+Source - https://stackoverflow.com/a
+Posted by neonwatty
+Retrieved 2025-11-24, License - CC BY-SA 4.0
+-->
+
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVoFq3XlAYVa5ThUCMFuzv_C7zei7KhT9Nag&s" alt="Avatar" style="width:100px; height:100px; border-radius:50%;">Nihal K  
 - **Backend:** <img src="https://github.com/s488u.png?size=32" width="20" style="border-radius:50%;" /> Shahabas Abdul Hameed
 
 

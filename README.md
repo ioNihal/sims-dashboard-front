@@ -2,7 +2,7 @@
 [Backend Code](https://github.com/S488U/ims)
 
 ### Team Project:
-- **Frontend:** <img src="https://github.com/ioNihal.png?size=32" width="20" style="border-radius:50%;" /> Nihal K  
+- **Frontend:**<img src="https://github.com/ioNihal.png" width="32" style="clip-path: circle(50%);" /> Nihal K  
 - **Backend:** <img src="https://github.com/s488u.png?size=32" width="20" style="border-radius:50%;" /> Shahabas Abdul Hameed
 
 

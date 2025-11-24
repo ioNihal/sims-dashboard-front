@@ -2,8 +2,8 @@
 [Backend Code](https://github.com/S488U/ims)
 
 ### Team Project:
-- **Frontend:**![Avatar](https://robohash.org/ioNihal?set=set5&size=80x80)Nihal K  
-- **Backend:** <img src="https://github.com/s488u.png?size=32" width="20" style="border-radius:50%;" /> Shahabas Abdul Hameed
+- **Frontend:** ![nihal-avatar](https://github.com/ioNihal.png?size=48) Nihal K  
+- **Backend:** ![shahabas-avatar](https://github.com/s488u.png?size=48) Shahabas Abdul Hameed
 
 
 # Sims Dashboard Front

@@ -7,8 +7,7 @@
 
 **Backend:** <img src="https://github.com/s488u.png?size=32" width="24" height="24" style="border-radius:50%;" />
 
-
-**Sims Dashboard Front**
+# Sims Dashboard Front
 
 This is the frontend repository for the Smart Inventory Management System (SIMS) Dashboard Application. It’s a React‑based web app that provides a comprehensive interface for visualizing and interacting with your inventory, orders, customers, suppliers, reports and more.
 
